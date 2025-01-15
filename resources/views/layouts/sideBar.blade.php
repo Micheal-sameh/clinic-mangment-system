@@ -4,35 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'My Laravel App')</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         /* Initially hide the sidebar off-screen */
         #sidebar {
             position: fixed;
             top: 0;
-            left: -250px;
+            left: -150px;  /* Sidebar hidden off-screen by default */
             height: 100vh;
-            width: 250px;
+            width: 150px;  /* Reduced sidebar width */
             background-color: #333;
             color: white;
             transition: left 0.3s ease;
             z-index: 999;
         }
 
+        /* Sidebar visible on mobile and desktop when toggled */
         #sidebar.show {
             left: 0;
         }
 
+        /* Sidebar navigation items */
         #sidebar ul {
             list-style-type: none;
             padding: 0;
         }
 
         #sidebar .nav-item {
-            padding: 10px;
+            padding: 8px;  /* Reduced padding for the smaller sidebar */
         }
 
-        /* Logo as the button to toggle sidebar */
+        /* Logo button to toggle sidebar */
         .btn-toggle-sidebar {
             position: fixed;
             top: 20px;
@@ -46,31 +49,48 @@
 
         /* Ensure the logo doesn't overflow and keeps the correct size */
         .btn-toggle-sidebar img {
-            width: 40px;  
+            width: 35px;  /* Reduced logo size for smaller sidebar */
             height: auto;
         }
 
-        /* Hide the sidebar button on medium and larger screens */
-        .btn-toggle-sidebar {
-            display: block;
-        }
-
+        /* Hide the toggle button on medium and larger screens */
         @media (min-width: 768px) {
-            /* Hide toggle button on medium and larger screens */
             .btn-toggle-sidebar {
-                display: none;
+                display: none;  /* Hide on medium+ screens */
             }
 
-            /* For medium and larger screens, the sidebar should be always visible */
+            /* For medium and larger screens, the sidebar should always be visible */
             #sidebar {
-                left: 0;
+                left: 0;  /* Sidebar always visible on larger screens */
+            }
+
+            /* Adjust content area to accommodate the smaller sidebar */
+            .content-wrapper {
+                display: flex;
+                flex-direction: row;
+            }
+
+            .content-area {
+                margin-left: 150px;  /* Adjusted for the smaller sidebar width */
             }
         }
+
+        /* On smaller screens, the content area should take full width */
+        @media (max-width: 768px) {
+            .content-wrapper {
+                display: block;
+            }
+
+            .content-area {
+                margin-left: 0;
+            }
+        }
+
     </style>
 </head>
 <body>
     <div class="container-fluid">
-        <div class="row">
+        <div class="row content-wrapper">
             <!-- Sidebar (Hidden by default on small screens) -->
             <div id="sidebar" class="col-12 col-md-3 col-lg-2 bg-dark text-white p-3">
                 <h3>My Sidebar</h3>
@@ -78,6 +98,11 @@
                     <li class="nav-item">
                         <a class="nav-link text-white" href="{{ url('/') }}">Home</a>
                     </li>
+                    @can('users_list')
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{ route('users.index') }}">Users</a>
+                    </li>
+                    @endcan
                     <li class="nav-item">
                         <a class="nav-link text-white" href="{{ url('/about') }}">About</a>
                     </li>
@@ -88,7 +113,7 @@
             </div>
 
             <!-- Main Content Area -->
-            <div class="col-12 col-md-9 col-lg-10 p-3">
+            <div class="col-12 col-md-9 col-lg-10 content-area p-3">
                 @yield('content')
             </div>
         </div>

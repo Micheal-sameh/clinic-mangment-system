@@ -30,6 +30,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+            return redirect()->intended(RouteServiceProvider::HOME);
         }
         return redirect()->intended(RouteServiceProvider::HOME);
     }
@@ -54,8 +55,13 @@ class AuthController extends Controller
         ]);
     }
 
-    public function logout()
+    public function logotu(Request $request)
     {
-        return response()->json('this is my logout method');
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('loginPage');
     }
 }
