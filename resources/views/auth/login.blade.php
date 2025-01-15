@@ -29,7 +29,8 @@
                         </div>
 
                         <!-- Login form -->
-                        <form id="login-form" method="POST" action="/login">
+                        <form id="login-form" method="POST" action="/auth/login">
+                            @csrf
                             <div class="form-group mb-4">
                                 <label for="email" class="form-label">Email Address</label>
                                 <input type="email" id="email" class="form-control" name="email" required autofocus placeholder="Enter your email">

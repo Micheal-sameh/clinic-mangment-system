@@ -8,6 +8,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use App\Traits\HttpResponses;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 
@@ -22,10 +23,14 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request)
     {
-        $request->authenticate();
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
 
-        $request->session()->regenerate();
-
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+        }
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 
