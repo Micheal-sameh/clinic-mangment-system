@@ -68,8 +68,12 @@
                         <th scope="row">{{ $key + 1 }}</th>
                         {{-- <td>{{ $user->name }}</td> --}}
                         <td>
-                            <a class="nav-item" href="{{ route('users.show', $user['id']) }}" style="text-decoration: none;">
+                            @can('users_show')
+                                <a class="nav-item" href="{{ route('users.show', $user['id']) }}" style="text-decoration: none;">
+                                    {{$user->localized_name}}
+                            @else
                                 {{$user->localized_name}}
+                            @endcan
                             </a>
                         </td>
 

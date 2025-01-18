@@ -8,6 +8,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        /* Sidebar and other styles here... */
+
         #sidebar {
             position: fixed;
             top: 0;
@@ -19,6 +21,7 @@
             z-index: 1000; /* Ensure it's above other content */
             left: -150px; /* Default hidden position for mobile */
         }
+
         [dir="rtl"] #sidebar {
             position: fixed;
             top: 0;
@@ -26,7 +29,7 @@
             width: 150px;
             background-color: #333;
             color: white;
-            transition: right 0.3s ease; /* Smooth transition for the sidebar */
+            transition: right 0.3s ease;
             z-index: 1000; /* Ensure it's above other content */
             right: 0; /* Sidebar is visible by default on large screens */
         }
@@ -34,7 +37,6 @@
         #sidebar.show {
             left: 0;
         }
-
 
         /* RTL adjustments */
         [dir="rtl"] #sidebar {
@@ -131,6 +133,33 @@
         #sidebar .nav-item {
             padding: 8px;
         }
+
+        /* World Icon Button at the bottom of the sidebar */
+        #sidebar .world-icon-btn {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: none;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            color: white;
+            font-size: 24px;
+            z-index: 1001;
+        }
+
+        #sidebar .world-icon-btn:hover {
+            color: #f8f9fa; /* Change color on hover */
+        }
+
+        /* RTL adjustments for the world icon button */
+        [dir="rtl"] #sidebar .world-icon-btn {
+            left: auto;
+            right: 50%;
+            transform: translateX(50%);
+        }
+
     </style>
 </head>
 <body>
@@ -141,13 +170,18 @@
                 <img src="{{ asset('images/logo.jpg') }}" alt="Logo" class="img-fluid mb-3">
                 <ul class="nav flex-column">
                     <li class="nav-item"><a class="nav-link text-white" href="{{ url('/') }}"> {{__('messages.home')}} </a></li>
-                    @can('users_list')
                     <li class="nav-item"><a class="nav-link text-white" href="{{ route('users.profile') }}">{{__('messages.profile')}} </a></li>
+                    @can('users_list')
                     <li class="nav-item"><a class="nav-link text-white" href="{{ route('users.index') }}">{{__('messages.users')}} </a></li>
                     @endcan
                     <li class="nav-item"><a class="nav-link text-white" href="{{ url('/about') }}">{{__('messages.about')}} </a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="{{ url('/contact') }}">{{__('messages.contact')}} </a></li>
                 </ul>
+
+                <!-- World Icon Button for language selection -->
+                <button class="world-icon-btn" id="languageSwitcher" aria-label="Change Language">
+                    <i class="fas fa-globe"></i>
+                </button>
             </div>
 
             <!-- Content Area -->
@@ -171,6 +205,15 @@
             const sidebar = document.getElementById("sidebar");
             sidebar.classList.toggle("show");
             this.setAttribute('aria-label', sidebar.classList.contains("show") ? 'Close Sidebar' : 'Open Sidebar');
+        });
+
+        // Language Switcher Logic
+        document.getElementById('languageSwitcher').addEventListener('click', function() {
+            // Toggle between 'en' and 'ar' as an example.
+            // You can replace this URL with your own language switching logic (like route or AJAX).
+            const currentLang = "{{ app()->getLocale() }}";
+            const newLang = currentLang === 'en' ? 'ar' : 'en';
+            window.location.href = `/lang/${newLang}`; // Adjust the route to match your language switching route
         });
     </script>
 

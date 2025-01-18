@@ -4,9 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -23,6 +21,7 @@ class RolesAndPermissionSeeder extends Seeder
         $users_show = Permission::firstOrCreate(['name' => 'users_show']);
         $users_delete = Permission::firstOrCreate(['name' => 'users_delete']);
         $users_reset_pass = Permission::firstOrCreate(['name' => 'users_reset_pass']);
+        $users_profile = Permission::firstOrCreate(['name' => 'users_profile']);
 
 
         $owner = Role::firstOrCreate(['name' => 'owner']);
@@ -33,11 +32,19 @@ class RolesAndPermissionSeeder extends Seeder
             $users_show,
             $users_delete,
             $users_reset_pass,
+            $users_profile,
+        ]);
+
+        $secretary = Role::firstOrCreate(['name' => 'secretary']);
+        $secretary->givePermissionTo([
+            $users_profile,
         ]);
 
         $patient = Role::firstOrCreate(['name' => 'patient']);
         $patient->givePermissionTo([
+            $users_profile,
         ]);
+
 
 
     }
