@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserRepository
 {
@@ -17,13 +18,14 @@ class UserRepository
      */
     public function index($input)
     {
-
         $users = $this->model
-            ->when(isset($input->role), function ($q) use ($input) {
+            ->when(!is_null($input->role), function ($q) use ($input) {
                 return $q->whereHas('roles', function ($query) use ($input) {
                     $query->where('name', $input->role);
                 });
             })
+            ->when(!is_null($input->name), fn($q) => $q->where('name', 'like', '%' . $input->name . '%'))
+            ->orderby('name')
             ->get();
 
         return $users;
@@ -48,9 +50,11 @@ class UserRepository
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show($id)
     {
-        //
+        $user = $this->model->find($id);
+
+        return $user;
     }
 
     /**
@@ -75,5 +79,11 @@ class UserRepository
     public function delete($id)
     {
         return $this->model->find($id)->delete();
+    }
+    public function resetPassword($id)
+    {
+        return $this->model->find($id)->update([
+            'password' => Hash::make('123456')
+        ]);
     }
 }

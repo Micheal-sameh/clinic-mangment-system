@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
-use App\Http\Requests\StoreUserRequest;
-use App\Http\Resources\UserResource;
+use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use App\Traits\HttpResponses;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
@@ -27,35 +27,37 @@ class AuthController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
+        $remember = $request->has('remember');
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
             return redirect()->intended(RouteServiceProvider::HOME);
         }
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 
-    public function register(StoreUserRequest $request)
+    public function registerPage()
     {
-        $request->validated($request->all());
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => 'user',
-            'status' => 'inactive',
-        ]);
-        $role = Role::where('name', 'user')->first();
-        $user->assignRole([$role->id]);
-
-        return $this->success([
-            'user' => new UserResource($user),
-            'token' => $user->createToken('API Token of' . $user->name)->plainTextToken,
-
-        ]);
+        return view('auth.register');
     }
 
-    public function logotu(Request $request)
+    public function register(RegisterRequest $request)
+    {
+        $user = User::create([
+            'name' => ['en' => $request->name_en, 'ar' => $request->name_ar],
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'age'   => $request->age,
+            'password' => Hash::make($request->password),
+            'status' => '1',
+        ]);
+        $role = Role::where('name', 'patient')->first();
+        $user->assignRole([$role->id]);
+
+        return redirect()->route('login');
+    }
+
+    public function logout(Request $request)
     {
         Auth::logout();
 

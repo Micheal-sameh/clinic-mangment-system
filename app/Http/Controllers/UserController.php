@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PasswordUpdateRequest;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Services\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -50,17 +53,26 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show($id)
     {
-        //
+        $user = $this->userService->show($id);
+        return view('users.show', compact('user'));
+    }
+
+    public function profile()
+    {
+        $user = $this->userService->show(Auth::id());
+        return view('users.profile', compact('user'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit($id)
     {
-        //
+        $user = User::find($id);
+
+        return view('users.edit', compact('user'));
     }
 
     /**
@@ -78,6 +90,26 @@ class UserController extends Controller
     {
         $this->userRepository->delete($id);
 
-        return response()->json(['message' => 'User deleted successfully']);
+        return response()->back()->with(['message' => 'User deleted successfully']);
+    }
+
+    public function updatePassword(PasswordUpdateRequest $request)
+    {
+        if (!Hash::check($request->current_password, Auth::user()->password)) {
+            return back()->withErrors(['current_password' => 'Current password is incorrect.']);
+        }
+        $user = User::find(Auth::id());
+        $user->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect()->back()->with('success', 'Password updated successfully.');
+    }
+
+    public function resetPassword($id)
+    {
+        $this->userRepository->resetPassword($id);
+
+        return redirect()->back()->with('message', 'Password reset successfully');
     }
 }

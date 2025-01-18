@@ -22,6 +22,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'phone',
+        'age',
     ];
 
     /**
@@ -42,5 +44,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'name' => 'array',
     ];
+
+    public function getLocalizedNameAttribute($value)
+    {
+        return $this->name[app()->getLocale()] ?? $this->name['en'];
+    }
+
 }

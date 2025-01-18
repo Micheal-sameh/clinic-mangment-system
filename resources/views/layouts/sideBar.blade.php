@@ -1,147 +1,180 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'My Laravel App')</title>
+    <link rel="icon" href="{{ asset('images/logo.jpg') }}" type="image/jpg">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Initially hide the sidebar off-screen */
         #sidebar {
             position: fixed;
             top: 0;
-            left: -150px;  /* Sidebar hidden off-screen by default */
             height: 100vh;
-            width: 150px;  /* Reduced sidebar width */
+            width: 150px;
             background-color: #333;
             color: white;
-            transition: left 0.3s ease;
-            z-index: 999;
+            transition: left 0.3s ease, right 0.3s ease;
+            z-index: 1000; /* Ensure it's above other content */
+            left: -150px; /* Default hidden position for mobile */
+        }
+        [dir="rtl"] #sidebar {
+            position: fixed;
+            top: 0;
+            height: 100vh;
+            width: 150px;
+            background-color: #333;
+            color: white;
+            transition: right 0.3s ease; /* Smooth transition for the sidebar */
+            z-index: 1000; /* Ensure it's above other content */
+            right: 0; /* Sidebar is visible by default on large screens */
         }
 
-        /* Sidebar visible on mobile and desktop when toggled */
         #sidebar.show {
             left: 0;
         }
 
-        /* Sidebar navigation items */
-        #sidebar ul {
-            list-style-type: none;
-            padding: 0;
+
+        /* RTL adjustments */
+        [dir="rtl"] #sidebar {
+            left: auto;
+            right: 0px; /* Default RTL hidden position */
         }
 
-        #sidebar .nav-item {
-            padding: 8px;  /* Reduced padding for the smaller sidebar */
+        [dir="rtl"] #sidebar.show {
+            right: -150px; /* Show the sidebar from the right side */
         }
 
-        /* Logo button to toggle sidebar */
+        /* Content Area */
+        .content-wrapper {
+            display: flex; /* Enable flexbox for layout */
+        }
+
+        .content-area {
+            flex-grow: 1; /* Allow content to take available space */
+            margin-left: 0;
+        }
+
+        /* Adjust content area margin for RTL */
+        [dir="rtl"] .content-area {
+            margin-right: 0;
+        }
+
         .btn-toggle-sidebar {
             position: fixed;
             top: 20px;
-            left: 20px;
-            z-index: 1000;
+            z-index: 1001; /* Above the sidebar */
             background: none;
             border: none;
             padding: 0;
             cursor: pointer;
         }
 
-        /* Ensure the logo doesn't overflow and keeps the correct size */
         .btn-toggle-sidebar img {
-            width: 35px;  /* Reduced logo size for smaller sidebar */
+            width: 40px;
             height: auto;
         }
 
-        /* Hide the toggle button on medium and larger screens */
-        @media (min-width: 768px) {
-            .btn-toggle-sidebar {
-                display: none;  /* Hide on medium+ screens */
-            }
-
-            /* For medium and larger screens, the sidebar should always be visible */
-            #sidebar {
-                left: 0;  /* Sidebar always visible on larger screens */
-            }
-
-            /* Adjust content area to accommodate the smaller sidebar */
-            .content-wrapper {
-                display: flex;
-                flex-direction: row;
-            }
-
-            .content-area {
-                margin-left: 150px;  /* Adjusted for the smaller sidebar width */
-            }
+        /* RTL toggle button position */
+        [dir="rtl"] .btn-toggle-sidebar {
+            right: 20px;
+            left: auto;
         }
 
-        /* On smaller screens, the content area should take full width */
-        @media (max-width: 768px) {
-            .content-wrapper {
-                display: block;
+        /* Hide toggle on medium and larger screens */
+        @media (min-width: 768px) {
+            .btn-toggle-sidebar {
+                display: none; /* Hide toggle button on larger screens */
             }
-
+            #sidebar {
+                left: 0; /* Sidebar is always visible on larger screens */
+            }
             .content-area {
+                margin-left: 150px; /* Content adjusts to make space for the sidebar */
+            }
+            /* Adjust the content area for RTL languages */
+            [dir="rtl"] .content-area {
+                margin-right: 150px; /* Match sidebar width */
                 margin-left: 0;
             }
         }
 
+        /* Mobile view adjustments */
+        @media (max-width: 767px) {
+            #sidebar {
+                left: -150px; /* Keep sidebar hidden off-screen */
+            }
+            [dir="rtl"] #sidebar {
+                right: -150px; /* Keep sidebar hidden off-screen */
+            }
+            #sidebar.show {
+                left: 0; /* Sidebar visible when toggled */
+            }
+
+            [dir="rtl"] #sidebar.show {
+                right: 0px; /* Sidebar visible when toggled */
+            }
+
+            /* Ensure toggle button is visible */
+            .btn-toggle-sidebar {
+                display: block;
+            }
+        }
+
+        #sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0; /* Reset default margins */
+        }
+
+        #sidebar .nav-item {
+            padding: 8px;
+        }
     </style>
 </head>
 <body>
     <div class="container-fluid">
         <div class="row content-wrapper">
-            <!-- Sidebar (Hidden by default on small screens) -->
-            <div id="sidebar" class="col-12 col-md-3 col-lg-2 bg-dark text-white p-3">
-                <h3>My Sidebar</h3>
+            <!-- Sidebar -->
+            <div id="sidebar">
+                <img src="{{ asset('images/logo.jpg') }}" alt="Logo" class="img-fluid mb-3">
                 <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ url('/') }}">Home</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link text-white" href="{{ url('/') }}"> {{__('messages.home')}} </a></li>
                     @can('users_list')
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ route('users.index') }}">Users</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link text-white" href="{{ route('users.profile') }}">{{__('messages.profile')}} </a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="{{ route('users.index') }}">{{__('messages.users')}} </a></li>
                     @endcan
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ url('/about') }}">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ url('/contact') }}">Contact</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link text-white" href="{{ url('/about') }}">{{__('messages.about')}} </a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="{{ url('/contact') }}">{{__('messages.contact')}} </a></li>
                 </ul>
             </div>
 
-            <!-- Main Content Area -->
-            <div class="col-12 col-md-9 col-lg-10 content-area p-3">
+            <!-- Content Area -->
+            <div class="content-area p-3">
                 @yield('content')
             </div>
         </div>
     </div>
 
-    <!-- Logo Button to Toggle Sidebar (Visible on Mobile) -->
-    <button class="btn-toggle-sidebar d-md-none" id="toggleSidebar">
-        <!-- Logo image for the button -->
-        <img src="{{ asset('images/logo.png') }}" alt="Logo">  <!-- Replace with your logo image -->
+    <!-- Mobile Toggle Button -->
+    <button class="btn-toggle-sidebar d-md-none" id="toggleSidebar" aria-label="Open Sidebar">
+        <img src="{{ asset('images/logo.jpg') }}" alt="Logo">
     </button>
 
-    <!-- Add Bootstrap 5 JS -->
+    <!-- JS Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- JavaScript to Handle Sidebar Toggle -->
+    <!-- Sidebar Toggle JS -->
     <script>
-        // Toggle sidebar visibility on mobile when the logo button is clicked
         document.getElementById("toggleSidebar").addEventListener("click", function() {
-            var sidebar = document.getElementById("sidebar");
-            sidebar.classList.toggle("show");  // Toggle the sidebar visibility
-
-            // Toggle the button text (optional, to indicate open/close action)
-            if (sidebar.classList.contains("show")) {
-                this.setAttribute('aria-label', 'Close Sidebar');  // Change aria-label for accessibility
-            } else {
-                this.setAttribute('aria-label', 'Open Sidebar');   // Change aria-label for accessibility
-            }
+            const sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("show");
+            this.setAttribute('aria-label', sidebar.classList.contains("show") ? 'Close Sidebar' : 'Open Sidebar');
         });
     </script>
+
+    <!-- Additional Scripts -->
+    @stack('scripts')
 </body>
 </html>

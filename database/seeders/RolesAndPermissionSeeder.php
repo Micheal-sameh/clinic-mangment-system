@@ -19,18 +19,24 @@ class RolesAndPermissionSeeder extends Seeder
     {
         $users_list = Permission::firstOrCreate(['name' => 'users_list']);
         $users_create = Permission::firstOrCreate(['name' => 'users_create']);
+        $users_edit = Permission::firstOrCreate(['name' => 'users_edit']);
         $users_show = Permission::firstOrCreate(['name' => 'users_show']);
         $users_delete = Permission::firstOrCreate(['name' => 'users_delete']);
         $users_reset_pass = Permission::firstOrCreate(['name' => 'users_reset_pass']);
 
 
-        $owner = Role::firstOrCreate(['name' => 'super_admin']);
+        $owner = Role::firstOrCreate(['name' => 'owner']);
         $owner->givePermissionTo([
             $users_list,
             $users_create,
+            $users_edit,
             $users_show,
             $users_delete,
             $users_reset_pass,
+        ]);
+
+        $patient = Role::firstOrCreate(['name' => 'patient']);
+        $patient->givePermissionTo([
         ]);
 
 

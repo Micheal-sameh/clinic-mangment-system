@@ -43,9 +43,11 @@ class UserService
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show($id)
     {
-        //
+        $user = $this->userRepository->show($id);
+
+        return $user;
     }
 
     /**
