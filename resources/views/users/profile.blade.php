@@ -37,11 +37,11 @@
                     </div>
                     @endif
 
-                    <div class="mb-3">
+                    {{-- <div class="mb-3">
                         <a href="{{ route('users.index') }}" class="btn btn-outline-primary">
                             <i class="fas fa-arrow-left"></i> {{ __('messages.back_to_users') }}
                         </a>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
 
@@ -79,7 +79,7 @@
             <!-- Change Password Card -->
             <div class="card shadow-sm border-light rounded mb-4">
                 <div class="card-header bg-warning text-white">
-                    <h5 class="mb-0">{{ __('Change Password') }}</h5>
+                    <h5 class="mb-0">{{ __('messages.change_password') }}</h5>
                 </div>
                 <div class="card-body">
                     <form method="POST" action="{{ route('users.password.update', $user->id) }}">
@@ -87,7 +87,7 @@
                         @method('PUT') <!-- Ensure PUT method for updating -->
 
                         <div class="form-group">
-                            <label for="current_password">{{ __('Current Password') }}</label>
+                            <label for="current_password">{{ __('messages.current_password') }}</label>
                             <input type="password" id="current_password" name="current_password" class="form-control @error('current_password') is-invalid @enderror" required>
                             @error('current_password')
                                 <span class="invalid-feedback" role="alert">
@@ -97,7 +97,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="new_password">{{ __('New Password') }}</label>
+                            <label for="new_password">{{ __('messages.new_password') }}</label>
                             <input type="password" id="new_password" name="new_password" class="form-control @error('new_password') is-invalid @enderror" required>
                             @error('new_password')
                                 <span class="invalid-feedback" role="alert">
@@ -107,11 +107,11 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="new_password_confirmation">{{ __('Confirm New Password') }}</label>
+                            <label for="new_password_confirmation">{{ __('messages.confirm_password') }}</label>
                             <input type="password" id="new_password_confirmation" name="new_password_confirmation" class="form-control" required>
                         </div>
 
-                        <button type="submit" class="btn btn-warning mt-3">{{ __('Change Password') }}</button>
+                        <button type="submit" class="btn btn-warning mt-3">{{ __('messages.change_password') }}</button>
                     </form>
                 </div>
             </div>
