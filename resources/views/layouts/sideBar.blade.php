@@ -169,13 +169,28 @@
             <div id="sidebar">
                 <img src="{{ asset('images/logo.jpg') }}" alt="Logo" class="img-fluid mb-3">
                 <ul class="nav flex-column">
-                    <li class="nav-item"><a class="nav-link text-white" href="{{ url('/') }}"> {{__('messages.home')}} </a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="{{ route('users.profile') }}">{{__('messages.profile')}} </a></li>
+                    <li class="nav-item text-center"><a class="nav-link text-white" href="{{ url('/') }}"> {{__('messages.home')}} </a></li>
+                    @auth
+                    <li class="nav-item text-center"><a class="nav-link text-white" href="{{ route('users.profile') }}">{{__('messages.profile')}} </a></li>
+                    @endauth
                     @can('users_list')
-                    <li class="nav-item"><a class="nav-link text-white" href="{{ route('users.index') }}">{{__('messages.users')}} </a></li>
+                    <li class="nav-item text-center"><a class="nav-link text-white" href="{{ route('users.index') }}">{{__('messages.users')}} </a></li>
                     @endcan
-                    <li class="nav-item"><a class="nav-link text-white" href="{{ url('/about') }}">{{__('messages.about')}} </a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="{{ url('/contact') }}">{{__('messages.contact')}} </a></li>
+                    <li class="nav-item text-center"><a class="nav-link text-white" href="{{ url('/about') }}">{{__('messages.about')}} </a></li>
+                    <li class="nav-item text-center"><a class="nav-link text-white" href="{{ url('/contact') }}">{{__('messages.contact')}} </a></li>
+                    @auth
+                    <li class="nav-item text-center">
+                        <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                            @csrf
+                            <button type="submit" class="nav-link text-white" style="background: none; border: none; padding: 0; cursor: pointer;">
+                                {{ __('messages.logout') }}
+                            </button>
+                        </form>
+                    </li>
+                    @else
+                    <a href="{{ route('loginPage') }}" class="nav-link text-white text-center">{{__('messages.login')}}</a>
+                    @endauth
+
                 </ul>
 
                 <!-- World Icon Button for language selection -->
