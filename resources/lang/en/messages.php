@@ -39,5 +39,8 @@ return [
     'price'             => 'Price',
     'create'            => 'Create',
     'procedure'         => 'Procedure',
+    'procedures'        => 'Procedures',
     'enter'             => 'Enter',
+    'user'              => 'User',
+    'list'              => 'List',
 ];

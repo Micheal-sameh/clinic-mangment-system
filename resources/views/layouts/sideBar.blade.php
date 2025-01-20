@@ -159,6 +159,10 @@
             right: 50%;
             transform: translateX(50%);
         }
+        .nav-item .dropdown-toggle {
+            text-decoration: none;  /* Remove underline */
+            color: white;           /* Set the text color to white */
+        }
 
     </style>
 </head>
@@ -169,13 +173,32 @@
             <div id="sidebar">
                 <img src="{{ asset('images/logo.jpg') }}" alt="Logo" class="img-fluid mb-3">
                 <ul class="nav flex-column">
-                    <li class="nav-item"><a class="nav-link text-white" href="{{ url('/') }}"> {{__('messages.home')}} </a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="{{ route('users.profile') }}">{{__('messages.profile')}} </a></li>
+                    <li class="nav-item text-center"><a class="nav-link text-white" href="{{ url('/') }}"> {{__('messages.home')}} </a></li>
+                    <li class="nav-item text-center"><a class="nav-link text-white" href="{{ route('users.profile') }}">{{__('messages.profile')}} </a></li>
                     @can('users_list')
-                    <li class="nav-item"><a class="nav-link text-white" href="{{ route('users.index') }}">{{__('messages.users')}} </a></li>
+                    <a class="nav-item text-center dropdown-toggle text-white" href="#" id="usersDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none;">
+                        {{__('messages.users')}}
+                    </a>
+                        <ul class="dropdown-menu nav-item" aria-labelledby="usersDropdown" style="background: #333; width: 100%;">
+                            <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('users.index') }}"> {{__('messages.list')}}</a></li>
+                            <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('users.index') }}">{{__('messages.create')}} {{__('messages.user')}} </a></li>
+                        </ul>
                     @endcan
-                    <li class="nav-item"><a class="nav-link text-white" href="{{ url('/about') }}">{{__('messages.about')}} </a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="{{ url('/contact') }}">{{__('messages.contact')}} </a></li>
+                    @can('users_list')
+                    <a class="nav-item text-center dropdown-toggle text-white" href="#" id="proceduresDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none;">
+                        {{__('messages.procedures')}}
+                    </a>
+                        <ul class="dropdown-menu nav-item" aria-labelledby="proceduresDropdown" style="background: #333; width: 100%;">
+                            <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('procedures.index') }}">{{__('messages.list')}}</a></li>
+                            <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('procedures.create') }}">{{__('messages.create')}} {{__('messages.procedure')}} </a></li>
+                        </ul>
+                    @endcan
+                </ul>
+
+
+                <ul class="dropdown-menu" aria-labelledby="usersDropdown">
+                    <li><a class="dropdown-item" href="{{ route('users.index') }}">Create User</a></li>
+                    <li><a class="dropdown-item" href="{{ route('users.index') }}">List Users</a></li>
                 </ul>
 
                 <!-- World Icon Button for language selection -->
