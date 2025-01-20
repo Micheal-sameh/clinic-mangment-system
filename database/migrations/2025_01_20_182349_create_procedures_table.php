@@ -16,6 +16,7 @@ return new class extends Migration
             $table->json('name');
             $table->json('description')->nullable();
             $table->float('price');
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

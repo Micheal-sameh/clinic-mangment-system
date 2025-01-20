@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\DTOs\ProcedureCreateDTO;
 use App\Models\User;
 use App\Repositories\ProcedureRepository;
 use Illuminate\Http\Request;
@@ -25,10 +26,9 @@ class ProcedureService
     /**
      * Store a newly created resource in storage.
      */
-    public function store($input)
+    public function store(ProcedureCreateDTO $input)
     {
         return $this->procedureRepository->store($input);
-
     }
 
     /**
@@ -52,5 +52,10 @@ class ProcedureService
     public function update(Request $request, User $user)
     {
         //
+    }
+
+    public function delete($id)
+    {
+        return $this->procedureRepository->delete($id);
     }
 }

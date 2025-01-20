@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DTOs\ProcedureCreateDTO;
-use App\Http\Requests\CreateProcedureRequest;
+use App\Http\Requests\ProcedureCreateRequest;
 use App\Services\ProcedureService;
 use Illuminate\Http\Request;
 
@@ -35,13 +35,14 @@ class ProcedureController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CreateProcedureRequest $request)
+    public function store(ProcedureCreateRequest $request)
     {
         $input = new ProcedureCreateDTO(...$request->only(
             'name_en', 'name_ar', 'description_en', 'description_ar', 'price',
         ));
+
         $this->procedureService->store($input);
-        return redirect()->route('procedures.create')->with('success', 'Procedure created successfully');
+        return redirect()->back()->with('success', 'Procedure created successfully');
     }
 
     /**
@@ -71,8 +72,9 @@ class ProcedureController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Procedure $procedure)
+    public function delete($id)
     {
-        //
+        $this->procedureService->delete($id);
+        return redirect()->route('procedures.index')->with('success', 'Procedure deleted successfully');
     }
 }

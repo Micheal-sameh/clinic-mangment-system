@@ -32,11 +32,13 @@ class ProcedureRepository
      */
     public function store(ProcedureCreateDTO $input)
     {
-        return $this->model->create([
+        $p = $this->model->create([
             'name'  =>['en' => $input->name_en, 'ar' => $input->name_ar],
             'description'  =>['en' => $input->description_en, 'ar' => $input->description_ar],
             'price'  => $input->price,
         ]);
+
+        return $p;
 
     }
 
