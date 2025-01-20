@@ -32,4 +32,12 @@ return [
     'filter'            => 'تصفية',
     'sort'              => 'ترتيب',
     'change_password'   => 'تغير كلمة المرور',
+    'name_en'           => 'الاسم بالانجليزي',
+    'name_ar'           => 'الاسم بالعربي',
+    'description_en'    => 'الوصف بالانجليزي',
+    'description_ar'    => 'الوصف بالعربي',
+    'price'             => 'السعر',
+    'create'            => 'اضافة',
+    'procedure'         => 'عملية',
+    'enter'             => 'ادخل'
 ];

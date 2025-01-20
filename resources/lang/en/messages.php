@@ -32,4 +32,12 @@ return [
     'filter'            => 'Filter',
     'sort'              => 'Sort',
     'change_password'   => 'Change Password',
+    'name_en'           => 'Name English',
+    'name_ar'           => 'Name Arabic',
+    'description_en'    => 'Description English',
+    'description_ar'    => 'Description Arabic',
+    'price'             => 'Price',
+    'create'            => 'Create',
+    'procedure'         => 'Procedure',
+    'enter'             => 'Enter',
 ];
