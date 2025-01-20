@@ -45,16 +45,16 @@ Route::group(['middleware' => 'setlocale'], function () {
         Route::post('/{id}/reset-password', [UserController::class, 'resetPassword'])->name('users.resetPassword');
     });
     Route::middleware(['auth'])->prefix('procedures')->group(function () {
-        // Route::get('/', [UserController::class, 'index'])->name('users.index');
+        Route::get('/', [ProcedureController::class, 'index'])->name('procedures.index');
         Route::get('/create', [ProcedureController::class, 'create'])->name('procedures.create');
         Route::post('/', [ProcedureController::class, 'store'])->name('procedures.store');
         // Route::get('/profile', [UserController::class, 'profile'])->name('users.profile');
-        // Route::get('/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
-        // Route::get('/{id}', [UserController::class, 'show'])->name('users.show');
+        Route::get('/{id}/edit', [ProcedureController::class, 'edit'])->name('procedures.edit');
+        Route::get('/{id}', [ProcedureController::class, 'show'])->name('procedures.show');
         // Route::post('/{id}', [UserController::class, 'delete'])->name('users.delete');
         // Route::put('/{id}/pass', [UserController::class, 'updatePassword'])->name('users.password.update');
         // Route::put('/{id}', [UserController::class, 'update'])->name('users.update');
-        // Route::post('/{id}/reset-password', [UserController::class, 'resetPassword'])->name('users.resetPassword');
+        Route::delete('/{id}', [ProcedureController::class, 'delete'])->name('procedures.delete');
     });
 });
 

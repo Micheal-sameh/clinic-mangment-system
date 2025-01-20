@@ -19,6 +19,7 @@ class ProcedureService
      */
     public function index($input)
     {
+        return $this->procedureRepository->index($input);
     }
 
     /**

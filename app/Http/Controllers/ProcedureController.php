@@ -17,8 +17,11 @@ class ProcedureController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $procedures = $this->procedureService->index($request);
+
+        return view('procedures.index', compact('procedures'));
     }
 
     /**

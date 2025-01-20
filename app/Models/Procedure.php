@@ -20,4 +20,10 @@ class Procedure extends Model
         'name' => 'array',
         'description' => 'array',
     ];
+
+
+    public function getLocalizedNameAttribute($value)
+    {
+        return $this->name[app()->getLocale()] ?? $this->name['en'];
+    }
 }

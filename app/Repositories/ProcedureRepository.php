@@ -18,17 +18,13 @@ class ProcedureRepository
      */
     public function index($input)
     {
-        $users = $this->model
-            ->when(!is_null($input->role), function ($q) use ($input) {
-                return $q->whereHas('roles', function ($query) use ($input) {
-                    $query->where('name', $input->role);
-                });
-            })
-            ->when(!is_null($input->name), fn($q) => $q->where('name', 'like', '%' . $input->name . '%'))
-            ->orderby('name')
+        $locale = app()->getLocale();  // Get the current locale
+        $procedures = $this->model
+        ->when(!is_null($input->name), fn($q) => $q->where('name', 'like', '%' . $input->name . '%'))
+        ->orderByRaw("JSON_UNQUOTE(JSON_EXTRACT(name, '$.$locale')) ASC")  // Sort by localized name (e.g., name.en or name.ar)
             ->get();
 
-        return $users;
+        return $procedures;
     }
 
     /**

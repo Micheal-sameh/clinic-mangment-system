@@ -181,7 +181,7 @@
                     </a>
                         <ul class="dropdown-menu nav-item" aria-labelledby="usersDropdown" style="background: #333; width: 100%;">
                             <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('users.index') }}"> {{__('messages.list')}}</a></li>
-                            <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('users.index') }}">{{__('messages.create')}} {{__('messages.user')}} </a></li>
+                            <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('users.index') }}">{{__('messages.create')}}</a></li>
                         </ul>
                     @endcan
                     @can('users_list')
@@ -190,7 +190,7 @@
                     </a>
                         <ul class="dropdown-menu nav-item" aria-labelledby="proceduresDropdown" style="background: #333; width: 100%;">
                             <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('procedures.index') }}">{{__('messages.list')}}</a></li>
-                            <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('procedures.create') }}">{{__('messages.create')}} {{__('messages.procedure')}} </a></li>
+                            <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('procedures.create') }}">{{__('messages.create')}}</a></li>
                         </ul>
                     @endcan
                 </ul>
