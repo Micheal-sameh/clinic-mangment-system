@@ -1,5 +1,7 @@
 @extends('layouts.sideBar')
 
+<title>{{__('messages.create')}} {{__('messages.procedure')}} </title>
+
 @section('content')
 <div class="container mt-5" style="max-width: 600px; background: linear-gradient(to right, #f0f8ff, #e6e6fa); padding: 30px; border-radius: 15px;">
     <div class="card border-0 shadow-sm p-4">
