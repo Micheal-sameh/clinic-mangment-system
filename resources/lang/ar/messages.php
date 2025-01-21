@@ -20,6 +20,7 @@ return [
     'past_visits'       => 'زيارات سابقة',
     'no_past_visits'    => 'لا يوجد زيارات سابقة',
     'current_password'  => 'كلمة المرور الحالية',
+    'password'          => 'كلمة المرور',
     'new_password'      => 'كلمة المرور الجديدة',
     'confirm_password'  => 'تأكيد كلمة المرور',
     'update'            => 'تحديث',
@@ -44,4 +45,11 @@ return [
     'user'              => 'مستخدم',
     'list'              => 'قائمة',
 
+    'logout'            => 'تسجيل الخروج',
+    'login'             => 'تسجيل الدخول',
+    'register'          => 'مستخدم جديد',
+    'remember_me'       => 'تذكرني',
+    'forget'            => 'نسيت كلمة المرور؟',
+    'here'              => 'هنا',
+    'have_an_account'   => 'لدي حساب مسبقاً',
 ];

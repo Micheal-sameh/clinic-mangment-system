@@ -20,6 +20,7 @@ return [
     'past_visits'       => 'Past Visits',
     'no_past_visits'    => 'Thier is no past visits.',
     'current_password'  => 'Current Password',
+    'password'          => 'Password',
     'new_password'      => 'New Password',
     'confirm_password'  => 'Confirm Password',
     'update'            => 'Update',
@@ -43,4 +44,10 @@ return [
     'enter'             => 'Enter',
     'user'              => 'User',
     'list'              => 'List',
+    'logout'            => 'Logout',
+    'login'             => 'Login',
+    'register'          => 'Register',
+    'remember_me'       => 'Remember Me',
+    'forget'            => 'Forgot Your Password?',
+    'have_an_account'   => 'Already have an account?',
 ];

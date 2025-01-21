@@ -196,9 +196,20 @@
                 </ul>
 
 
-                <ul class="dropdown-menu" aria-labelledby="usersDropdown">
-                    <li><a class="dropdown-item" href="{{ route('users.index') }}">Create User</a></li>
-                    <li><a class="dropdown-item" href="{{ route('users.index') }}">List Users</a></li>
+                <ul class="nav flex-column">
+                    @auth
+                    <li class="nav-item text-center">
+                        <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                            @csrf
+                            <button type="submit" class="nav-link text-white" style="background: none; border: none; padding: 0; cursor: pointer;">
+                                {{ __('messages.logout') }}
+                            </button>
+                        </form>
+                    </li>
+                    @else
+                    <a href="{{ route('loginPage') }}" class="nav-link text-white text-center">{{__('messages.login')}}</a>
+                    @endauth
+
                 </ul>
 
                 <!-- World Icon Button for language selection -->
