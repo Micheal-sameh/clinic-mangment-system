@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProcedureController;
+use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -48,13 +49,19 @@ Route::group(['middleware' => 'setlocale'], function () {
         Route::get('/', [ProcedureController::class, 'index'])->name('procedures.index');
         Route::get('/create', [ProcedureController::class, 'create'])->name('procedures.create');
         Route::post('/', [ProcedureController::class, 'store'])->name('procedures.store');
-        // Route::get('/profile', [UserController::class, 'profile'])->name('users.profile');
         Route::get('/{id}/edit', [ProcedureController::class, 'edit'])->name('procedures.edit');
         Route::get('/{id}', [ProcedureController::class, 'show'])->name('procedures.show');
-        // Route::post('/{id}', [UserController::class, 'delete'])->name('users.delete');
-        // Route::put('/{id}/pass', [UserController::class, 'updatePassword'])->name('users.password.update');
-        // Route::put('/{id}', [UserController::class, 'update'])->name('users.update');
         Route::delete('/{id}', [ProcedureController::class, 'delete'])->name('procedures.delete');
+    });
+
+    Route::middleware(['auth'])->prefix('reservations')->group(function () {
+        Route::get('/', [ReservationController::class, 'index'])->name('reservations.index');
+        Route::get('/create', [ReservationController::class, 'create'])->name('reservations.create');
+        Route::get('/{id}/apply', [ReservationController::class, 'apply'])->name('reservations.apply');
+        Route::get('/{id}', [ReservationController::class, 'show'])->name('reservations.show');
+
+        Route::post('/', [ReservationController::class, 'store'])->name('reservations.store');
+
     });
 });
 

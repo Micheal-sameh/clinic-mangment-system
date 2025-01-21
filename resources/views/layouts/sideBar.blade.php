@@ -195,6 +195,15 @@
                             <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('procedures.create') }}">{{__('messages.create')}}</a></li>
                         </ul>
                     @endcan
+                    @can('reservations_list')
+                    <a class="nav-item text-center dropdown-toggle text-white" href="#" id="reservationsDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none;">
+                        {{__('messages.reservations')}}
+                    </a>
+                        <ul class="dropdown-menu nav-item" aria-labelledby="reservationsDropdown" style="background: #333; width: 100%;">
+                            <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('reservations.index') }}">{{__('messages.list')}}</a></li>
+                            <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('reservations.create') }}">{{__('messages.create')}}</a></li>
+                        </ul>
+                    @endcan
                     @auth
                     <li class="nav-item text-center">
                         <form action="{{ route('logout') }}" method="POST" class="d-inline">

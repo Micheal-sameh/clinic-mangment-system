@@ -51,5 +51,13 @@ return [
     'enter'             => 'ادخل',
     'user'              => 'مستخدم',
     'list'              => 'قائمة',
-
+    'reservation'       => 'حجز',
+    'reservations'      => 'الحجوزات',
+    'select'            => 'اختر',
+    'date'              => 'التاريخ',
+    'slate'             => 'الوقت',
+    'patient'           => 'المرضى',
+    'reservation_date'  => 'تاريخ الحجز',
+    'reservation_details'   => 'تفاصيل الحجز',
+    'updated_at'            => 'تم التحديث من',
 ];

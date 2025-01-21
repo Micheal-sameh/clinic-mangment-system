@@ -50,4 +50,13 @@ return [
     'enter'             => 'Enter',
     'user'              => 'User',
     'list'              => 'List',
+    'reservation'       => 'Reservation',
+    'reservations'      => 'Reservations',
+    'select'            => 'Select',
+    'date'              => 'Date',
+    'slate'             => 'Slate',
+    'patient'           => 'Patient',
+    'reservation_date'  => 'Reservation Date',
+    'reservation_details'   => 'Reservation Details',
+    'updated_at'            => 'Updated at',
 ];
