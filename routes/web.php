@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProcedureController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,23 +27,35 @@ Route::group(['middleware' => 'setlocale'], function () {
         session(['lang' => $lang]);  // Store the language in session
         return redirect()->back();
     });
-Route::prefix('auth')->group(function () {
-    Route::get('/login', [AuthController::class, 'loginPage'])->name('loginPage');
-    Route::get('/register', [AuthController::class, 'registerPage'])->name('registerPage');
-    Route::post('/register', [AuthController::class, 'register'])->name('register');
-    Route::post('/login', [AuthController::class, 'login'])->name('login');
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-});
-Route::middleware(['auth'])->prefix('users')->group(function () {
-    Route::get('/', [UserController::class, 'index'])->name('users.index');
-    Route::get('/profile', [UserController::class, 'profile'])->name('users.profile');
-    Route::get('/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
-    Route::get('/{id}', [UserController::class, 'show'])->name('users.show');
-    Route::post('/{id}', [UserController::class, 'delete'])->name('users.delete');
-    Route::put('/{id}/pass', [UserController::class, 'updatePassword'])->name('users.password.update');
-    Route::put('/{id}', [UserController::class, 'update'])->name('users.update');
-    Route::post('/{id}/reset-password', [UserController::class, 'resetPassword'])->name('users.resetPassword');
-});
+    Route::prefix('auth')->group(function () {
+        Route::get('/login', [AuthController::class, 'loginPage'])->name('loginPage');
+        Route::get('/register', [AuthController::class, 'registerPage'])->name('registerPage');
+        Route::post('/register', [AuthController::class, 'register'])->name('register');
+        Route::post('/login', [AuthController::class, 'login'])->name('login');
+        Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    });
+    Route::middleware(['auth'])->prefix('users')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('users.index');
+        Route::get('/profile', [UserController::class, 'profile'])->name('users.profile');
+        Route::get('/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
+        Route::get('/{id}', [UserController::class, 'show'])->name('users.show');
+        Route::post('/{id}', [UserController::class, 'delete'])->name('users.delete');
+        Route::put('/{id}/pass', [UserController::class, 'updatePassword'])->name('users.password.update');
+        Route::put('/{id}', [UserController::class, 'update'])->name('users.update');
+        Route::post('/{id}/reset-password', [UserController::class, 'resetPassword'])->name('users.resetPassword');
+    });
+    Route::middleware(['auth'])->prefix('procedures')->group(function () {
+        Route::get('/', [ProcedureController::class, 'index'])->name('procedures.index');
+        Route::get('/create', [ProcedureController::class, 'create'])->name('procedures.create');
+        Route::post('/', [ProcedureController::class, 'store'])->name('procedures.store');
+        // Route::get('/profile', [UserController::class, 'profile'])->name('users.profile');
+        Route::get('/{id}/edit', [ProcedureController::class, 'edit'])->name('procedures.edit');
+        Route::get('/{id}', [ProcedureController::class, 'show'])->name('procedures.show');
+        // Route::post('/{id}', [UserController::class, 'delete'])->name('users.delete');
+        // Route::put('/{id}/pass', [UserController::class, 'updatePassword'])->name('users.password.update');
+        // Route::put('/{id}', [UserController::class, 'update'])->name('users.update');
+        Route::delete('/{id}', [ProcedureController::class, 'delete'])->name('procedures.delete');
+    });
 });
 
 
