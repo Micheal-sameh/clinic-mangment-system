@@ -50,4 +50,11 @@ return [
     'remember_me'       => 'Remember Me',
     'forget'            => 'Forgot Your Password?',
     'have_an_account'   => 'Already have an account?',
+    'reservation'       => 'Reservation',
+    'select'            => 'Select',
+    'date'              => 'Date',
+    'slate'             => 'Slate',
+    'patient'           => 'Patient',
+    'reservation_date'  => 'Reservation Date',
+    'reservation_details'   => 'Reservation Details',
 ];

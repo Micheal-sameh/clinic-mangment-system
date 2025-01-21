@@ -80,10 +80,18 @@ class UserRepository
     {
         return $this->model->find($id)->delete();
     }
+
     public function resetPassword($id)
     {
         return $this->model->find($id)->update([
             'password' => Hash::make('123456')
         ]);
+    }
+
+    public function patients()
+    {
+        return $this->model->whereHas('roles', function ($query) {
+            $query->where('name', 'patient');
+        })->get();
     }
 }

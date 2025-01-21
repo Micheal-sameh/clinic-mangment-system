@@ -30,6 +30,14 @@ class RolesAndPermissionSeeder extends Seeder
         $procedures_delete = Permission::firstOrCreate(['name' => 'procedures_delete']);
         $procedures_update = Permission::firstOrCreate(['name' => 'procedures_update']);
 
+        $reservations_list = Permission::firstOrCreate(['name' => 'reservations_list']);
+        $reservations_create = Permission::firstOrCreate(['name' => 'reservations_create']);
+        $reservations_add = Permission::firstOrCreate(['name' => 'reservations_add']);
+        $reservations_edit = Permission::firstOrCreate(['name' => 'reservations_edit']);
+        $reservations_show = Permission::firstOrCreate(['name' => 'reservations_show']);
+        $reservations_delete = Permission::firstOrCreate(['name' => 'reservations_delete']);
+        $reservations_update = Permission::firstOrCreate(['name' => 'reservations_update']);
+
 
         $owner = Role::firstOrCreate(['name' => 'owner']);
         $owner->givePermissionTo([
@@ -47,6 +55,14 @@ class RolesAndPermissionSeeder extends Seeder
             $procedures_show,
             $procedures_delete,
             $procedures_update,
+
+            $reservations_list,
+            $reservations_create,
+            $reservations_add,
+            $reservations_edit,
+            $reservations_show,
+            $reservations_delete,
+            $reservations_update,
         ]);
 
         $secretary = Role::firstOrCreate(['name' => 'secretary']);
@@ -54,11 +70,25 @@ class RolesAndPermissionSeeder extends Seeder
             $users_profile,
             $procedures_list,
             $procedures_show,
+
+            $reservations_list,
+            $reservations_create,
+            $reservations_add,
+            $reservations_edit,
+            $reservations_show,
+            $reservations_delete,
+            $reservations_update,
         ]);
 
         $patient = Role::firstOrCreate(['name' => 'patient']);
         $patient->givePermissionTo([
             $users_profile,
+
+            $reservations_create,
+            $reservations_edit,
+            $reservations_show,
+            $reservations_delete,
+            $reservations_update,
         ]);
 
 

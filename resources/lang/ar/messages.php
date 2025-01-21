@@ -44,7 +44,6 @@ return [
     'enter'             => 'ادخل',
     'user'              => 'مستخدم',
     'list'              => 'قائمة',
-
     'logout'            => 'تسجيل الخروج',
     'login'             => 'تسجيل الدخول',
     'register'          => 'مستخدم جديد',
@@ -52,4 +51,13 @@ return [
     'forget'            => 'نسيت كلمة المرور؟',
     'here'              => 'هنا',
     'have_an_account'   => 'لدي حساب مسبقاً',
+    'reservation'       => 'حجز',
+    'reservations'      => 'الحجوزات',
+    'select'            => 'اختر',
+    'date'              => 'التاريخ',
+    'slate'             => 'الوقت',
+    'patient'           => 'المرضى',
+    'reservation_date'  => 'تاريخ الحجز',
+    'reservation_details'   => 'تفاصيل الحجز',
+    'updated_at'            => 'تم التحديث من',
 ];
