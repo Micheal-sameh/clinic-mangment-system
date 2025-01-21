@@ -23,6 +23,13 @@ class RolesAndPermissionSeeder extends Seeder
         $users_reset_pass = Permission::firstOrCreate(['name' => 'users_reset_pass']);
         $users_profile = Permission::firstOrCreate(['name' => 'users_profile']);
 
+        $procedures_list = Permission::firstOrCreate(['name' => 'procedures_list']);
+        $procedures_create = Permission::firstOrCreate(['name' => 'procedures_create']);
+        $procedures_edit = Permission::firstOrCreate(['name' => 'procedures_edit']);
+        $procedures_show = Permission::firstOrCreate(['name' => 'procedures_show']);
+        $procedures_delete = Permission::firstOrCreate(['name' => 'procedures_delete']);
+        $procedures_update = Permission::firstOrCreate(['name' => 'procedures_update']);
+
 
         $owner = Role::firstOrCreate(['name' => 'owner']);
         $owner->givePermissionTo([
@@ -33,11 +40,20 @@ class RolesAndPermissionSeeder extends Seeder
             $users_delete,
             $users_reset_pass,
             $users_profile,
+
+            $procedures_list,
+            $procedures_create,
+            $procedures_edit,
+            $procedures_show,
+            $procedures_delete,
+            $procedures_update,
         ]);
 
         $secretary = Role::firstOrCreate(['name' => 'secretary']);
         $secretary->givePermissionTo([
             $users_profile,
+            $procedures_list,
+            $procedures_show,
         ]);
 
         $patient = Role::firstOrCreate(['name' => 'patient']);
