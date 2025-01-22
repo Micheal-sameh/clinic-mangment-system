@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\ReservationStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,7 +18,7 @@ return new class extends Migration
             $table->date('date');
             $table->integer('reservation_number');
             $table->float('total_price')->nullable();
-            $table->float('paid')->nullable();
+            $table->float('status')->default(ReservationStatus::WAITING);
             $table->timestamps();
         });
     }

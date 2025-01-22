@@ -60,4 +60,6 @@ return [
     'reservation_date'  => 'تاريخ الحجز',
     'reservation_details'   => 'تفاصيل الحجز',
     'updated_at'            => 'تم التحديث من',
+    'history'           => 'السجل',
+    'today'             => 'اليوم',
 ];

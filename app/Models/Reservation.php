@@ -14,11 +14,17 @@ class Reservation extends Model
         'date',
         'reservation_number',
         'total_price',
+        'status',
         'paid',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function reservationProcedures()
+    {
+        return $this->hasMany(ReservationProcedure::class);
     }
 }

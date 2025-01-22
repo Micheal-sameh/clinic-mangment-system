@@ -14,8 +14,7 @@ class ReservationService
     public function __construct(
         protected ReservationRepository $reservationRepository,
         protected UserRepository $userRepository
-        )
-    {
+        ){
 
     }
 
@@ -69,5 +68,10 @@ class ReservationService
     public function delete($id)
     {
         return $this->reservationRepository->delete($id);
+    }
+
+    public function history()
+    {
+        return $this->reservationRepository->history();
     }
 }

@@ -1,6 +1,6 @@
 @extends('layouts.sideBar')
 
-<title> {{__('messages.reservations')}}</title>
+<title>{{__('messages.reservations')}}</title>
 
 @section('content')
 <div class="container">
@@ -13,6 +13,18 @@
         </div>
     @endif
 
+    <!-- Filter by Today -->
+    <div class="text-right mb-4 me-3">
+        <form id="todayFilterForm" action="{{ route('reservations.index') }}" method="GET">
+            <label for="today_filter" class="mr-2">{{ __('messages.today') }}</label>
+            <input type="checkbox" name="today" id="today_filter" {{ request('today') ? 'checked' : '' }}>
+            <button type="submit" class="btn btn-primary btn-sm" style="display:none;">
+                {{ __('messages.apply_filter') }}
+            </button>
+        </form>
+    </div>
+
+    <!-- Create Button -->
     <div class="text-right mb-4 me-3">
         @can('reservations_create')
             <a class="btn btn-success btn-lg" href="{{ route('reservations.create') }}">
@@ -20,6 +32,7 @@
             </a>
         @endcan
     </div>
+
     <!-- Reservations Table -->
     <table class="table table-striped text-center">
         <thead>
@@ -28,6 +41,8 @@
                 <th>{{__('messages.patient')}}</th>
                 <th>{{__('messages.slate')}}</th>
                 <th>{{__('messages.date')}}</th>
+                <th>{{__('messages.price')}}</th>
+                <th>{{__('messages.status')}}</th>
                 <th>{{__('messages.actions')}}</th>
             </tr>
         </thead>
@@ -37,7 +52,7 @@
             @endphp
             @foreach($reservations as $key => $reservation)
                 <tr>
-                    <td><a href="{{ route('reservations.apply', $reservation->id) }}" class="text-dark text-decoration-none">
+                    <td><a href="{{ route('reservations.applyPage', $reservation->id) }}" class="text-dark text-decoration-none">
                         {{ $key + 1 }}</a>
                     </td>
                     <td>
@@ -47,19 +62,40 @@
                     </td>
                     <td>{{ $reservation->reservation_number }}</td>
                     <td>{{ Carbon::parse($reservation->date)->format('d-m-Y') }}</td>
+                    <td>{{ $reservation->total_price }}</td>
+                    <td>{{ App\Enums\ReservationStatus::getStringValue($reservation->status) }}</td>
                     <td>
                         <!-- Edit and Delete buttons can be added here -->
                          <a href="{{route('reservations.show', $reservation->id)}}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i></a>
+                         @if($reservation->status == App\Enums\ReservationStatus::WAITING)
                          <a href="#" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></a>
-                        <form action="#" method="POST" style="display:inline;">
+                         <form action="#" method="POST" style="display:inline;">
+                             @csrf
+                             @method('DELETE')
+                             <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                         </form>
+                         @endif
+                        @if($reservation->status == App\Enums\ReservationStatus::TOPAY)
+                        <form action="{{route('reservations.paid', $reservation->id)}}" method="POST" style="display:inline;">
                             @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                            @method('put')
+                            <button type="submit" class="btn btn-success btn-sm"><i class="fa fa-credit-card"></i> </button>
                         </form>
+                        @endif
                     </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
 </div>
+
 @endsection
+
+@push('scripts')
+<script>
+    // JavaScript to automatically trigger form submission when the checkbox is toggled
+    document.getElementById('today_filter').addEventListener('change', function() {
+        document.getElementById('todayFilterForm').submit();
+    });
+</script>
+@endpush
