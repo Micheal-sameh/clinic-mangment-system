@@ -4,23 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ReservationRequest;
 use App\Models\Reservation;
+use App\Repositories\ReservationRepository;
+use App\Services\ProcedureService;
 use App\Services\ReservationService;
 use Illuminate\Http\Request;
 
 class ReservationController extends Controller
 {
-    public function __construct(protected ReservationService $reservationService)
-    {
+    public function __construct(
+        protected ReservationService $reservationService,
+        protected ReservationRepository $reservationRepository,
+        protected ProcedureService  $procedureService
+    ){
 
     }
 
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $input = 1;
-        $reservations = $this->reservationService->index($input);
+        $reservations = $this->reservationService->index($request);
 
         return view('reservations.index', compact('reservations'));
     }
@@ -31,6 +35,7 @@ class ReservationController extends Controller
     public function create()
     {
         $data = $this->reservationService->create();
+
         return view('reservations.create', ['users' => $data['users']]);
     }
 
@@ -50,8 +55,8 @@ class ReservationController extends Controller
     public function show($id)
     {
         $reservation = $this->reservationService->show($id);
-
-        return view('reservations.show', compact('reservation'));
+        $procedures = $reservation->reservationProcedures()->get();
+        return view('reservations.show', compact('reservation', 'procedures'));
     }
 
     /**
@@ -76,5 +81,27 @@ class ReservationController extends Controller
     public function destroy(Reservation $reservation)
     {
         //
+    }
+
+    public function applyPage($id)
+    {
+        $input = 1;
+        $reservation = $this->reservationService->show($id);
+        $procedures = $this->procedureService->index($input);
+
+        return view('reservations.apply', compact('reservation', 'procedures'));
+    }
+
+    public function paid($id)
+    {
+        $this->reservationRepository->paid($id);
+        return redirect()->back()->with('success', 'Reservation paid successfully!');
+    }
+
+    public function history()
+    {
+        $reservations = $this->reservationService->history();
+
+        return view('reservations.history', compact('reservations'));
     }
 }
