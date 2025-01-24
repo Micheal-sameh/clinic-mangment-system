@@ -18,9 +18,9 @@ class ProcedureRepository
      */
     public function index($input)
     {
-        $locale = app()->getLocale();  // Get the current locale
+        $locale = app()->getLocale();
         $procedures = $this->model
-        ->when(!is_null($input->name), fn($q) => $q->where('name', 'like', '%' . $input->name . '%'))
+        ->when(isset($input->name), fn($q) => $q->where('name', 'like', '%' . $input->name . '%'))
         ->orderByRaw("JSON_UNQUOTE(JSON_EXTRACT(name, '$.$locale')) ASC")  // Sort by localized name (e.g., name.en or name.ar)
             ->get();
 
@@ -55,7 +55,7 @@ class ProcedureRepository
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit()
     {
         //
     }
@@ -63,7 +63,7 @@ class ProcedureRepository
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update()
     {
         //
     }
@@ -74,11 +74,5 @@ class ProcedureRepository
     public function delete($id)
     {
         return $this->model->find($id)->delete();
-    }
-    public function resetPassword($id)
-    {
-        return $this->model->find($id)->update([
-            'password' => Hash::make('123456')
-        ]);
     }
 }

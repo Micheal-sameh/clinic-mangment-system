@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Enums\ReservationStatus;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,8 +19,10 @@ class ReservationRepository
      */
     public function index($input)
     {
+        // dd($input);
         return $this->model
             ->with('user')
+            ->when(isset($input->today), fn($q) => $q->where('date', today()))
             ->where('date', '>=', today())
             ->orderBy('date')
             ->get();
@@ -49,7 +52,7 @@ class ReservationRepository
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit()
     {
         //
     }
@@ -57,7 +60,7 @@ class ReservationRepository
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update()
     {
         //
     }
@@ -67,12 +70,28 @@ class ReservationRepository
      */
     public function delete($id)
     {
-        return $this->model->find($id)->delete();
+        return $this->model->find($id)->update([
+            'status'    => ReservationStatus::CANCELLED,
+        ]);
     }
-    public function resetPassword($id)
+
+    public function storePrice($reservation, $totalprice)
+    {
+        return $reservation->update([
+            'total_price'   => $totalprice,
+            'status'        => ReservationStatus::TOPAY,
+        ]);
+    }
+
+    public function paid($id)
     {
         return $this->model->find($id)->update([
-            'password' => Hash::make('123456')
+            'status'        => ReservationStatus::DONE,
         ]);
+    }
+
+    public function history()
+    {
+        return $this->model->where('date', '<=', today())->get();
     }
 }

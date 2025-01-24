@@ -202,6 +202,7 @@
                         <ul class="dropdown-menu nav-item" aria-labelledby="reservationsDropdown" style="background: #333; width: 100%;">
                             <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('reservations.index') }}">{{__('messages.list')}}</a></li>
                             <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('reservations.create') }}">{{__('messages.create')}}</a></li>
+                            <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('reservations.history') }}">{{__('messages.history')}}</a></li>
                         </ul>
                     @endcan
                     @auth
