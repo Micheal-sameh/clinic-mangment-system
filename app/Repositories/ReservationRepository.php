@@ -18,7 +18,7 @@ class ReservationRepository
     public function getAll()
     {
         return $this->model
-        ->when(auth()->user()->hasRole('patient'), fn($q) => $q->where('user_id', auth()->id()))
+        ->when(auth()->user()->hasRole(['patient', 'secretary']) , fn($q) => $q->where('user_id', auth()->id()))
         ->with('user')->get();
     }
 

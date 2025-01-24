@@ -186,13 +186,17 @@
                             <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('users.index') }}">{{__('messages.create')}}</a></li>
                         </ul>
                     @endcan
-                    @can('procedures_list')
+                    @can(['procedures_list'])
                     <a class="nav-item text-center dropdown-toggle text-white" href="#" id="proceduresDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none;">
                         {{__('messages.procedures')}}
                     </a>
                         <ul class="dropdown-menu nav-item" aria-labelledby="proceduresDropdown" style="background: #333; width: 100%;">
-                            <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('procedures.index') }}">{{__('messages.list')}}</a></li>
-                            <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('procedures.create') }}">{{__('messages.create')}}</a></li>
+                            @can('procedures_list')
+                                <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('procedures.index') }}">{{__('messages.list')}}</a></li>
+                            @endcan
+                            @can('procedures_create')
+                                <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('procedures.create') }}">{{__('messages.create')}}</a></li>
+                            @endcan
                         </ul>
                     @endcan
                     @can('reservations_list')
@@ -200,9 +204,15 @@
                         {{__('messages.reservations')}}
                     </a>
                         <ul class="dropdown-menu nav-item" aria-labelledby="reservationsDropdown" style="background: #333; width: 100%;">
-                            <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('reservations.index') }}">{{__('messages.list')}}</a></li>
-                            <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('reservations.create') }}">{{__('messages.create')}}</a></li>
-                            <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('reservations.history') }}">{{__('messages.history')}}</a></li>
+                            @can('reservations_list')
+                                <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('reservations.index') }}">{{__('messages.list')}}</a></li>
+                            @endcan
+                            @can('reservations_create')
+                                <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('reservations.create') }}">{{__('messages.create')}}</a></li>
+                            @endcan
+                            @can('reservations_history')
+                                <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('reservations.history') }}">{{__('messages.history')}}</a></li>
+                            @endcan
                         </ul>
                     @endcan
                     @auth

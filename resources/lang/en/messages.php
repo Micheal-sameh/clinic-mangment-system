@@ -68,4 +68,5 @@ return [
     'enter_note'  => 'Enter a note',
     'remove' => 'Remove',
     'note' => 'Note',
+    'no_upcoming_visits' => 'No upcoming visits',
 ];
