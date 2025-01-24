@@ -41,8 +41,8 @@ class RolesAndPermissionSeeder extends Seeder
         $reservations_notes = Permission::firstOrCreate(['name' => 'reservations_notes']);
 
 
-        $owner = Role::firstOrCreate(['name' => 'owner']);
-        $owner->givePermissionTo([
+        $admin = Role::firstOrCreate(['name' => 'admin']);
+        $admin->givePermissionTo([
             $users_list,
             $users_create,
             $users_edit,
@@ -98,8 +98,5 @@ class RolesAndPermissionSeeder extends Seeder
             $reservations_delete,
             $reservations_history,
         ]);
-
-
-
     }
 }
