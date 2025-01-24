@@ -43,7 +43,9 @@
                 <th>{{__('messages.date')}}</th>
                 <th>{{__('messages.price')}}</th>
                 <th>{{__('messages.status')}}</th>
-                <th>{{__('messages.actions')}}</th>
+                @can(['reservations_paid', 'reservations_edit', 'reservations_show', 'reservations_delete'])
+                    <th>{{__('messages.actions')}}</th>
+                @endcan
             </tr>
         </thead>
         <tbody>
@@ -52,9 +54,13 @@
             @endphp
             @foreach($reservations as $key => $reservation)
                 <tr>
-                    <td><a href="{{ route('reservations.applyPage', $reservation->id) }}" class="text-dark text-decoration-none">
-                        {{ $key + 1 }}</a>
-                    </td>
+                    @if($reservation->status == App\Enums\ReservationStatus::WAITING &&  auth()->user()->can('reservations_apply'))
+                        <td><a href="{{ route('reservations.applyPage', $reservation->id) }}" class="text-dark text-decoration-none">
+                            {{ $key + 1 }}</a>
+                        </td>
+                    @else
+                        <td>{{ $key + 1 }}</td>
+                    @endif
                     <td>
                         <a href="{{ route('users.show', $reservation->user->id) }}" class="text-dark text-decoration-none">
                             {{ $reservation->user->localized_name }}
@@ -66,21 +72,29 @@
                     <td>{{ App\Enums\ReservationStatus::getStringValue($reservation->status) }}</td>
                     <td>
                         <!-- Edit and Delete buttons can be added here -->
-                         <a href="{{route('reservations.show', $reservation->id)}}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i></a>
-                         @if($reservation->status == App\Enums\ReservationStatus::WAITING)
-                         <a href="#" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></a>
-                         <form action="#" method="POST" style="display:inline;">
-                             @csrf
-                             @method('DELETE')
-                             <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
-                         </form>
+                        @can('reservations_show')
+                            <a href="{{route('reservations.show', $reservation->id)}}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i></a>
+                        @endcan
+                        @if($reservation->status == App\Enums\ReservationStatus::WAITING)
+                            @can('reservations_edit')
+                            <a href="#" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></a>
+                            @endcan
+                            @can('reservations_delete')
+                                <form action="#" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                                </form>
+                            @endcan
                          @endif
                         @if($reservation->status == App\Enums\ReservationStatus::TOPAY)
+                        @can('reservations_paid')
                         <form action="{{route('reservations.paid', $reservation->id)}}" method="POST" style="display:inline;">
                             @csrf
                             @method('put')
                             <button type="submit" class="btn btn-success btn-sm"><i class="fa fa-credit-card"></i> </button>
                         </form>
+                        @endcan
                         @endif
                     </td>
                 </tr>

@@ -48,7 +48,9 @@
                     <th scope="col">{{__('messages.number')}}</th>
                     <th scope="col">{{__('messages.name')}}</th>
                     <th scope="col">{{__('messages.price')}}</th>
+                    @can(['procedures_edit', 'procedures_delete'])
                     <th scope="col">{{__('messages.actions')}}</th>
+                    @endcan
                 </tr>
             </thead>
             <tbody>
@@ -71,6 +73,8 @@
                                 <a class="btn btn-secondary btn-sm mx-1" href="{{ route('procedures.edit', $procedure['id']) }}">
                                     <i class="fas fa-edit"></i>
                                 </a>
+                            @endcan
+                            @can('procedures_delete')
                                 <form action="{{ route('procedures.delete', $procedure['id']) }}" method="POST" class="d-inline-block">
                                     @csrf
                                     @method('DELETE')

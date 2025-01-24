@@ -58,7 +58,7 @@
         <!-- Separator between Procedures and Notes -->
         <hr class="my-4">
 
-        @if(!empty($reservation->reservationNotes))
+        @if($reservation->has('reservationNotes'))
         <div class="mt-4">
             <div class="form-check">
                 <h3 class="me-2 mr-2"> {{__('messages.notes')}}</h3>

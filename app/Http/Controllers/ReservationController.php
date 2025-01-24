@@ -16,6 +16,12 @@ class ReservationController extends Controller
         protected ReservationRepository $reservationRepository,
         protected ProcedureService  $procedureService
     ){
+        $this->middleware('permission:reservations_list', ['only' => ['index', 'show']]);
+        $this->middleware('permission:reservations_create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:reservations_edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:reservations_apply', ['only' => ['applyPage']]);
+        $this->middleware('permission:reservations_paid', ['only' => ['paid']]);
+        $this->middleware('permission:reservations_history', ['only' => ['history']]);
 
     }
 
@@ -96,7 +102,7 @@ class ReservationController extends Controller
     public function paid($id)
     {
         $this->reservationRepository->paid($id);
-        
+
         return redirect()->back()->with('success', 'Reservation paid successfully!');
     }
 

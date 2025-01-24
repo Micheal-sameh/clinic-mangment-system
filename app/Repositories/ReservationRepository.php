@@ -27,6 +27,7 @@ class ReservationRepository
         return $this->model
             ->with('user')
             ->when(isset($input->today), fn($q) => $q->where('date', today()))
+            ->when(auth()->user()->hasRole('patient'), fn($q) => $q->where('user_id', auth()->id()))
             ->where('date', '>=', today())
             ->orderBy('date')
             ->get();
@@ -50,7 +51,7 @@ class ReservationRepository
      */
     public function show($id)
     {
-        return $this->model->find($id)->load('reservationNotes');;
+        return $this->model->find($id)->load('reservationNotes');
     }
 
     /**
@@ -90,13 +91,17 @@ class ReservationRepository
     public function paid($id)
     {
         return $this->model->find($id)->update([
-            'status'        => ReservationStatus::DONE,
+            'status' => ReservationStatus::DONE,
         ]);
     }
 
     public function history()
     {
-        return $this->model->where('date', '<=', today())->get();
+        return $this->model
+        ->where('date', '<', today())
+        ->when(auth()->user()->hasRole('patient'), fn($q) => $q->where('user_id', auth()->id()))
+        ->orderBy('date', 'desc')
+        ->get();
     }
 
     public function userShow($id)
