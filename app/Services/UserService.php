@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Repositories\ReservationRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
 class UserService
 {
@@ -24,8 +25,8 @@ class UserService
     public function index($input)
     {
         $users = $this->userRepository->index($input);
-
-        return $users;
+        $roles = Role::where('name', '!=', 'admin')->get();
+        return compact('users', 'roles');
     }
 
     /**
@@ -59,7 +60,7 @@ class UserService
         $user = $this->userRepository->show($id);
         $reservations = $this->reservationRepository->userProfile($id);
         $reservationsCount = $this->reservationRepository->getAll()->count();
-        
+
         return compact('user', 'reservations', 'reservationsCount');
     }
 
