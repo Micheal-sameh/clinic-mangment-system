@@ -63,4 +63,10 @@ return [
     'history'           => 'السجل',
     'today'             => 'اليوم',
     'upcoming_reservations' => 'الحجوزات القادمة',
+    'notes' => 'الملاحظات',
+    'save_notes' => 'حفظ الملاحظات',
+    'add_another_note' => '+ اضف ملاحظة اخرى',
+    'enter_note'  => 'ادخل ملاحظة',
+    'remove' => 'حذف',
+    'note'  => 'ملاحظة',
 ];

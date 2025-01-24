@@ -12,7 +12,10 @@ class ProcedureController extends Controller
 
     public function __construct(protected ProcedureService $procedureService)
     {
-
+        $this->middleware('permission:procedures_list', ['only' => ['index', 'show']]);
+        $this->middleware('permission:procedures_create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:procedures_edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:procedures_delete', ['only' => ['delete']]);
     }
     /**
      * Display a listing of the resource.

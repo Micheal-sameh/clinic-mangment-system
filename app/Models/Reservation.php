@@ -27,4 +27,9 @@ class Reservation extends Model
     {
         return $this->hasMany(ReservationProcedure::class);
     }
+
+    public function reservationNotes()
+    {
+        return $this->hasMany(ReservationNote::class);
+    }
 }
