@@ -61,4 +61,5 @@ return [
     'updated_at'            => 'Updated at',
     'history'               => 'History',
     'today'                 => 'Today',
+    'upcoming_reservations' => 'Upcoming Reservations',
 ];

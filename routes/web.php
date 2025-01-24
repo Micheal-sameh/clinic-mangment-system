@@ -5,6 +5,7 @@ use App\Http\Controllers\ProcedureController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ReservationProcedureController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,7 +20,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    if (Auth::check()) {
+        return redirect()->route('reservations.create'); // Redirect to home if authenticated
+    } else {
+        return redirect()->route('login'); // Redirect to login if not authenticated
+    }
 });
 Route::group(['middleware' => 'setlocale'], function () {
 

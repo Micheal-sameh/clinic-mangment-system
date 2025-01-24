@@ -3,13 +3,17 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Repositories\ReservationRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 
 class UserService
 {
 
-    public function __construct(protected UserRepository $userRepository)
+    public function __construct(
+        protected UserRepository $userRepository,
+        protected ReservationRepository $reservationRepository
+        )
     {
 
     }
@@ -46,8 +50,15 @@ class UserService
     public function show($id)
     {
         $user = $this->userRepository->show($id);
+        $reservations = $this->reservationRepository->userShow($id);
+        return compact('user', 'reservations');
+    }
 
-        return $user;
+    public function profile($id)
+    {
+        $user = $this->userRepository->show($id);
+        $reservations = $this->reservationRepository->userProfile($id);
+        return compact('user', 'reservations');
     }
 
     /**
