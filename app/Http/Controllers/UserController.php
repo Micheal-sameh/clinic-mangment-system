@@ -56,14 +56,14 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = $this->userService->show($id);
-        return view('users.show', compact('user'));
+        $data = $this->userService->show($id);
+        return view('users.show',['user' => $data['user'], 'reservations' => $data['reservations']]);
     }
 
     public function profile()
     {
-        $user = $this->userService->show(Auth::id());
-        return view('users.profile', compact('user'));
+        $data = $this->userService->profile(Auth::id());
+        return view('users.profile', ['user' => $data['user'], 'reservations' => $data['reservations']]);
     }
 
     /**

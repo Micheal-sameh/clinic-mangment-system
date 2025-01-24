@@ -51,21 +51,25 @@
                     <h5 class="mb-0">Past Visits</h5>
                 </div>
                 <div class="card-body">
-                    @if($user->visits && $user->visits->isNotEmpty())
-                    <table class="table table-striped table-hover">
+                    @if($reservations && !is_null($reservations))
+                    <table class="table table-striped table-hover text-center">
                         <thead>
                             <tr>
-                                <th>Date</th>
-                                <th>Location</th>
-                                <th>Notes</th>
+                                <th>{{__('messages.number')}}</th>
+                                <th>{{__('messages.date')}}</th>
+                                <th>{{__('messages.price')}}</th>
+                                {{-- <th>Notes</th> --}}
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($user->visits as $visit)
+                            @foreach($reservations as $key => $reservation)
                             <tr>
-                                <td>{{ $visit->created_at->format('d M, Y') }}</td>
-                                <td>{{ $visit->location }}</td>
-                                <td>{{ $visit->notes }}</td>
+                                <td> <a href="{{ route('reservations.show', $reservation->id) }}" style="text-decoration: none; color: black;">
+                                    {{ $key + 1 }}
+                                </a></td>
+                                <td>{{ \Carbon\Carbon::parse($reservation->date)->format('d-m-Y') }}</td>
+                                <td>{{ $reservation->total_price }}</td>
+                                {{-- <td>{{ $reservation->notes }}</td> --}}
                             </tr>
                             @endforeach
                         </tbody>

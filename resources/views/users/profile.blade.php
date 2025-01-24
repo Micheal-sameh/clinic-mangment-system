@@ -48,24 +48,30 @@
             <!-- Past Visits Card -->
             <div class="card shadow-sm border-light rounded mb-4">
                 <div class="card-header bg-success text-white">
-                    <h5 class="mb-0"> {{__('messages.no_past_visits')}}</h5>
+                    <h5 class="mb-0">{{__('messages.upcoming_reservations')}}</h5>
                 </div>
                 <div class="card-body">
-                    @if($user->visits && $user->visits->isNotEmpty())
-                    <table class="table table-striped table-hover">
+                    @if($reservations && !is_null($reservations))
+                    <table class="table table-striped table-hover text-center">
                         <thead>
                             <tr>
+                                <th>{{ __('messages.number') }}</th>
                                 <th>{{ __('messages.date') }}</th>
-                                <th>{{ __('messages.location') }}</th>
-                                <th>{{ __('messages.notes') }}</th>
+                                <th>{{ __('messages.slate') }}</th>
+                                <th>{{ __('messages.price') }}</th>
+                                {{-- <th>{{ __('messages.notes') }}</th> --}}
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($user->visits as $visit)
+                            @foreach($reservations as $key => $reservation)
                             <tr>
-                                <td>{{ $visit->created_at->format('d M, Y') }}</td>
-                                <td>{{ $visit->location }}</td>
-                                <td>{{ $visit->notes }}</td>
+                                <td> <a href="{{ route('reservations.show', $reservation->id) }}" style="text-decoration: none; color: black;">
+                                    {{ $key + 1 }}
+                                </a></td>
+                                <td>{{ \Carbon\Carbon::parse($reservation->date)->format('d-m-Y') }}</td>
+                                <td>{{ $reservation->reservation_number }}</td>
+                                <td>{{ $reservation->total_price }}</td>
+                                {{-- <td>{{ $reservation->notes }}</td> --}}
                             </tr>
                             @endforeach
                         </tbody>

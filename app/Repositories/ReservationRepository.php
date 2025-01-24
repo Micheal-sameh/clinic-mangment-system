@@ -94,4 +94,20 @@ class ReservationRepository
     {
         return $this->model->where('date', '<=', today())->get();
     }
+
+    public function userShow($id)
+    {
+        return $this->model->where('user_id', $id)
+        ->latest('date')
+        ->take(5)
+        ->get();
+    }
+
+    public function userProfile($id)
+    {
+        return $this->model->where('user_id', $id)
+        ->where('status', ReservationStatus::WAITING)
+        ->take(5)
+        ->get();
+    }
 }

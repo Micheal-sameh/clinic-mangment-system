@@ -62,4 +62,5 @@ return [
     'updated_at'            => 'تم التحديث من',
     'history'           => 'السجل',
     'today'             => 'اليوم',
+    'upcoming_reservations' => 'الحجوزات القادمة',
 ];
