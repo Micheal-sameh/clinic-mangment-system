@@ -56,6 +56,7 @@ class ReservationController extends Controller
     {
         $reservation = $this->reservationService->show($id);
         $procedures = $reservation->reservationProcedures()->get();
+
         return view('reservations.show', compact('reservation', 'procedures'));
     }
 
@@ -95,6 +96,7 @@ class ReservationController extends Controller
     public function paid($id)
     {
         $this->reservationRepository->paid($id);
+        
         return redirect()->back()->with('success', 'Reservation paid successfully!');
     }
 

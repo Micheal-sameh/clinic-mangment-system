@@ -31,9 +31,19 @@
                     </div>
 
                     @if($user->age)
-                    <div class="mb-3">
-                        <strong>{{__('messages.age')}}:</strong>
-                        <p class="text-muted">{{ $user->age }}</p>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                <strong>{{__('messages.age')}}:</strong>
+                                <p class="text-muted">{{ $user->age }}</p>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                <strong>{{__('messages.reservations')}}:</strong>
+                                <p class="text-muted">{{ $reservationsCount }}</p>
+                            </div>
+                        </div>
                     </div>
                     @endif
 

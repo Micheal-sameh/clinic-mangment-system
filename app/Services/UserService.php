@@ -58,7 +58,9 @@ class UserService
     {
         $user = $this->userRepository->show($id);
         $reservations = $this->reservationRepository->userProfile($id);
-        return compact('user', 'reservations');
+        $reservationsCount = $this->reservationRepository->getAll()->count();
+        
+        return compact('user', 'reservations', 'reservationsCount');
     }
 
     /**

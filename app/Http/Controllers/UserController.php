@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PasswordUpdateRequest;
-use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Services\UserService;
 use Illuminate\Http\Request;
@@ -63,7 +62,7 @@ class UserController extends Controller
     public function profile()
     {
         $data = $this->userService->profile(Auth::id());
-        return view('users.profile', ['user' => $data['user'], 'reservations' => $data['reservations']]);
+        return view('users.profile', ['user' => $data['user'], 'reservations' => $data['reservations'], 'reservationsCount' => $data['reservationsCount']]);
     }
 
     /**
@@ -71,7 +70,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = User::find($id);
+        $user = $this->userRepository->show($id);
 
         return view('users.edit', compact('user'));
     }
@@ -79,7 +78,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update()
     {
         //
     }
@@ -99,7 +98,7 @@ class UserController extends Controller
         if (!Hash::check($request->current_password, Auth::user()->password)) {
             return back()->withErrors(['current_password' => 'Current password is incorrect.']);
         }
-        $user = User::find(Auth::id());
+        $user = $this->userRepository->show(Auth::id());
         $user->update([
             'password' => Hash::make($request->password),
         ]);

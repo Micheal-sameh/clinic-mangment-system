@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProcedureController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\ReservationNoteController;
 use App\Http\Controllers\ReservationProcedureController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
@@ -70,6 +71,7 @@ Route::group(['middleware' => 'setlocale'], function () {
         Route::post('/', [ReservationController::class, 'store'])->name('reservations.store');
         Route::put('/', [ReservationController::class, 'updateProcedures'])->name('reservations.update');
         Route::put('/{id}/paid', [ReservationController::class, 'paid'])->name('reservations.paid');
+        Route::post('/store', [ReservationNoteController::class, 'store'])->name('reservationNotes.store');
 
     });
 

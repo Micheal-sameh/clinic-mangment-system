@@ -62,4 +62,10 @@ return [
     'history'               => 'History',
     'today'                 => 'Today',
     'upcoming_reservations' => 'Upcoming Reservations',
+    'notes' => 'Notes',
+    'save_notes' => 'Save Notes',
+    'add_another_note' => '+ Add another note',
+    'enter_note'  => 'Enter a note',
+    'remove' => 'Remove',
+    'note' => 'Note',
 ];

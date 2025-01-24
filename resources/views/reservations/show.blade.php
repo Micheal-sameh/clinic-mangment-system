@@ -38,24 +38,36 @@
                 {{ \Carbon\Carbon::parse($reservation->updated_at)->diffForHumans() }}
             </small>
         </div>
-        {{-- @dd($reservation->status != App\Enums\ReservationStatus::WAITING) --}}
+
         @if($reservation->status != App\Enums\ReservationStatus::WAITING && $reservation->status != App\Enums\ReservationStatus::CANCELLED)
         <div class="mt-4">
-            <form action="{{ route('reservations_pro.store') }}" method="POST">
-                @csrf
-                <div class="form-check">
-                    <h3 class="me-2 mr-2"> {{__('messages.procedures')}}</h4>
-                        @foreach($procedures as $procedure)
-                        <h6 class="form-check-label me-2 mr-2" for="procedure_{{ $procedure->procedure->id }}" style="display: inline-block;">
-                            {{ $procedure->procedure->localized_name }}
-                        </h6>
-                        <h6 class="form-check-label me-2 mr-2" for="procedure_{{ $procedure->procedure->id }}" style="display: inline-block;">
-                            {{ $procedure->price }}
-                        </h6>
-                    @endforeach
+            <div class="form-check">
+                <h3 class="me-2 mr-2"> {{__('messages.procedures')}}</h3>
+                @foreach($procedures as $procedure)
+                    <h6 class="form-check-label me-2 mr-2" for="procedure_{{ $procedure->procedure->id }}" style="display: inline-block;">
+                        {{ $procedure->procedure->localized_name }}
+                    </h6>
+                    <h6 class="form-check-label me-2 mr-2" for="procedure_{{ $procedure->procedure->id }}" style="display: inline-block;">
+                        {{ $procedure->price }}
+                    </h6>
+                @endforeach
+            </div>
+        </div>
+        @endif
 
-                </div>
-            </form>
+        <!-- Separator between Procedures and Notes -->
+        <hr class="my-4">
+
+        @if(!empty($reservation->reservationNotes))
+        <div class="mt-4">
+            <div class="form-check">
+                <h3 class="me-2 mr-2"> {{__('messages.notes')}}</h3>
+                @foreach($reservation->reservationNotes as $key => $note)
+                    <small class="text-muted">{{ __('messages.note') }} {{$key+1}}:
+                        {{ $note->note }}
+                    </small></br>
+                @endforeach
+            </div>
         </div>
         @endif
     </div>

@@ -37,6 +37,7 @@ class RolesAndPermissionSeeder extends Seeder
         $reservations_show = Permission::firstOrCreate(['name' => 'reservations_show']);
         $reservations_delete = Permission::firstOrCreate(['name' => 'reservations_delete']);
         $reservations_update = Permission::firstOrCreate(['name' => 'reservations_update']);
+        $reservations_notes = Permission::firstOrCreate(['name' => 'reservations_notes']);
 
 
         $owner = Role::firstOrCreate(['name' => 'owner']);
@@ -63,6 +64,8 @@ class RolesAndPermissionSeeder extends Seeder
             $reservations_show,
             $reservations_delete,
             $reservations_update,
+
+            $reservations_notes,
         ]);
 
         $secretary = Role::firstOrCreate(['name' => 'secretary']);
