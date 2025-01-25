@@ -75,4 +75,6 @@ return [
     'Add Another Working Day' => 'اضف يوم عمل اخر',
     'working_days' => 'ايام العمل',
     'You can only reserve one time today' => 'يمكنك الحجز مرة واحدة في اليوم',
+    'start_date' => 'تاريخ البداية',
+    'end_date' => 'تاريخ النهاية',
 ];

@@ -20,9 +20,9 @@ class WorkingDayService
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($input)
     {
-        return $this->workingDayRepository->index();
+        return $this->workingDayRepository->index($input);
     }
 
     /**

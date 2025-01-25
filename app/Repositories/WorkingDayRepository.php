@@ -19,13 +19,14 @@ class WorkingDayRepository
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($input)
     {
 
         return $this->model
-        // ->when(isset($input->name), fn($q) => $q->where('name', 'like', '%' . $input->name . '%'))
-        // ->orderByRaw("JSON_UNQUOTE(JSON_EXTRACT(name, '$.$locale')) ASC")  // Sort by localized name (e.g., name.en or name.ar)
-            ->get();
+        ->when(isset($input->start_date), fn($q) => $q->whereDate('date', '>=', $input->start_date))
+        ->when(isset($input->end_date), fn($q) => $q->whereDate('date', '<=', $input->end_date))
+        ->where('date', '>=', today())
+        ->get();
 
     }
 
@@ -76,51 +77,36 @@ class WorkingDayRepository
     }
 
     public function slatesNumber($date)
-{
-    // Fetch the day data
-    $day = $this->model->where('date', $date)->first();
+    {
+        $day = $this->model->where('date', $date)->first();
 
-    // Parse start and end times
-    $startTime = Carbon::createFromFormat('H:i:s', $day->from);
-    $endTime = Carbon::createFromFormat('H:i:s', $day->to);
+        $startTime = Carbon::createFromFormat('H:i:s', $day->from);
+        $endTime = Carbon::createFromFormat('H:i:s', $day->to);
 
-    // Initialize an array to store slate intervals
-    $slateIntervals = [];
+        $slateIntervals = [];
 
-    // Fetch existing reservations for the selected date
-    $reservations = Reservation::where('date', $date)->get();
-    // Initialize an array to hold reserved intervals (in the format of 'H:i - H:i')
-    $reservedIntervals = [];
+        $reservations = Reservation::where('date', $date)->get();
+        $reservedIntervals = [];
 
-    // Loop through the reservations and extract the reserved time intervals
-    foreach ($reservations as $reservation) {
-        $reservedIntervals[] = $reservation->reservation_number;  // assuming you store the slate number (1, 2, 3, etc.)
-    }
-
-    // Loop through the time period in 30-minute increments
-    while ($startTime->lt($endTime)) {
-        // Define the end of the current slate interval (30 minutes after start)
-        $slateEnd = $startTime->copy()->addMinutes(30);
-
-        // Ensure we don't go beyond the actual end time
-        if ($slateEnd->gt($endTime)) {
-            $slateEnd = $endTime;
+        foreach ($reservations as $reservation) {
+            $reservedIntervals[] = $reservation->reservation_number;
         }
 
-        // Format the times as 'H:i' (e.g., 4:00, 4:30)
-        $slateIntervals[] = $startTime->format('H:i') . ' - ' . $slateEnd->format('H:i');
-        // Check if this slate interval is already reserved
+        while ($startTime->lt($endTime)) {
+            $slateEnd = $startTime->copy()->addMinutes(30);
 
+            if ($slateEnd->gt($endTime)) {
+                $slateEnd = $endTime;
+            }
 
-        // Move to the next slate by adding 30 minutes
-        $startTime = $slateEnd;
+            $slateIntervals[] = $startTime->format('H:i') . ' - ' . $slateEnd->format('H:i');
+            $startTime = $slateEnd;
+        }
+        foreach($reservedIntervals as $interval){
+        $slateIntervals[$interval-1] = 'Reserved';
+        }
+
+        return $slateIntervals;
     }
-    foreach($reservedIntervals as $interval){
-       $slateIntervals[$interval-1] = 'Reserved';
-    }
-
-    // Return the array of available slate intervals
-    return $slateIntervals;
-}
 
 }

@@ -215,6 +215,19 @@
                             @endcan
                         </ul>
                     @endcan
+                    @can('workDays_list')
+                    <a class="nav-item text-center dropdown-toggle text-white" href="#" id="workingDaysDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none;">
+                        {{__('messages.working_days')}}
+                    </a>
+                        <ul class="dropdown-menu nav-item" aria-labelledby="workingDaysDropdown" style="background: #333; width: 100%;">
+                            @can('workDays_list')
+                                <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('working-days.index') }}">{{__('messages.list')}}</a></li>
+                            @endcan
+                            @can('workDays_create')
+                                <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('working-days.create') }}">{{__('messages.create')}}</a></li>
+                            @endcan
+                        </ul>
+                    @endcan
                     @auth
                     <li class="nav-item text-center">
                         <form action="{{ route('logout') }}" method="POST" class="d-inline">

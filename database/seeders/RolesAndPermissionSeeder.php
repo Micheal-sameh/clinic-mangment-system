@@ -40,6 +40,10 @@ class RolesAndPermissionSeeder extends Seeder
         $reservations_history = Permission::firstOrCreate(['name' => 'reservations_history']);
         $reservations_notes = Permission::firstOrCreate(['name' => 'reservations_notes']);
 
+        $workDays_list = Permission::firstOrCreate(['name' => 'workDays_list']);
+        $workDays_create = Permission::firstOrCreate(['name' => 'workDays_create']);
+
+
 
         $admin = Role::firstOrCreate(['name' => 'admin']);
         $admin->givePermissionTo([
@@ -67,6 +71,9 @@ class RolesAndPermissionSeeder extends Seeder
             $reservations_history,
 
             $reservations_notes,
+
+            $workDays_list,
+            $workDays_create,
         ]);
 
         $secretary = Role::firstOrCreate(['name' => 'secretary']);
@@ -85,6 +92,7 @@ class RolesAndPermissionSeeder extends Seeder
             $reservations_paid,
             $reservations_history,
 
+            $workDays_list,
         ]);
 
         $patient = Role::firstOrCreate(['name' => 'patient']);
@@ -97,6 +105,8 @@ class RolesAndPermissionSeeder extends Seeder
             $reservations_show,
             $reservations_delete,
             $reservations_history,
+            
+            $workDays_list,
         ]);
     }
 }

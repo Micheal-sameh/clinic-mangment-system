@@ -3,6 +3,7 @@
 @section('title')
     {{ __('messages.create') }} {{ __('messages.working_days') }}
 @endsection
+
 @section('content')
 <div class="container">
     <h1 class="text-center mb-4"> {{__('messages.create')}} {{__('messages.working_days')}} </h1>
@@ -22,16 +23,28 @@
                 <div class="form-group col-3">
                     <label for="date" class="font-weight-bold">{{__('messages.date')}}</label>
                     <input type="date" name="working_days[0][date]" class="form-control custom-date-input" value="{{ old('working_days.0.date') }}" required>
+                    <!-- Display error message for 'date' -->
+                    @if($errors->has('working_days.0.date'))
+                        <small class="text-danger">{{ $errors->first('working_days.0.date') }}</small>
+                    @endif
                 </div>
 
                 <div class="form-row">
                     <div class="form-group col-md-3">
                         <label for="from_time" class="font-weight-bold">{{__('messages.from')}}</label>
                         <input type="time" name="working_days[0][from]" class="form-control" value="{{ old('working_days.0.from') }}" required>
+                        <!-- Display error message for 'from' -->
+                        @if($errors->has('working_days.0.from'))
+                            <small class="text-danger">{{ $errors->first('working_days.0.from') }}</small>
+                        @endif
                     </div>
                     <div class="form-group col-md-3">
                         <label for="to_time" class="font-weight-bold">{{__('messages.to')}}</label>
                         <input type="time" name="working_days[0][to]" class="form-control" value="{{ old('working_days.0.to') }}" required>
+                        <!-- Display error message for 'to' -->
+                        @if($errors->has('working_days.0.to'))
+                            <small class="text-danger">{{ $errors->first('working_days.0.to') }}</small>
+                        @endif
                     </div>
                 </div>
                 <!-- Separator (Horizontal Line) -->
@@ -71,6 +84,13 @@
     .form-row {
         margin-top: 15px;
     }
+
+    /* Styling for error message text */
+    small.text-danger {
+        font-size: 12px;
+        display: block;
+        margin-top: 5px;
+    }
 </style>
 @endpush
 
@@ -88,16 +108,22 @@
                 <div class="form-group col-3">
                     <label for="date" class="font-weight-bold">{{__('messages.date')}}</label>
                     <input type="date" name="working_days[${dayCount}][date]" class="form-control custom-date-input" required>
+                    <!-- Display error message for 'date' dynamically -->
+                    <small class="text-danger" id="error-date-${dayCount}"></small>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group col-md-3">
                         <label for="from_time" class="font-weight-bold">{{__('messages.from')}}</label>
                         <input type="time" name="working_days[${dayCount}][from]" class="form-control" required>
+                        <!-- Display error message for 'from' dynamically -->
+                        <small class="text-danger" id="error-from-${dayCount}"></small>
                     </div>
                     <div class="form-group col-md-3">
                         <label for="to_time" class="font-weight-bold">{{__('messages.to')}}</label>
                         <input type="time" name="working_days[${dayCount}][to]" class="form-control" required>
+                        <!-- Display error message for 'to' dynamically -->
+                        <small class="text-danger" id="error-to-${dayCount}"></small>
                     </div>
                 </div>
                 <!-- Separator (Horizontal Line) -->
