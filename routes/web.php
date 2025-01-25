@@ -6,6 +6,7 @@ use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ReservationNoteController;
 use App\Http\Controllers\ReservationProcedureController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WorkingDayController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -77,6 +78,14 @@ Route::group(['middleware' => 'setlocale'], function () {
 
     Route::middleware(['auth'])->prefix('reservation_procedures')->group(function () {
         Route::post('/', [ReservationProcedureController::class, 'store'])->name('reservations_pro.store');
+
+    });
+
+    Route::middleware(['auth'])->prefix('working-days')->group(function () {
+        Route::get('/', [WorkingDayController::class, 'index'])->name('working-days.index');
+        Route::get('/slatesNumber', [WorkingDayController::class, 'slates'])->name('working-days.slatesNumber');
+        Route::get('/create', [WorkingDayController::class, 'create'])->name('working-days.create');
+        Route::post('/', [WorkingDayController::class, 'store'])->name('working-days.store');
 
     });
 
