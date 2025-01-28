@@ -25,7 +25,7 @@ class ReservationRepository
     public function index($input = null)
     {
         return $this->model
-            ->with('user')
+            ->with('user', 'workingDay')
             ->when(isset($input->today), fn($q) => $q->where('date', today()))
             ->when(auth()->user()->hasRole('patient'), fn($q) => $q->where('user_id', auth()->id()))
             ->where('date', '>=', today())

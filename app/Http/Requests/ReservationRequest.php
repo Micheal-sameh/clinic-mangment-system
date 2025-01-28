@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\CanReserveToday;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ReservationRequest extends FormRequest
@@ -15,7 +16,7 @@ class ReservationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'exists:users,id',
+            'user_id' => ['exists:users,id', new CanReserveToday($this->reservation_date)],
             'reservation_date' => 'required|date|after_or_equal:today',
             'slate_number' => 'required|integer',
         ];

@@ -69,4 +69,11 @@ return [
     'remove' => 'Remove',
     'note' => 'Note',
     'no_upcoming_visits' => 'No upcoming visits',
+    'from' => 'From',
+    'to' => 'To',
+    'Add Another Working Day' => 'Add Another Working Day',
+    'working_days' => 'Working Days',
+    'You can only reserve one time today' => 'You can only reserve one time today',
+    'start_date' => 'Start Date',
+    'end_date' => 'End Date',
 ];
