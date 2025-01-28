@@ -56,6 +56,7 @@
             </div>
 
             <!-- Past Visits Card -->
+            @if(!auth()->user()->hasRole('admin') && $reservationsCount > 0)
             <div class="card shadow-sm border-light rounded mb-4">
                 <div class="card-header bg-success text-white">
                     <h5 class="mb-0">{{__('messages.upcoming_reservations')}}</h5>
@@ -69,7 +70,6 @@
                                 <th>{{ __('messages.date') }}</th>
                                 <th>{{ __('messages.slate') }}</th>
                                 <th>{{ __('messages.price') }}</th>
-                                {{-- <th>{{ __('messages.notes') }}</th> --}}
                             </tr>
                         </thead>
                         <tbody>
@@ -81,16 +81,16 @@
                                 <td>{{ \Carbon\Carbon::parse($reservation->date)->format('d-m-Y') }}</td>
                                 <td>{{ $reservation->reservation_number }}</td>
                                 <td>{{ $reservation->total_price }}</td>
-                                {{-- <td>{{ $reservation->notes }}</td> --}}
                             </tr>
                             @endforeach
                         </tbody>
                     </table>
                     @else
-                    <p class="text-muted">{{ __('messages.no_past_visits') }}</p>
+                    <p class="text-muted">{{ __('messages.no_upcoming_visits') }}</p>
                     @endif
                 </div>
             </div>
+            @endif
 
             <!-- Change Password Card -->
             <div class="card shadow-sm border-light rounded mb-4">

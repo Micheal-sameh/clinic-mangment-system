@@ -1,0 +1,53 @@
+version: "3.7"
+services:
+  app:
+    build:
+      args:
+        user: clinc
+        uid: 1500
+      context: ./docker/php
+      dockerfile: Dockerfile
+    container_name: clinc
+    restart: unless-stopped
+    working_dir: /var/www/breakfast
+    volumes:
+      - ./:/var/www/breakfast
+      - ./docker/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini
+    ports:
+      - 8030:9000
+    networks:
+      - clinc
+      - external_db_network
+
+  # node:
+  #   image: node:20.9
+  #   container_name: breakfast-vite
+  #   working_dir: /var/www/breakfast
+  #   volumes:
+  #     - ./:/var/www/breakfast
+  #   command: "sleep 600"
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         cpus: '1'
+
+#   supervisor:
+#     build:
+#       context: ./docker/supervisor
+#       dockerfile: Dockerfile
+#     container_name: breakfast-supervisor
+#     restart: unless-stopped
+#     working_dir: /var/www/
+#     volumes:
+#       - ./:/var/www
+#       - ./docker/supervisor/conf.d/:/etc/supervisor/conf.d/
+#     ports:
+#       - 3026:3000
+#     networks:
+#       - breakfast
+
+networks:
+  breakfast:
+    driver: bridge
+  external_db_network:
+    external: true

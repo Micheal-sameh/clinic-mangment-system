@@ -69,4 +69,5 @@ return [
     'enter_note'  => 'ادخل ملاحظة',
     'remove' => 'حذف',
     'note'  => 'ملاحظة',
+    'no_upcoming_visits' => 'لا توجد زيارات قادمة',
 ];
