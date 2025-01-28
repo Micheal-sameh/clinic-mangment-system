@@ -24,6 +24,7 @@ class UserSeeder extends Seeder
             'email'     => 'admin@admin.com',
             'password'  => Hash::make('password'),
             'phone'     => '01234567890',
+            'status'    => 1,
             'age'       => 35,
         ]);
         $role = Role::where('name', 'admin')->first();
@@ -37,6 +38,7 @@ class UserSeeder extends Seeder
             'email'     => 'secretary@gmail.com',
             'password'  => Hash::make('password'),
             'phone'     => '01278783884',
+            'status'    => 1,
             'age'       => 28,
         ]);
         $role = Role::where('name', 'secretary')->first();
@@ -47,12 +49,13 @@ class UserSeeder extends Seeder
                 'en' => 'patient',
                 'ar' => 'مريض',
             ],
-            'email'     => 'paitent@gmail.com',
+            'email'     => 'patient@gmail.com',
             'password'  => Hash::make('password'),
             'phone'     => '01278783888',
+            'status'    => 1,
             'age'       => 22,
         ]);
-        $role = Role::where('name', 'paitent')->first();
+        $role = Role::where('name', 'patient')->first();
         $user->assignRole($role);
     }
 }
