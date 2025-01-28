@@ -173,6 +173,9 @@
             <div id="sidebar">
                 <img src="{{ asset('images/logo.jpg') }}" alt="Logo" class="img-fluid mb-3">
                 <ul class="nav flex-column">
+                    {{-- <li class="nav-item text-center"><a class="nav-link text-white" href="{{ url('/') }}"> {{__('messages.about')}} </a></li>
+                    <li class="nav-item text-center"><a class="nav-link text-white" href="{{ url('/') }}"> {{__('messages.contact')}} </a></li> --}}
+                    @auth
                     <li class="nav-item text-center"><a class="nav-link text-white" href="{{ url('/') }}"> {{__('messages.home')}} </a></li>
                     <li class="nav-item text-center"><a class="nav-link text-white" href="{{ route('users.profile') }}">{{__('messages.profile')}} </a></li>
                     @can('users_list')
@@ -226,6 +229,7 @@
                             @endcan
                         </ul>
                     @endcan
+                    @endauth
                     @auth
                     <li class="nav-item text-center">
                         <form action="{{ route('logout') }}" method="POST" class="d-inline">

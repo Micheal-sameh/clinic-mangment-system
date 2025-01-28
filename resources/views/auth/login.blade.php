@@ -1,4 +1,4 @@
-@extends('layouts.sidebar')
+@extends('layouts.sideBar')
 <title>Management System</title>
 @section('content')
     <div class="container d-flex justify-content-center align-items-center min-vh-100">
