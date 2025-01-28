@@ -173,64 +173,37 @@
             <div id="sidebar">
                 <img src="{{ asset('images/logo.jpg') }}" alt="Logo" class="img-fluid mb-3">
                 <ul class="nav flex-column">
-                    {{-- <li class="nav-item text-center"><a class="nav-link text-white" href="{{ url('/') }}"> {{__('messages.about')}} </a></li>
-                    <li class="nav-item text-center"><a class="nav-link text-white" href="{{ url('/') }}"> {{__('messages.contact')}} </a></li> --}}
+                    {{-- <li class="nav-item text-begin"><a class="nav-link text-white" href="{{ url('/') }}"> {{__('messages.about')}} </a></li>
+                    <li class="nav-item text-begin"><a class="nav-link text-white" href="{{ url('/') }}"> {{__('messages.contact')}} </a></li> --}}
                     @auth
-                    <li class="nav-item text-center"><a class="nav-link text-white" href="{{ url('/') }}"> {{__('messages.home')}} </a></li>
-
-
-                    <li class="nav-item text-center"><a class="nav-link text-white" href="{{ route('users.profile') }}">{{__('messages.profile')}} </a></li>
+                    <li class="nav-item text-begin"><a class="nav-link text-white" href="{{ url('/') }}"> {{__('messages.home')}} </a></li>
+                    <li class="nav-item text-begin"><a class="nav-link text-white" href="{{ route('users.profile') }}">{{__('messages.profile')}} </a></li>
                     @can('users_list')
-                    <a class="nav-item text-center dropdown-toggle text-white" href="#" id="usersDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none;">
-                        {{__('messages.users')}}
-                    </a>
-                        <ul class="dropdown-menu nav-item" aria-labelledby="usersDropdown" style="background: #333; width: 100%;">
-                            <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('users.index') }}"> {{__('messages.list')}}</a></li>
-                            <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('users.index') }}">{{__('messages.create')}}</a></li>
-                        </ul>
+                            <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('users.index') }}"> {{__('messages.users')}}</a></li>
                     @endcan
-                    @can(['procedures_list'])
-                    <a class="nav-item text-center dropdown-toggle text-white" href="#" id="proceduresDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none;">
-                        {{__('messages.procedures')}}
-                    </a>
-                        <ul class="dropdown-menu nav-item" aria-labelledby="proceduresDropdown" style="background: #333; width: 100%;">
-                            @can('procedures_list')
-                                <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('procedures.index') }}">{{__('messages.list')}}</a></li>
-                            @endcan
-                            @can('procedures_create')
-                                <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('procedures.create') }}">{{__('messages.create')}}</a></li>
-                            @endcan
-                        </ul>
+                    @can('procedures_list')
+                        <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('procedures.index') }}">{{__('messages.procedures')}}</a></li>
                     @endcan
                     @can('reservations_list')
-                    <a class="nav-item text-center dropdown-toggle text-white" href="#" id="reservationsDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none;">
-                        {{__('messages.reservations')}}
-                    </a>
-                        <ul class="dropdown-menu nav-item" aria-labelledby="reservationsDropdown" style="background: #333; width: 100%;">
-                            @can('reservations_list')
-                                <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('reservations.index') }}">{{__('messages.list')}}</a></li>
-                            @endcan
-                            @can('reservations_create')
-                                <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('reservations.create') }}">{{__('messages.create')}}</a></li>
-                            @endcan
-                            @can('reservations_history')
-                                <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('reservations.history') }}">{{__('messages.history')}}</a></li>
-                            @endcan
-                        </ul>
+                        <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('reservations.index') }}">{{__('messages.reservations')}}</a></li>
+                    @endcan
+                    @can('workDays_list')
+                        <li class="nav-item"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('working-days.index') }}">{{__('messages.working_days')}}</a></li>
                     @endcan
                     @endauth
                     @auth
-                    <li class="nav-item text-center">
+                    <li class="nav-item text-begin">
                         <form action="{{ route('logout') }}" method="POST" class="d-inline">
                             @csrf
-                            <button type="submit" class="nav-link text-white tex" style="background: none; border: none; padding: 0; cursor: pointer;">
+                            <button type="submit" class="nav-link text-white" style="background: none; border: none; padding: 0; cursor: pointer;">
                                 {{ __('messages.logout') }}
                             </button>
                         </form>
                     </li>
                     @else
-                    <a href="{{ route('loginPage') }}" class="nav-link text-white text-center">{{__('messages.login')}}</a>
+                    <a href="{{ route('loginPage') }}" class="nav-link text-white text-begin">{{__('messages.login')}}</a>
                     @endauth
+
                 </ul>
 
                 <!-- World Icon Button for language selection -->

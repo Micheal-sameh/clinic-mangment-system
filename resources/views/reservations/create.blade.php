@@ -2,7 +2,7 @@
 <title> {{__('messages.create')}} {{__('messages.reservation')}} </title>
 @section('content')
 <div class="container mt-4">
-    <h1 class="mb-4 text-center text-primary test-center"> {{__('messages.create')}} {{__('messages.reservation')}}</h1>
+    <h1 class="mb-4 text-center text-primary"> {{__('messages.create')}} {{__('messages.reservation')}}</h1>
 
     @if(session('success'))
         <div class="alert alert-success">
@@ -17,11 +17,10 @@
             <!-- User Dropdown -->
             @can('reservations_add')
                 <div class="form-group row mb-3 col-6">
-                    <label for="user_id" class="col-md-3 col-3col-form-label text-info"> {{__('messages.select')}}  {{__('messages.patient')}}</label>
+                    <label for="user_id" class="col-md-3 col-form-label text-info">{{__('messages.select')}}  {{__('messages.patient')}}</label>
                     <div class="col-md-9 col-12">
                         <select name="user_id" id="user_id" class="form-control border-info rounded bg-white col-3">
                             <option value="">{{__('messages.select')}} {{__('messages.patient')}}</option>
-
                             @foreach ($users as $user)
                                 <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
                                     {{ $user->localized_name }}
@@ -33,7 +32,11 @@
                         @enderror
                     </div>
                 </div>
+
+            @else
+                <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
             @endcan
+
             <!-- Reservation Day (Date) -->
             <div class="form-group row mb-3 col-6">
                 <label for="reservation_date" class="col-3 col-md-3 col-form-label text-info">{{__('messages.reservation_date')}}</label>
@@ -49,7 +52,9 @@
             <div class="form-group row mb-3 col-6">
                 <label for="slate_number" class="col-md-3 col-3 col-form-label text-info">{{__('messages.slate')}}</label>
                 <div class="col-md-9 col-12">
-                    <input type="text" name="slate_number" id="slate_number" class="form-control border-info rounded bg-white col-3" value="{{ old('slate_number') }}">
+                    <select name="slate_number" id="slate_number" class="form-control border-info rounded bg-white col-3">
+                        <option value="">{{__('messages.select')}} {{__('messages.slate')}}</option>
+                    </select>
                     @error('slate_number')
                         <div class="text-danger mt-1">{{ $message }}</div>
                     @enderror
@@ -66,7 +71,6 @@
     </form>
 </div>
 
-<!-- Additional custom styles -->
 @section('styles')
     <style>
         .container {
@@ -151,20 +155,74 @@
                 width: 100%;
             }
         }
-
-        /* Border and shadow styles for the form container */
-        .border {
-            border: 1px solid #e0e0e0;
-        }
-
-        .rounded {
-            border-radius: 8px;
-        }
-
-        .shadow-sm {
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        }
     </style>
 @endsection
+
+@push('scripts')
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const reservationDateInput = document.getElementById('reservation_date');  // Get the reservation date input
+    const slateNumberSelect = document.getElementById('slate_number');  // Get the slate number dropdown
+
+    reservationDateInput.addEventListener('change', function () {
+        const date = this.value;  // Get the selected date value
+        console.log('Selected date:', date);  // Log the selected date for debugging
+
+        slateNumberSelect.innerHTML = '<option value="">{{__('messages.select')}} {{__('messages.slate')}}</option>'; // Clear existing slate options
+
+        // If no date is selected, stop and do nothing
+        if (!date) {
+            console.log('No date selected, skipping GET request.');
+            return;
+        }
+
+        const url = `/working-days/slatesNumber?date=${encodeURIComponent(date)}`;  // Prepare the URL for the GET request
+        console.log('Fetching URL:', url);  // Log the URL for debugging
+
+        // Perform the fetch request
+        fetch(url)
+            .then(response => response.json())  // Parse the JSON response
+            .then(data => {
+                console.log('Response data:', data);  // Log the fetched data
+                if (data && data.length > 0) {
+                    // Loop through the available slates and add them as options
+                    data.forEach((slate, index) => {
+                        const option = document.createElement('option');
+                        option.value = index + 1;  // Store the index (1-based) in the option value
+                        option.textContent = slate;
+
+                        // Check if the slate is "Reserved" and hide it if true
+                        if (slate === "Reserved") {
+                            option.style.display = 'none';  // Hide the option
+                        }
+
+                        slateNumberSelect.appendChild(option);
+                    });
+                } else {
+                    const option = document.createElement('option');
+                    option.value = '';
+                    option.textContent = '{{__('messages.no_available_slates')}}';
+                    slateNumberSelect.appendChild(option);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching slates:', error);  // Handle any errors
+                const option = document.createElement('option');
+                option.value = '';
+                option.textContent = '{{__('messages.error_fetching_slates')}}';
+                slateNumberSelect.appendChild(option);
+            });
+    });
+
+    // Trigger the change event if there's an old value for the date
+    const oldDate = "{{ old('reservation_date') }}";
+    if (oldDate) {
+        reservationDateInput.value = oldDate;  // Set the old value
+        reservationDateInput.dispatchEvent(new Event('change'));  // Trigger the change event programmatically
+    }
+    });
+
+    </script>
+@endpush
 
 @endsection
