@@ -3,20 +3,20 @@ services:
   app:
     build:
       args:
-        user: clinc
+        user: reservation-system
         uid: 1500
       context: ./docker/php
       dockerfile: Dockerfile
-    container_name: clinc
+    container_name: reservation-system
     restart: unless-stopped
-    working_dir: /var/www/breakfast
+    working_dir: /var/www/reservation-system
     volumes:
-      - ./:/var/www/breakfast
+      - ./:/var/www/reservation-system
       - ./docker/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini
     ports:
       - 8030:9000
     networks:
-      - clinc
+      - reservation-system
       - external_db_network
 
   # node:
@@ -47,7 +47,7 @@ services:
 #       - breakfast
 
 networks:
-  breakfast:
+  reservation-system:
     driver: bridge
   external_db_network:
     external: true
