@@ -25,7 +25,7 @@
             color: white;
             transition: left 0.3s ease, right 0.3s ease;
             z-index: 1000;
-            left: -200px;
+            left: 0;
         }
         /* RTL adjustments for sidebar */
         [dir="rtl"] #sidebar {
@@ -45,11 +45,11 @@
         }
         .content-area {
             flex-grow: 1;
-            margin-left: 0;
+            margin-left: 200px;
         }
         /* RTL content margin */
         [dir="rtl"] .content-area {
-            margin-right: 0;
+            margin-right: 200px;
         }
         /* Sidebar Toggle Button */
         .btn-toggle-sidebar {
@@ -80,6 +80,13 @@
             }
             [dir="rtl"] #sidebar.show {
                 right: 0;
+            }
+            .content-area {
+            flex-grow: 1;
+            margin-left: 0px;
+            }
+            [dir="rtl"] .content-area {
+                margin-right: 0;
             }
             .btn-toggle-sidebar {
                 display: block;
