@@ -1,5 +1,6 @@
 @extends('layouts.sideBar')
 <title> {{__('messages.create')}} {{__('messages.reservation')}} </title>
+
 @section('content')
 <div class="container mt-4">
     <h1 class="mb-4 text-center text-primary"> {{__('messages.create')}} {{__('messages.reservation')}}</h1>
@@ -13,18 +14,16 @@
     <form action="{{ route('reservations.store') }}" method="POST">
         @csrf
 
-        <div class="border p-4 rounded shadow-sm bg-light col-9">
+        <div class="border p-3 rounded shadow-sm bg-light col-md-9">
             <!-- User Dropdown -->
             @can('reservations_add')
-                <div class="form-group row mb-3 col-6">
-                    <label for="user_id" class="col-md-3 col-form-label text-info">{{__('messages.select')}}  {{__('messages.patient')}}</label>
+                <div class="form-group row mb-3 col-12">
+                    <label for="user_id" class="col-md-5 col-form-label text-info">{{__('messages.select')}}  {{__('messages.patient')}}</label>
                     <div class="col-md-9 col-12">
                         <select name="user_id" id="user_id" class="form-control border-info rounded bg-white col-3">
                             <option value="">{{__('messages.select')}} {{__('messages.patient')}}</option>
                             @foreach ($users as $user)
-                                <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
-                                    {{ $user->localized_name }}
-                                </option>
+                                <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>{{ $user->localized_name }}</option>
                             @endforeach
                         </select>
                         @error('user_id')
@@ -32,16 +31,15 @@
                         @enderror
                     </div>
                 </div>
-
             @else
                 <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
             @endcan
 
             <!-- Reservation Day (Date) -->
-            <div class="form-group row mb-3 col-6">
-                <label for="reservation_date" class="col-3 col-md-3 col-form-label text-info">{{__('messages.reservation_date')}}</label>
+            <div class="form-group row mb-3 col-12">
+                <label for="reservation_date" class="col-4 col-md-4 col-form-label text-info">{{__('messages.reservation_date')}}</label>
                 <div class="col-md-9 col-12">
-                    <input type="date" name="reservation_date" id="reservation_date" class="col-3 form-control border-info rounded bg-white" value="{{ old('reservation_date') }}">
+                    <input type="date" name="reservation_date" id="reservation_date" class="col-md-5 form-control border-info rounded bg-white" value="{{ old('reservation_date') }}">
                     @error('reservation_date')
                         <div class="text-danger mt-1">{{ $message }}</div>
                     @enderror
@@ -49,10 +47,10 @@
             </div>
 
             <!-- Slate Number -->
-            <div class="form-group row mb-3 col-6">
-                <label for="slate_number" class="col-md-3 col-3 col-form-label text-info">{{__('messages.slate')}}</label>
+            <div class="form-group row mb-3 col-12">
+                <label for="slate_number" class="col-md-5 col-5 col-form-label text-info">{{__('messages.slate')}}</label>
                 <div class="col-md-9 col-12">
-                    <select name="slate_number" id="slate_number" class="form-control border-info rounded bg-white col-3">
+                    <select name="slate_number" id="slate_number" class="form-control border-info rounded bg-white col-md-5">
                         <option value="">{{__('messages.select')}} {{__('messages.slate')}}</option>
                     </select>
                     @error('slate_number')
@@ -71,6 +69,8 @@
     </form>
 </div>
 
+@endsection
+
 @section('styles')
     <style>
         .container {
@@ -78,6 +78,18 @@
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+
+            /* Flexbox to center content */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Make sure it takes full screen height */
+        }
+
+        form {
+            width: 100%;
+            max-width: 800px;  /* Set a max width to ensure the form isn't too wide */
+            margin: 0 auto;
         }
 
         h1 {
@@ -129,6 +141,7 @@
 
             .form-control {
                 font-size: 1rem;
+                width: 100%; /* Make inputs take full width on mobile */
             }
 
             .btn {
@@ -139,6 +152,11 @@
             .container {
                 padding: 15px;
             }
+
+            /* Ensure full width for the select input on mobile */
+            select.form-control {
+                width: 100%;
+            }
         }
 
         /* Full-width mobile form */
@@ -148,7 +166,7 @@
             }
 
             .form-control {
-                width: 100%;
+                width: 100%; /* Ensure all inputs are full width on smaller screens */
             }
 
             .btn-block {
@@ -190,9 +208,8 @@
                         const option = document.createElement('option');
                         option.value = index + 1;  // Store the index (1-based) in the option value
                         option.textContent = slate;
-
                         // Check if the slate is "Reserved" and hide it if true
-                        if (slate === "Reserved") {
+                        if (slate.status === "Reserved") {
                             option.style.display = 'none';  // Hide the option
                         }
 
@@ -224,5 +241,3 @@
 
     </script>
 @endpush
-
-@endsection

@@ -27,7 +27,7 @@
                 <span class="text-dark">{{ $reservation->reservation_number }}</span> <br>
                 <strong class="text-info">{{ __('messages.status') }}:</strong>
                 <span class="text-dark">{{ App\Enums\ReservationStatus::getStringValue($reservation->status) }}</span> <br>
-                @if($reservation->status == App\Enums\ReservationStatus::TOPAY || $reservation->status == App\Enums\ReservationStatus::DONE)
+                @if($reservation->status == App\Enums\ReservationStatus::TOPAY || $reservation->status == App\Enums\ReservationStatus::PAID)
                 <strong class="text-info">{{ __('messages.price') }}:</strong>
                 <span class="text-dark">{{ $reservation->total_price }}</span> <br>
                 @endif
@@ -49,7 +49,7 @@
                     </h6>
                     <h6 class="form-check-label me-2 mr-2" for="procedure_{{ $procedure->procedure->id }}" style="display: inline-block;">
                         {{ $procedure->price }}
-                    </h6>
+                    </h6></br>
                 @endforeach
             </div>
         </div>

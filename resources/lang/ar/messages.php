@@ -77,4 +77,6 @@ return [
     'You can only reserve one time today' => 'يمكنك الحجز مرة واحدة في اليوم',
     'start_date' => 'تاريخ البداية',
     'end_date' => 'تاريخ النهاية',
+    'Add new procedure' => 'اضف عملية جديدة',
+    'create_reservation' => 'اضف حجز',
 ];

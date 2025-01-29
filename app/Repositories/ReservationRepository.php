@@ -91,7 +91,7 @@ class ReservationRepository
     public function paid($id)
     {
         return $this->model->find($id)->update([
-            'status' => ReservationStatus::DONE,
+            'status' => ReservationStatus::PAID,
         ]);
     }
 

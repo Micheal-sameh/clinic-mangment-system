@@ -52,7 +52,7 @@ class ReservationController extends Controller
     {
         $this->reservationService->store($request);
 
-        return redirect()->route('reservations.create')->with('success', 'Reservation created successfully!');
+        return redirect()->route('reservations.index')->with('success', 'Reservation created successfully!');
     }
 
     /**

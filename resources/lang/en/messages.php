@@ -76,4 +76,6 @@ return [
     'You can only reserve one time today' => 'You can only reserve one time today',
     'start_date' => 'Start Date',
     'end_date' => 'End Date',
+    'Add new procedure' => 'Add new procedure',
+    'create_reservation' => 'Create Reservation',
 ];
