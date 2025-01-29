@@ -69,9 +69,4 @@ class ReservationService
     {
         return $this->reservationRepository->delete($id);
     }
-
-    public function history()
-    {
-        return $this->reservationRepository->history();
-    }
 }

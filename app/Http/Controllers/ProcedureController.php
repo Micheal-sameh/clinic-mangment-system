@@ -45,36 +45,9 @@ class ProcedureController extends Controller
         ));
 
         $this->procedureService->store($input);
-        return redirect()->back()->with('success', 'Procedure created successfully');
+        return redirect()->route('procedures.index')->with('message', 'Procedure created successfully');
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Procedure $procedure)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Procedure $procedure)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Procedure $procedure)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function delete($id)
     {
         $this->procedureService->delete($id);

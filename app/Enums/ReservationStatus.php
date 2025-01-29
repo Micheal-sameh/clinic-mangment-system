@@ -10,7 +10,7 @@ class ReservationStatus
 
     public const TOPAY = 2;
 
-    public const DONE = 3;
+    public const PAID = 3;
 
     public const CANCELLED  = 4;
 
@@ -27,8 +27,8 @@ class ReservationStatus
                     "value" => self::TOPAY,
                 ],
                 [
-                    "name" => 'تم الزيارة',
-                    "value" => self::DONE,
+                    "name" => 'تم الدفع',
+                    "value" => self::PAID,
                 ],
                 [
                     "name" => 'ملغي',
@@ -42,12 +42,12 @@ class ReservationStatus
                     "value" => self::WAITING,
                 ],
                 [
-                    "name" => 'Waiting for payment',
+                    "name" => 'Pending payment',
                     "value" => self::TOPAY,
                 ],
                 [
-                    "name" => 'Done',
-                    "value" => self::DONE,
+                    "name" => 'Paid',
+                    "value" => self::PAID,
                 ],
                 [
                     "name" => 'Cancel',
@@ -65,9 +65,9 @@ class ReservationStatus
             case self::WAITING:
                 return ( $locale == 'en') ? 'Waiting' : 'في الانتظار';
             case self::TOPAY:
-                return ( $locale == 'en') ? 'Wating Payment' : 'انتظار الدفع';
-            case self::DONE:
-                return ( $locale == 'en') ? 'Done' : 'تم الدفع';
+                return ( $locale == 'en') ? 'Pending Payment' : 'انتظار الدفع';
+            case self::PAID:
+                return ( $locale == 'en') ? 'Paid' : 'تم الدفع';
             case self::CANCELLED:
                 return ( $locale == 'en') ? 'Cancelled' : 'ملغى';
             default:

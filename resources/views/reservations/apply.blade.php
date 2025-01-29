@@ -1,4 +1,5 @@
 @extends('layouts.sideBar')
+
 <title> {{$reservation->user->localized_name}} </title>
 
 @section('content')
@@ -36,19 +37,28 @@
                 <h5 class="text-dark">{{ __('messages.select')}} {{__('messages.procedures') }}:</h5>
                 <form action="{{ route('reservations_pro.store') }}" method="POST">
                     @csrf
-                    <div class="form-check">
-                        <input class="form-check-input" type="hidden" value="{{$reservation->id}}" name="reservation_id" id="reservation_id">
-                        @foreach($procedures as $procedure)
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" value="{{ $procedure->id }}" id="procedure_{{ $procedure->id }}"
-                                    name="procedures[]"
-                                    {{ in_array($procedure->id, $reservation->reservationProcedures->pluck('id')->toArray()) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="procedure_{{ $procedure->id }}">
-                                    {{ $procedure->localized_name }}
-                                </label>
-                            </div>
-                        @endforeach
-                    </div>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>{{ __('messages.name') }}</th>
+                                <th>{{ __('messages.price') }}</th>
+                                <th>{{ __('messages.select') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($procedures as $procedure)
+                                <tr>
+                                    <td>{{ $procedure->localized_name }}</td>
+                                    <td>{{ $procedure->price }}</td>
+                                    <td>
+                                        <input class="form-check-input" type="checkbox" value="{{ $procedure->id }}" id="procedure_{{ $procedure->id }}"
+                                            name="procedures[]"
+                                            {{ in_array($procedure->id, $reservation->reservationProcedures->pluck('id')->toArray()) ? 'checked' : '' }}>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                     <button type="submit" class="btn btn-primary mt-3 w-100">{{ __('messages.save')}} {{__('messages.procedures') }}</button>
                 </form>
             </div>
@@ -93,7 +103,6 @@
         `;
         notesContainer.appendChild(newNote);
 
-        // Add event listener to remove note button
         newNote.querySelector('.remove-note-button').addEventListener('click', function () {
             notesContainer.removeChild(newNote);
         });

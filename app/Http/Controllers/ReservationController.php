@@ -52,7 +52,7 @@ class ReservationController extends Controller
     {
         $this->reservationService->store($request);
 
-        return redirect()->route('reservations.create')->with('success', 'Reservation created successfully!');
+        return redirect()->route('reservations.index')->with('success', 'Reservation created successfully!');
     }
 
     /**
@@ -104,12 +104,5 @@ class ReservationController extends Controller
         $this->reservationRepository->paid($id);
 
         return redirect()->back()->with('success', 'Reservation paid successfully!');
-    }
-
-    public function history()
-    {
-        $reservations = $this->reservationService->history();
-
-        return view('reservations.history', compact('reservations'));
     }
 }

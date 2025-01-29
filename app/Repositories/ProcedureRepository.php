@@ -20,9 +20,9 @@ class ProcedureRepository
     {
         $locale = app()->getLocale();
         $procedures = $this->model
-        ->when(isset($input->name), fn($q) => $q->where('name', 'like', '%' . $input->name . '%'))
-        ->orderByRaw("JSON_UNQUOTE(JSON_EXTRACT(name, '$.$locale')) ASC")  // Sort by localized name (e.g., name.en or name.ar)
-            ->get();
+            ->when(isset($input->name), fn($q) => $q->where('name', 'like', '%' . $input->name . '%'))
+            ->orderByRaw("JSON_UNQUOTE(JSON_EXTRACT(name, '$.$locale')) ASC")  // Sort by localized name (e.g., name.en or name.ar)
+            ->paginate(2);
 
         return $procedures;
     }

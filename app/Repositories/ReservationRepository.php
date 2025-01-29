@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Enums\ReservationStatus;
 use App\Models\Reservation;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,14 +25,18 @@ class ReservationRepository
 
     public function index($input = null)
     {
-        return $this->model
-            ->with('user', 'workingDay')
-            ->when(isset($input->today), fn($q) => $q->where('date', today()))
-            ->when(auth()->user()->hasRole('patient'), fn($q) => $q->where('user_id', auth()->id()))
-            ->where('date', '>=', today())
-            ->orderBy('date')
-            ->get();
+        if(auth()->user()->hasRole('admin')){
+            $this->checkDate();
+        }
+        return $this->model->with('user', 'workingDay')
+            ->when(isset($input->today), fn($q) => $q->whereDate('date', today()))
+            ->when(isset($input->history), fn($q) => $q->where('date', '<', today()))
+            ->when(Auth::user()->hasRole('patient'), fn($q) => $q->where('user_id', auth()->id()))
+            ->when(!isset($input->today) && !isset($input->history), fn($q) => $q->where('date', '>=', today()))
+            ->orderBy('date', 'desc')
+            ->paginate();
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -91,17 +96,8 @@ class ReservationRepository
     public function paid($id)
     {
         return $this->model->find($id)->update([
-            'status' => ReservationStatus::DONE,
+            'status' => ReservationStatus::PAID,
         ]);
-    }
-
-    public function history()
-    {
-        return $this->model
-        ->where('date', '<', today())
-        ->when(auth()->user()->hasRole('patient'), fn($q) => $q->where('user_id', auth()->id()))
-        ->orderBy('date', 'desc')
-        ->get();
     }
 
     public function userShow($id)
@@ -118,5 +114,20 @@ class ReservationRepository
         ->where('status', ReservationStatus::WAITING)
         ->take(5)
         ->get();
+    }
+
+    public function checkDate()
+    {
+        $reservations = $this->model
+            ->where('status', ReservationStatus::WAITING)
+            ->where('date', '<', today())
+            ->get();
+
+            $reservations->each(function ($reservation) {
+                $reservation->update([
+                    'status' => ReservationStatus::CANCELLED,
+                ]);
+            });
+            return true;
     }
 }

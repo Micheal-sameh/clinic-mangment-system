@@ -26,7 +26,7 @@ class UserRepository
             })
             ->when(!is_null($input->name), fn($q) => $q->where('name', 'like', '%' . $input->name . '%'))
             ->orderby('name')
-            ->get();
+            ->paginate();
 
         return $users;
     }

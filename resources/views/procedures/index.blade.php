@@ -17,11 +17,22 @@
         </div>
     @endif
 
+    <!-- Error Message Display -->
+    @if ($errors->any())
+        <div class="alert alert-danger fixed-top w-50 mx-auto" id="flashMessage" style="top: 20px; left: 50%; transform: translateX(-50%); z-index: 1050;">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <!-- Action Button to Create a Procedure -->
     <div class="text-right mb-3">
         @can('procedures_create')
             <a class="btn btn-success btn-lg" href="{{ route('procedures.create') }}">
-                <i class="fas fa-plus"></i>
+                <i class="fas fa-plus"></i> {{__('messages.Add new procedure')}}
             </a>
         @endcan
     </div>
@@ -34,6 +45,11 @@
                     <div class="col-md-3 col-lg-2 mb-3">
                         <!-- Filter by Name -->
                         <input type="text" name="name" class="form-control form-control-sm" placeholder="Search by Name" value="{{ request()->name }}" style="height: 35px;" id="name-input">
+
+                        <!-- Display error for 'name' input field -->
+                        @error('name')
+                            <div class="text-danger mt-2">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
             </div>
@@ -89,11 +105,20 @@
             </tbody>
         </table>
     </div>
+    <div class="text-center">
+        @if($procedures->hasPages())
+            <div class="pagination">
+                @foreach ($procedures->getUrlRange(1, $procedures->lastPage()) as $page => $url)
+                    <a href="{{ $url }}" class="page-link">{{ $page }}</a>
+                @endforeach
+            </div>
+        @endif
+    </div>
 
     <!-- Count of Procedures Displayed -->
     <div class="text-center mt-4">
         <div class="alert alert-info" role="alert">
-            <strong>{{__('messages.count')}} {{__('messages.procedures')}}: </strong>{{ $procedures->count() }}
+            <strong>{{__('messages.count')}} {{__('messages.procedures')}}: </strong>{{ $procedures->total() }}
         </div>
     </div>
 
