@@ -30,7 +30,7 @@ class ReservationRepository
             ->when(auth()->user()->hasRole('patient'), fn($q) => $q->where('user_id', auth()->id()))
             ->where('date', '>=', today())
             ->orderBy('date')
-            ->get();
+            ->paginate();
     }
 
     /**

@@ -149,11 +149,20 @@
                 </div>
             @endforeach
         </div>
+        <div class="text-center">
+            @if($users->hasPages())
+                <div class="pagination">
+                    @foreach ($users->getUrlRange(1, $users->lastPage()) as $page => $url)
+                        <a href="{{ $url }}" class="page-link">{{ $page }}</a>
+                    @endforeach
+                </div>
+            @endif
+        </div>
 
         <!-- Count of Users Displayed -->
         <div class="text-center mt-4">
             <div class="alert alert-info" role="alert">
-                <strong>{{__('messages.count')}} {{__('messages.users')}}: </strong>{{ $users->count() }}
+                <strong>{{__('messages.count')}} {{__('messages.users')}}: </strong>{{ $users->total() }}
             </div>
         </div>
     </div>

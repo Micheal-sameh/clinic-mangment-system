@@ -153,6 +153,21 @@
     </div>
 
 </div>
+<div class="text-center">
+    @if($reservations->hasPages())
+        <div class="pagination">
+            @foreach ($reservations->getUrlRange(1, $reservations->lastPage()) as $page => $url)
+                <a href="{{ $url }}" class="page-link">{{ $page }}</a>
+            @endforeach
+        </div>
+    @endif
+</div>
+
+<div class="text-center mt-4">
+    <div class="alert alert-info" role="alert">
+        <strong>{{__('messages.count')}} {{__('messages.reservations')}}: </strong>{{ $reservations->total() }}
+    </div>
+</div>
 
 @endsection
 

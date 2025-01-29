@@ -105,11 +105,20 @@
             </tbody>
         </table>
     </div>
+    <div class="text-center">
+        @if($procedures->hasPages())
+            <div class="pagination">
+                @foreach ($procedures->getUrlRange(1, $procedures->lastPage()) as $page => $url)
+                    <a href="{{ $url }}" class="page-link">{{ $page }}</a>
+                @endforeach
+            </div>
+        @endif
+    </div>
 
     <!-- Count of Procedures Displayed -->
     <div class="text-center mt-4">
         <div class="alert alert-info" role="alert">
-            <strong>{{__('messages.count')}} {{__('messages.procedures')}}: </strong>{{ $procedures->count() }}
+            <strong>{{__('messages.count')}} {{__('messages.procedures')}}: </strong>{{ $procedures->total() }}
         </div>
     </div>
 
