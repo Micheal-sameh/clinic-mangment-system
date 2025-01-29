@@ -4,8 +4,11 @@
 
 @section('content')
 <div class="container">
-    <h1 class='text-center'>{{__('messages.reservations')}}</h1>
-
+    @if(request('history'))
+        <h1 class='text-center'>{{__('messages.history')}}</h1>
+    @else
+        <h1 class='text-center'>{{__('messages.reservations')}}</h1>
+    @endif
     <!-- Success Message -->
     @if(session('success'))
         <div class="alert alert-success">
@@ -16,14 +19,21 @@
     <!-- Filter by Today -->
     <div class="text-right mb-4 me-3">
         <form id="todayFilterForm" action="{{ route('reservations.index') }}" method="GET">
-            <label for="today_filter" class="mr-2">{{ __('messages.today') }}</label>
-            <input type="checkbox" name="today" id="today_filter" {{ request('today') ? 'checked' : '' }}>
-            <button type="submit" class="btn btn-primary btn-sm" style="display:none;">
+            <div class="d-flex align-items-center mb-3">
+                <label for="today_filter" class="mr-2">{{ __('messages.today') }}</label>
+                <input type="checkbox" name="today" id="today_filter" {{ request('today') ? 'checked' : '' }}>
+            </div>
+
+            <div class="d-flex align-items-center mb-3">
+                <label for="history_filter" class="mr-2">{{ __('messages.history') }}</label>
+                <input type="checkbox" name="history" id="history_filter" {{ request('history') ? 'checked' : '' }}>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-sm d-none">
                 {{ __('messages.apply_filter') }}
             </button>
         </form>
     </div>
-
     <!-- Create Button -->
     <div class="text-right mb-4 me-3">
         @can('reservations_create')
@@ -32,6 +42,7 @@
             </a>
         @endcan
     </div>
+
 
     <!-- Reservations Table for larger screens -->
     <div class="d-none d-md-block">
@@ -171,10 +182,50 @@
 
 @endsection
 
+<style>
+    <style>
+    .text-right {
+        text-align: right;
+    }
+
+    .d-flex {
+        display: flex;
+    }
+
+    .align-items-center {
+        align-items: center;
+    }
+
+    .mb-3 {
+        margin-bottom: 1rem;
+    }
+
+    .me-3 {
+        margin-right: 1rem;
+    }
+
+    .btn {
+        padding: 0.5rem 1rem;
+    }
+
+    /* Optional: Style for better checkbox spacing */
+    input[type="checkbox"] {
+        margin-left: 5px;
+        margin-right: 10px;
+    }
+
+    label {
+        font-weight: 500;
+    }
+</style>
+
 @push('scripts')
 <script>
     // JavaScript to automatically trigger form submission when the checkbox is toggled
     document.getElementById('today_filter').addEventListener('change', function() {
+        document.getElementById('todayFilterForm').submit();
+    });
+    document.getElementById('history_filter').addEventListener('change', function() {
         document.getElementById('todayFilterForm').submit();
     });
 </script>

@@ -105,11 +105,4 @@ class ReservationController extends Controller
 
         return redirect()->back()->with('success', 'Reservation paid successfully!');
     }
-
-    public function history()
-    {
-        $reservations = $this->reservationService->history();
-
-        return view('reservations.history', compact('reservations'));
-    }
 }
