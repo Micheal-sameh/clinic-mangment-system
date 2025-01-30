@@ -99,14 +99,24 @@ class UserRepository
     public function report()
     {
         $today = Carbon::today();
-        $usersThisMonth = $this->model->whereMonth('created_at', '=', $today->month)
+        $usersThisMonth = $this->model->whereHas('roles', function ($query) {
+            $query->where('name', 'patient');
+        })->whereMonth('created_at', '=', $today->month)
             ->whereYear('created_at', '=', $today->year)
             ->count();
 
 
-        $usersAllTime = $this->model->count();
-        $newUsersToday = $this->model->whereDate('created_at', '=', $today)->count();
-        $usersLastMonth = $this->model->whereMonth('created_at', '=', today()->subMonth()->month)
+        $usersAllTime = $this->model->whereHas('roles', function ($query) {
+            $query->where('name', 'patient');
+            })->count();
+
+        $newUsersToday = $this->model->whereHas('roles', function ($query) {
+            $query->where('name', 'patient');
+            })->whereDate('created_at', '=', $today)->count();
+
+        $usersLastMonth = $this->model->whereHas('roles', function ($query) {
+            $query->where('name', 'patient');
+                })->whereMonth('created_at', '=', today()->subMonth()->month)
             ->whereYear('created_at', '=', $today->year)
             ->count();
 
