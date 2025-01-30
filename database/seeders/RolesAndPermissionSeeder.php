@@ -42,7 +42,7 @@ class RolesAndPermissionSeeder extends Seeder
 
         $workDays_list = Permission::firstOrCreate(['name' => 'workDays_list']);
         $workDays_create = Permission::firstOrCreate(['name' => 'workDays_create']);
-
+        $reports_list = Permission::firstOrCreate(['name' => 'reports_list']);
 
 
         $admin = Role::firstOrCreate(['name' => 'admin']);
@@ -74,6 +74,8 @@ class RolesAndPermissionSeeder extends Seeder
 
             $workDays_list,
             $workDays_create,
+
+            $reports_list,
         ]);
 
         $secretary = Role::firstOrCreate(['name' => 'secretary']);
@@ -105,7 +107,7 @@ class RolesAndPermissionSeeder extends Seeder
             $reservations_show,
             $reservations_delete,
             $reservations_history,
-            
+
             $workDays_list,
         ]);
     }

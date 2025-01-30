@@ -90,4 +90,9 @@ class ReservationProcedureService
     {
         return $this->reservationRepository->delete($id);
     }
+
+    public function report()
+    {
+        return $this->reservationProcedureRepository->report();
+    }
 }

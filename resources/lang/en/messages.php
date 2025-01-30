@@ -78,4 +78,11 @@ return [
     'end_date' => 'End Date',
     'Add new procedure' => 'Add new procedure',
     'create_reservation' => 'Create Reservation',
+    'reports' => 'Reports',
+    'report' => 'Report',
+    'monthly_report' => 'Monthly Report',
+    "Today's Analytics" => "Today's Analytics",
+    'New Customers Today'=> 'New Customers Today',
+    'Income Today' => 'Income Today',
+    'reservations Today' => 'Reservations Today',
 ];

@@ -130,4 +130,12 @@ class ReservationRepository
             });
             return true;
     }
+
+    public function report()
+    {
+        $today = Carbon::today();
+        $reservationsToday = $this->model->whereDate('date', $today)->count();
+
+        return compact('reservationsToday');
+    }
 }

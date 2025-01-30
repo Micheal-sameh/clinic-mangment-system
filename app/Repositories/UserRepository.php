@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -93,5 +94,22 @@ class UserRepository
         return $this->model->whereHas('roles', function ($query) {
             $query->where('name', 'patient');
         })->get();
+    }
+
+    public function report()
+    {
+        $today = Carbon::today();
+        $usersThisMonth = $this->model->whereMonth('created_at', '=', $today->month)
+            ->whereYear('created_at', '=', $today->year)
+            ->count();
+
+
+        $usersAllTime = $this->model->count();
+        $newUsersToday = $this->model->whereDate('created_at', '=', $today)->count();
+        $usersLastMonth = $this->model->whereMonth('created_at', '=', today()->subMonth()->month)
+            ->whereYear('created_at', '=', $today->year)
+            ->count();
+
+        return compact('usersThisMonth', 'usersAllTime', 'usersLastMonth', 'newUsersToday');
     }
 }
