@@ -79,4 +79,11 @@ return [
     'end_date' => 'تاريخ النهاية',
     'Add new procedure' => 'اضف عملية جديدة',
     'create_reservation' => 'اضف حجز',
+    'reports' => 'التقارير',
+    'report' => 'التقرير',
+    'monthly_report' => 'التقرير الشهري',
+    "Today's Analytics" => "الاحصائيات اليومية",
+    'New Customers Today' => 'الزبائن الجدد اليوم',
+    'Income Today' => 'ايرادات اليوم',
+    'reservations Today' => 'الحجوزات اليوم',
 ];

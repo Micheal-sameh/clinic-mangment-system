@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProcedureController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ReservationNoteController;
 use App\Http\Controllers\ReservationProcedureController;
@@ -83,6 +84,14 @@ Route::group(['middleware' => 'setlocale'], function () {
 
     Route::middleware(['auth'])->prefix('working-days')->group(function () {
         Route::get('/', [WorkingDayController::class, 'index'])->name('working-days.index');
+        Route::get('/slatesNumber', [WorkingDayController::class, 'slates'])->name('working-days.slatesNumber');
+        Route::get('/create', [WorkingDayController::class, 'create'])->name('working-days.create');
+        Route::post('/', [WorkingDayController::class, 'store'])->name('working-days.store');
+
+    });
+
+    Route::middleware(['auth'])->prefix('reports')->group(function () {
+        Route::get('/', [ReportController::class, 'index'])->name('reports.index');
         Route::get('/slatesNumber', [WorkingDayController::class, 'slates'])->name('working-days.slatesNumber');
         Route::get('/create', [WorkingDayController::class, 'create'])->name('working-days.create');
         Route::post('/', [WorkingDayController::class, 'store'])->name('working-days.store');

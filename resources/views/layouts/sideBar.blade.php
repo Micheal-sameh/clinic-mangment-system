@@ -7,6 +7,8 @@
     <link rel="icon" href="{{ asset('images/logo.jpg') }}" type="image/jpg">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
         /* Sidebar and other styles here... */
         html, body {
@@ -165,6 +167,9 @@
                     @endcan
                     @can('workDays_list')
                         <li class="nav-item text-begin"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('working-days.index') }}">{{__('messages.working_days')}}</a></li>
+                    @endcan
+                    @can('reports_list')
+                        <li class="nav-item text-begin"><a class="nav-item text-white" style="text-decoration: none;" href="{{ route('reports.index') }}">{{__('messages.reports')}}</a></li>
                     @endcan
                     @endauth
                     @auth

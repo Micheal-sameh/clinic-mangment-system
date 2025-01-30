@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\ReservationProcedure;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class ReservationProcedureRepository
@@ -67,5 +68,21 @@ class ReservationProcedureRepository
     public function delete($id)
     {
         return $this->model->find($id)->delete();
+    }
+
+    public function report()
+    {
+        $today = Carbon::today();
+        $incomeThisMonth = $this->model->whereMonth('created_at', '=', $today->month)
+            ->whereYear('created_at', '=', $today->year)
+            ->sum('price');
+
+        $incomeAllTime = $this->model->sum('price');
+        $incomeToday = $this->model->whereDate('created_at', $today)->sum('price');
+        $incomeLastMonth = $this->model->whereMonth('created_at', '=', today()->subMonth()->month)
+            ->whereYear('created_at', '=', $today->year)
+            ->sum('price');
+
+        return compact('incomeThisMonth', 'incomeAllTime', 'incomeToday', 'incomeLastMonth');
     }
 }

@@ -69,4 +69,9 @@ class ReservationService
     {
         return $this->reservationRepository->delete($id);
     }
+
+    public function report()
+    {
+        return $this->reservationRepository->report();
+    }
 }
