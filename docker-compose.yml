@@ -13,41 +13,63 @@ services:
     volumes:
       - ./:/var/www/reservation-system
       - ./docker/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini
+    networks:
+      - reservation-system
+      - external_db_network
+    depends_on:
+      - db
+
+  nginx:
+    container_name: reservation-test-nginx
+    restart: unless-stopped
+    image: nginx
     ports:
-      - 8030:9000
+      - 8031:80
+    depends_on:
+      - app
+    volumes:
+      - ./:/var/www/reservation-system
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d
+    networks:
+      - reservation-system
+  db:
+    image: mariadb:10.5
+    container_name: reservation-test-db
+    restart: unless-stopped
+    command: --max_allowed_packet=67108864
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - "9001:3306"
     networks:
       - reservation-system
       - external_db_network
 
-  # node:
-  #   image: node:20.9
-  #   container_name: breakfast-vite
-  #   working_dir: /var/www/breakfast
-  #   volumes:
-  #     - ./:/var/www/breakfast
-  #   command: "sleep 600"
-  #   deploy:
-  #     resources:
-  #       limits:
-  #         cpus: '1'
-
-#   supervisor:
-#     build:
-#       context: ./docker/supervisor
-#       dockerfile: Dockerfile
-#     container_name: breakfast-supervisor
-#     restart: unless-stopped
-#     working_dir: /var/www/
-#     volumes:
-#       - ./:/var/www
-#       - ./docker/supervisor/conf.d/:/etc/supervisor/conf.d/
-#     ports:
-#       - 3026:3000
-#     networks:
-#       - breakfast
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: reservation-system-db
+    restart: unless-stopped
+    environment:
+      PMA_HOST: db  # Points to the db service
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      UPLOAD_LIMIT: 256M
+    ports:
+      - "8080:80"
+    networks:
+      - reservation-system
 
 networks:
   reservation-system:
     driver: bridge
   external_db_network:
-    external: true
+    external: false
+
+volumes:
+  mysql-data:
+    driver: local
