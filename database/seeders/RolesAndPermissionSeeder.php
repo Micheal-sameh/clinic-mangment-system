@@ -63,6 +63,7 @@ class RolesAndPermissionSeeder extends Seeder
 
             $reservations_list,
             $reservations_create,
+            $reservations_paid,
             $reservations_add,
             $reservations_edit,
             $reservations_show,
