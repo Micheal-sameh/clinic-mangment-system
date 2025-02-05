@@ -10,8 +10,17 @@ class WorkingDay extends Model
     use HasFactory;
 
     protected $fillable = [
-        'date',
+        'name',
         'from',
         'to',
     ];
+
+    protected $casts = [
+        'name' => 'array',
+    ];
+
+    public function getLocalizedNameAttribute($value)
+    {
+        return $this->name[app()->getLocale()] ?? $this->name['en'];
+    }
 }

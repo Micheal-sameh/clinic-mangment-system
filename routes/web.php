@@ -8,8 +8,10 @@ use App\Http\Controllers\ReservationNoteController;
 use App\Http\Controllers\ReservationProcedureController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkingDayController;
+use App\Rules\CheckActiveDayRule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Validator;
 
 /*
 |--------------------------------------------------------------------------
@@ -86,7 +88,30 @@ Route::group(['middleware' => 'setlocale'], function () {
         Route::get('/', [WorkingDayController::class, 'index'])->name('working-days.index');
         Route::get('/slatesNumber', [WorkingDayController::class, 'slates'])->name('working-days.slatesNumber');
         Route::get('/create', [WorkingDayController::class, 'create'])->name('working-days.create');
-        Route::post('/', [WorkingDayController::class, 'store'])->name('working-days.store');
+        Route::put('/', [WorkingDayController::class, 'update'])->name('working-days.update');
+        Route::get('/{id}/active', [WorkingDayController::class, 'active'])->name('working-days.active');
+        Route::get('check-active-date', function () {
+            $data = [
+                'date' => request('date'),
+            ];
+            // dd($data);
+
+            // Validate date
+            $validator = Validator::make($data, [
+                'date' => ['required', new CheckActiveDayRule],
+            ]);
+
+            // Initial active status is 0 (inactive)
+            $is_active = 0;
+
+            // If validation passes, set active to 1
+            if (!$validator->fails()) {
+                $is_active = 1;
+            }
+
+            // Return the response as JSON
+            return response()->json(['is_active' => $is_active]);
+        });
 
     });
 
@@ -95,7 +120,6 @@ Route::group(['middleware' => 'setlocale'], function () {
         Route::get('/slatesNumber', [WorkingDayController::class, 'slates'])->name('working-days.slatesNumber');
         Route::get('/create', [WorkingDayController::class, 'create'])->name('working-days.create');
         Route::post('/', [WorkingDayController::class, 'store'])->name('working-days.store');
-
     });
 
 });

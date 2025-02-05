@@ -55,6 +55,7 @@ return [
     'select'            => 'Select',
     'date'              => 'Date',
     'slate'             => 'Slate',
+    'slote'             => 'Slote',
     'patient'           => 'Patient',
     'reservation_date'  => 'Reservation Date',
     'reservation_details'   => 'Reservation Details',
@@ -85,4 +86,7 @@ return [
     'New Customers Today'=> 'New Customers Today',
     'Income Today' => 'Income Today',
     'reservations Today' => 'Reservations Today',
+    'day'       => 'Day',
+    'holiday'   => 'This day is a holiday',
+    'all_booked' => 'All booked',
 ];

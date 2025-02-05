@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Enums\ReservationStatus;
 use App\Models\Reservation;
+use App\Models\WorkingDay;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,7 +29,7 @@ class ReservationRepository
         if(auth()->user()->hasRole('admin')){
             $this->checkDate();
         }
-        return $this->model->with('user', 'workingDay')
+        return $this->model->with('user')
             ->when(isset($input->today), fn($q) => $q->whereDate('date', today()))
             ->when(isset($input->history), fn($q) => $q->where('date', '<', today()))
             ->when(Auth::user()->hasRole('patient'), fn($q) => $q->where('user_id', auth()->id()))
