@@ -37,6 +37,15 @@ class WorkingDayService
         DB::commit();
     }
 
+    public function update($input)
+    {
+        DB::beginTransaction();
+        foreach($input->working_days as $key => $day){
+            $this->workingDayRepository->update($key, $day);
+        }
+        DB::commit();
+    }
+
     /**
      * Display the specified resource.
      */
@@ -55,10 +64,6 @@ class WorkingDayService
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
-    {
-        //
-    }
 
     public function delete($id)
     {

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Rules\CanReserveToday;
+use App\Rules\CheckActiveDayRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ReservationRequest extends FormRequest
@@ -17,7 +18,7 @@ class ReservationRequest extends FormRequest
     {
         return [
             'user_id' => ['exists:users,id', new CanReserveToday($this->reservation_date)],
-            'reservation_date' => 'required|date|after_or_equal:today',
+            'reservation_date' => ['required','date','after_or_equal:today', new CheckActiveDayRule],
             'slate_number' => 'required|integer',
         ];
     }

@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\DTOs\ProcedureCreateDTO;
+use App\Enums\WorkingDayStatus;
 use App\Models\Procedure;
 use App\Models\Reservation;
 use App\Models\WorkingDay;
@@ -21,13 +22,7 @@ class WorkingDayRepository
      */
     public function index($input)
     {
-
-        return $this->model
-        ->when(isset($input->start_date), fn($q) => $q->whereDate('date', '>=', $input->start_date))
-        ->when(isset($input->end_date), fn($q) => $q->whereDate('date', '<=', $input->end_date))
-        ->where('date', '>=', today())
-        ->get();
-
+        return $this->model->get();
     }
 
     /**
@@ -37,6 +32,15 @@ class WorkingDayRepository
     {
        return $this->model->create([
             'date'  => $day['date'],
+            'from'  => $day['from'],
+            'to'    => $day['to'],
+        ]);
+    }
+
+    public function update($key, $day)
+    {
+        $worlingDay = $this->model->find($key);
+        $worlingDay->update([
             'from'  => $day['from'],
             'to'    => $day['to'],
         ]);
@@ -55,17 +59,13 @@ class WorkingDayRepository
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit()
+    public function active($id)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update()
-    {
-        //
+        $day = $this->model->find($id);
+        $day->status == WorkingDayStatus::ACTIVE
+        ? $day->status = WorkingDayStatus::INACTIVE
+        : $day->status = WorkingDayStatus::ACTIVE;
+        $day->save();
     }
 
     /**
@@ -78,12 +78,13 @@ class WorkingDayRepository
 
     public function slatesNumber($date)
     {
-        $day = $this->model->where('date', $date)->first();
-        // dd($date);
 
+        $weekday = Carbon::create($date)->format('l');
+
+        $day = $this->model->where('name->' . 'en', $weekday)->first();
+        
         $startTime = Carbon::createFromFormat('H:i:s', $day->from);
         $endTime = Carbon::createFromFormat('H:i:s', $day->to);
-
         $slateIntervals = [];
 
         $reservations = Reservation::where('date', $date)->get();

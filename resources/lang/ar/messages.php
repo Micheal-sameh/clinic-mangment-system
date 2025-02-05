@@ -56,6 +56,7 @@ return [
     'select'            => 'اختر',
     'date'              => 'التاريخ',
     'slate'             => 'الوقت',
+    'slote'             => 'الدور',
     'patient'           => 'المرضى',
     'reservation_date'  => 'تاريخ الحجز',
     'reservation_details'   => 'تفاصيل الحجز',
@@ -86,4 +87,7 @@ return [
     'New Customers Today' => 'الزبائن الجدد اليوم',
     'Income Today' => 'ايرادات اليوم',
     'reservations Today' => 'الحجوزات اليوم',
+    'day'       => 'يوم',
+    'holiday'   => 'هذا اليوم عطلة',
+    'all_booked' => 'تم الحجز',
 ];

@@ -34,35 +34,21 @@ class Reservation extends Model
         return $this->hasMany(ReservationNote::class);
     }
 
-   // Reservation model
-    public function workingDay()
+    public function getReservationNumberAttribute($value)
     {
-        return $this->belongsTo(WorkingDay::class, 'date', 'date'); // Adjust based on your foreign key and primary key
-    }
+        $weekday = Carbon::create($this->date)->format('l');
+        $day = workingDay::where('name->en', $weekday)->first();
 
+        $fromTime = Carbon::createFromFormat('H:i:s', $day->from);
+        $toTime = Carbon::createFromFormat('H:i:s', $day->to);
 
-
-    public function getReservationNumberAttribute()
-    {
-        // Assuming the reservation has a related working day
-        $workingDay = $this->workingDay;
-        if (!$workingDay) {
-            return null;
-        }
-
-        $fromTime = Carbon::createFromFormat('H:i:s', $workingDay->from);
-        $toTime = Carbon::createFromFormat('H:i:s', $workingDay->to);
-
-        // Calculate the slate start and end times
         $slateStart = $fromTime->copy();
         $slateEnd = $slateStart->copy()->addMinutes(30);
 
-        // Return slate time if within working hours
         if ($slateStart->lt($toTime)) {
             return $slateStart->format('H:i') . ' - ' . $slateEnd->format('H:i');
         }
 
-        return null; // Slate time is outside working hours
+        return null;
     }
-
 }

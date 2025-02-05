@@ -51,7 +51,7 @@
                 <tr>
                     <th>{{__('messages.number')}}</th>
                     <th>{{__('messages.patient')}}</th>
-                    <th>{{__('messages.slate')}}</th>
+                    <th>{{__('messages.slote')}}</th>
                     <th>{{__('messages.date')}}</th>
                     <th>{{__('messages.price')}}</th>
                     <th>{{__('messages.status')}}</th>
@@ -66,6 +66,7 @@
                 @endphp
                 @foreach($reservations as $key => $reservation)
                     <tr>
+                        {{-- @dd($reservation) --}}
                         @if($reservation->status == App\Enums\ReservationStatus::WAITING &&  auth()->user()->can('reservations_apply'))
                             <td><a href="{{ route('reservations.applyPage', $reservation->id) }}" class="text-decoration-none">
                                 {{ $key + 1 }}</a>
@@ -125,7 +126,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ $reservation->user->localized_name }}</h5>
                     <p class="card-text">
-                        <strong>{{ __('messages.slate') }}:</strong> {{ $reservation->reservation_number }}<br>
+                        {{-- <strong>{{ __('messages.slate') }}:</strong> {{ $reservation->reservation_number }}<br> --}}
                         <strong>{{ __('messages.date') }}:</strong> {{ Carbon::parse($reservation->date)->format('d-m-Y') }}<br>
                         <strong>{{ __('messages.price') }}:</strong> {{ $reservation->total_price }}<br>
                         <strong>{{ __('messages.status') }}:</strong> {{ App\Enums\ReservationStatus::getStringValue($reservation->status) }}
