@@ -79,7 +79,8 @@
                                 {{ $reservation->user->localized_name }}
                             </a>
                         </td>
-                        <td>{{ $reservation->reservation_number }}</td>
+                        <td>{{ \Carbon\Carbon::parse($reservation->from)->format('h:i') }}
+                             - {{ \Carbon\Carbon::parse($reservation->to)->format('h:i') }}</td>
                         <td>{{ Carbon::parse($reservation->date)->format('d-m-Y') }}</td>
                         <td>{{ $reservation->total_price }}</td>
                         <td>{{ App\Enums\ReservationStatus::getStringValue($reservation->status) }}</td>
@@ -222,7 +223,6 @@
 
 @push('scripts')
 <script>
-    // JavaScript to automatically trigger form submission when the checkbox is toggled
     document.getElementById('today_filter').addEventListener('change', function() {
         document.getElementById('todayFilterForm').submit();
     });

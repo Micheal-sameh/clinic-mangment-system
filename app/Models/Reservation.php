@@ -17,6 +17,8 @@ class Reservation extends Model
         'total_price',
         'status',
         'paid',
+        'from',
+        'to',
     ];
 
     public function user()
@@ -49,5 +51,19 @@ class Reservation extends Model
         }
 
         return null;
+    }
+
+    public function getFromAndToFromWoringDays($date, $slateNumber)
+    {
+        $weekday = Carbon::create($date)->format('l');
+        $day = WorkingDay::where('name->en', $weekday)->first();
+        $fromTime = Carbon::createFromFormat('H:i:s', $day->from);
+        $toTime = Carbon::createFromFormat('H:i:s', $day->to);
+
+        $slateStart = $fromTime->copy()->addMinutes(30 * ($slateNumber - 1));
+        $slateEnd = $slateStart->copy()->addMinutes(30);
+        if ($slateStart->lt($toTime)) {
+            return ['from' => $slateStart->format('H:i') , 'to' => $slateEnd->format('H:i')];
+        }
     }
 }

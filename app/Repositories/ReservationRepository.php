@@ -35,6 +35,7 @@ class ReservationRepository
             ->when(Auth::user()->hasRole('patient'), fn($q) => $q->where('user_id', auth()->id()))
             ->when(!isset($input->today) && !isset($input->history), fn($q) => $q->where('date', '>=', today()))
             ->orderBy('date', 'desc')
+            ->orderBy('reservation_number', 'asc')
             ->paginate();
     }
 
@@ -44,10 +45,13 @@ class ReservationRepository
      */
     public function store($input)
     {
+        $data = $this->model->getFromAndToFromWoringDays($input->reservation_date, $input->slate_number);
         return $this->model->create([
             'user_id' => $input->user_id ?? Auth::id(),
             'date' => $input->reservation_date,
             'reservation_number' => $input->slate_number,
+            'from' => $data['from'],
+            'to' => $data['to'],
         ]);
 
     }

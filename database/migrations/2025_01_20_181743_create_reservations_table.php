@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->date('date');
             $table->integer('reservation_number');
+            $table->time('from');
+            $table->time('to');
             $table->float('total_price')->nullable();
             $table->float('status')->default(ReservationStatus::WAITING);
             $table->timestamps();
