@@ -22,4 +22,10 @@ class ReservationRequest extends FormRequest
             'slate_number' => 'required|integer',
         ];
     }
+
+    public function message()
+    {
+        return __('validation.custom.can_reserve_today');
+    }
+
 }
