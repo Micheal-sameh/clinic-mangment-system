@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('working_days', function (Blueprint $table) {
             $table->id();
-            $table->json('day');
+            $table->json('name');
             $table->time('from');
             $table->time('to');
             $table->integer('status')->default(WorkingDayStatus::INACTIVE);
