@@ -56,7 +56,7 @@
                                     <input type="time" name="working_days[{{ $workingDay->id }}][to]" value="{{ \Carbon\Carbon::parse($workingDay->to)->format('H:i') }}">
                                 </td>
                                 <td class="d-flex justify-content-center">
-                                    <a href="{{route('working-days.active', $workingDay->id)}}" class="btn btn-warning btn-sm mx-1"> {{App\Enums\workingDayStatus::getStringValue($workingDay->status)}}</a>
+                                    <a href="{{route('working-days.active', $workingDay->id)}}" class="btn btn-warning btn-sm mx-1"> {{App\Enums\WorkingDayStatus::getStringValue($workingDay->status)}}</a>
                                 </td>
                             </tr>
                         @else
