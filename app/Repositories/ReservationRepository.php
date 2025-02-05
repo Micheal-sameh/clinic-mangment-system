@@ -46,7 +46,6 @@ class ReservationRepository
     public function store($input)
     {
         $data = $this->model->getFromAndToFromWoringDays($input->reservation_date, $input->slate_number);
-        dd($data, $input);
 
         return $this->model->create([
             'user_id' => $input->user_id ?? Auth::id(),
