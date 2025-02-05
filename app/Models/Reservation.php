@@ -36,22 +36,22 @@ class Reservation extends Model
         return $this->hasMany(ReservationNote::class);
     }
 
-    public function getReservationNumberAttribute($value)
-    {
-        $weekday = Carbon::create($this->date)->format('l');
-        $day = WorkingDay::where('name->en', $weekday)->first();
+    // public function getReservationNumberAttribute($value)
+    // {
+    //     $weekday = Carbon::create($this->date)->format('l');
+    //     $day = WorkingDay::where('name->en', $weekday)->first();
 
-        $fromTime = Carbon::createFromFormat('H:i:s', $day->from);
-        $toTime = Carbon::createFromFormat('H:i:s', $day->to);
+    //     $fromTime = Carbon::createFromFormat('H:i:s', $day->from);
+    //     $toTime = Carbon::createFromFormat('H:i:s', $day->to);
 
-        $slateStart = $fromTime->copy()->addMinutes(30 * ($value - 1));
-        $slateEnd = $slateStart->copy()->addMinutes(30 * $value);
-        if ($slateStart->lt($toTime)) {
-            return $slateStart->format('H:i') . ' - ' . $slateEnd->format('H:i');
-        }
+    //     $slateStart = $fromTime->copy()->addMinutes(30 * ($value - 1));
+    //     $slateEnd = $slateStart->copy()->addMinutes(30 * $value);
+    //     if ($slateStart->lt($toTime)) {
+    //         return $slateStart->format('H:i') . ' - ' . $slateEnd->format('H:i');
+    //     }
 
-        return null;
-    }
+    //     return null;
+    // }
 
     public function getFromAndToFromWoringDays($date, $slateNumber)
     {

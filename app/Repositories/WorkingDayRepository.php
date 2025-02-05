@@ -78,11 +78,10 @@ class WorkingDayRepository
 
     public function slatesNumber($date)
     {
-
         $weekday = Carbon::create($date)->format('l');
 
         $day = $this->model->where('name->' . 'en', $weekday)->first();
-        
+
         $startTime = Carbon::createFromFormat('H:i:s', $day->from);
         $endTime = Carbon::createFromFormat('H:i:s', $day->to);
         $slateIntervals = [];
@@ -104,12 +103,11 @@ class WorkingDayRepository
             $slateIntervals[] = $startTime->format('H:i') . ' - ' . $slateEnd->format('H:i');
             $startTime = $slateEnd;
         }
-        foreach($reservedIntervals as $key => $interval){
-            $slateIntervals[$key] = 'Reserved';
-        }
 
+        foreach($reservedIntervals as $interval){
+            $slateIntervals[$interval-1] = 'Reserved';
+        }
 
         return $slateIntervals;
     }
-
 }
