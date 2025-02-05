@@ -75,7 +75,9 @@ Route::group(['middleware' => 'setlocale'], function () {
         Route::post('/', [ReservationController::class, 'store'])->name('reservations.store');
         Route::put('/', [ReservationController::class, 'updateProcedures'])->name('reservations.update');
         Route::put('/{id}/paid', [ReservationController::class, 'paid'])->name('reservations.paid');
-        Route::post('/store', [ReservationNoteController::class, 'store'])->name('reservationNotes.store');
+        Route::put('/cancel', [ReservationNoteController::class, 'cancel'])->name('reservations.cancel');
+
+        Route::post('/store', [ReservationController::class, 'store'])->name('reservationNotes.store');
 
     });
 
@@ -94,22 +96,14 @@ Route::group(['middleware' => 'setlocale'], function () {
             $data = [
                 'date' => request('date'),
             ];
-            // dd($data);
-
-            // Validate date
             $validator = Validator::make($data, [
                 'date' => ['required', new CheckActiveDayRule],
             ]);
-
-            // Initial active status is 0 (inactive)
             $is_active = 0;
-
-            // If validation passes, set active to 1
             if (!$validator->fails()) {
                 $is_active = 1;
             }
 
-            // Return the response as JSON
             return response()->json(['is_active' => $is_active]);
         });
 

@@ -220,7 +220,8 @@
                                     option.textContent = slate;
 
                                     // Check if the slate is "Reserved" and hide it if true
-                                    if (slate.status === "Reserved") {
+                                    if (slate == "Reserved") {
+                                        option.disabled = true;
                                         option.style.display = 'none';  // Hide the option
                                     }
 
@@ -245,7 +246,7 @@
                     const option = document.createElement('option');
                     option.value = '';
                     option.textContent = '{{__('messages.holiday')}}';  // You can define this error message in your translation files
-                    // option.disabled = true;
+                    option.disabled = true;
                     slateNumberSelect.appendChild(option);
                 }
             })
@@ -256,15 +257,15 @@
                 option.textContent = '{{__('messages.error_checking_date')}}';  // You can define this error message as well
                 slateNumberSelect.appendChild(option);
             });
-    });
+        });
 
-    // Trigger the change event if there's an old value for the date
-    const oldDate = "{{ old('reservation_date') }}";
-    if (oldDate) {
-        reservationDateInput.value = oldDate;  // Set the old value
-        reservationDateInput.dispatchEvent(new Event('change'));  // Trigger the change event programmatically
-    }
-});
+        // Trigger the change event if there's an old value for the date
+        const oldDate = "{{ old('reservation_date') }}";
+        if (oldDate) {
+            reservationDateInput.value = oldDate;  // Set the old value
+            reservationDateInput.dispatchEvent(new Event('change'));  // Trigger the change event programmatically
+        }
+    });
 
 
     </script>
