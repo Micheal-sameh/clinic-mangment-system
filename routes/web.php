@@ -53,6 +53,7 @@ Route::group(['middleware' => 'setlocale'], function () {
         Route::get('/{id}', [UserController::class, 'show'])->name('users.show');
         Route::post('/{id}', [UserController::class, 'delete'])->name('users.delete');
         Route::put('/{id}/pass', [UserController::class, 'updatePassword'])->name('users.password.update');
+        Route::put('/{id}/change-status', [UserController::class, 'changeStatus'])->name('users.changeStatus');
         Route::put('/{id}', [UserController::class, 'update'])->name('users.update');
         Route::post('/{id}/reset-password', [UserController::class, 'resetPassword'])->name('users.resetPassword');
     });
