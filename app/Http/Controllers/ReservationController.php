@@ -85,9 +85,10 @@ class ReservationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Reservation $reservation)
+    public function destroy($id)
     {
-        //
+        $this->reservationRepository->delete($id);
+        return redirect()->back()->with('success', 'Reservation deleted successfully!');
     }
 
     public function applyPage($id)

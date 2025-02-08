@@ -93,7 +93,7 @@
                                 <a href="#" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></a>
                                 @endcan
                                 @can('reservations_delete')
-                                    <form action="{{route('reservations.cancel'), $reservation->id}}" method="POST" style="display:inline;">
+                                    <form action="{{route('reservations.cancel', $reservation->id)}}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('put')
                                         <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
