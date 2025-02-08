@@ -2,17 +2,14 @@
 
 namespace App\Repositories;
 
-use App\DTOs\ProcedureCreateDTO;
+use App\Enums\ReservationStatus;
 use App\Enums\WorkingDayStatus;
-use App\Models\Procedure;
 use App\Models\Reservation;
 use App\Models\WorkingDay;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 
 class WorkingDayRepository
 {
-
     public function __construct(protected WorkingDay $model)
     {
 
@@ -82,12 +79,12 @@ class WorkingDayRepository
         $weekday = Carbon::create($date)->format('l');
 
         $day = $this->model->where('name->' . 'en', $weekday)->first();
-        
+
         $startTime = Carbon::createFromFormat('H:i:s', $day->from);
         $endTime = Carbon::createFromFormat('H:i:s', $day->to);
         $slateIntervals = [];
 
-        $reservations = Reservation::where('date', $date)->get();
+        $reservations = Reservation::where('date', $date)->where('status', '!=', ReservationStatus::CANCELLED)->get();
         $reservedIntervals = [];
 
         foreach ($reservations as $reservation) {
