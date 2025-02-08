@@ -66,8 +66,7 @@
                 @endphp
                 @foreach($reservations as $key => $reservation)
                     <tr>
-                        {{-- @dd($reservation) --}}
-                        @if($reservation->status == App\Enums\ReservationStatus::WAITING &&  auth()->user()->can('reservations_apply'))
+                        @if($reservation->status == \App\Enums\ReservationStatus::WAITING && \Carbon\Carbon::parse($reservation->date)->isToday() && auth()->user()->can('reservations_apply'))
                             <td><a href="{{ route('reservations.applyPage', $reservation->id) }}" class="text-decoration-none">
                                 {{ $key + 1 }}</a>
                             </td>

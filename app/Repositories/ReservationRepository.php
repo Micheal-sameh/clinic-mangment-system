@@ -91,10 +91,10 @@ class ReservationRepository
         ]);
     }
 
-    public function storePrice($reservation, $totalprice)
+    public function storePrice($reservation, $total)
     {
         return $reservation->update([
-            'total_price'   => $totalprice,
+            'total_price'   => $total,
             'status'        => ReservationStatus::TOPAY,
         ]);
     }
