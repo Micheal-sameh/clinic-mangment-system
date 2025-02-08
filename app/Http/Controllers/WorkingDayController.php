@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\WorkingDayFilterRequest;
 use App\Http\Requests\WorkingDayStoreRequest;
+use App\Http\Requests\WorkingDayUpdateRequest;
+use App\Repositories\WorkingDayRepository;
 use App\Services\WorkingDayService;
 use Illuminate\Http\Request;
 
@@ -11,6 +13,7 @@ class WorkingDayController extends Controller
 {
     public function __construct(
         protected WorkingDayService $workingDayService,
+        protected WorkingDayRepository $workingDayRepository,
     )
     {
         $this->middleware('permission:workDays_list', ['only' => ['index']]);
@@ -24,14 +27,16 @@ class WorkingDayController extends Controller
         return view('workingDays.index', compact('workingDays'));
     }
 
-    public function create()
+    public function update(WorkingDayUpdateRequest $request)
     {
-        return view('workingDays.create');
+        $this->workingDayService->update($request);
+        return redirect()->route('working-days.index');
     }
 
-    public function store(WorkingDayStoreRequest $request)
+    public function active($id)
     {
-        $this->workingDayService->store($request);
+        $this->workingDayRepository->active($id);
+
         return redirect()->route('working-days.index');
     }
 

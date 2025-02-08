@@ -190,43 +190,70 @@
 
         // If no date is selected, stop and do nothing
         if (!date) {
-            console.log('No date selected, skipping GET request.');
+            console.log('No date selected, skipping request.');
             return;
         }
 
-        const url = `/working-days/slatesNumber?date=${encodeURIComponent(date)}`;  // Prepare the URL for the GET request
-        console.log('Fetching URL:', url);  // Log the URL for debugging
+        // First, check if the date is active
+        const checkActiveUrl = `/working-days/check-active-date?date=${encodeURIComponent(date)}`;  // URL to check if the date is active
+        console.log('Checking active status:', checkActiveUrl);
 
-        // Perform the fetch request
-        fetch(url)
-            .then(response => response.json())  // Parse the JSON response
+        fetch(checkActiveUrl)
+            .then(response => response.json())
             .then(data => {
-                console.log('Response data:', data);  // Log the fetched data
-                if (data && data.length > 0) {
-                    // Loop through the available slates and add them as options
-                    data.forEach((slate, index) => {
-                        const option = document.createElement('option');
-                        option.value = index + 1;  // Store the index (1-based) in the option value
-                        option.textContent = slate;
-                        // Check if the slate is "Reserved" and hide it if true
-                        if (slate.status === "Reserved") {
-                            option.style.display = 'none';  // Hide the option
-                        }
+                console.log('Active status response:', data);
 
-                        slateNumberSelect.appendChild(option);
-                    });
+                if (data.is_active) {
+                    // If the date is active, fetch the slate numbers
+                    const url = `/working-days/slatesNumber?date=${encodeURIComponent(date)}`;  // URL to fetch slates
+                    console.log('Fetching URL for slates:', url);
+
+                    fetch(url)
+                        .then(response => response.json())  // Parse the JSON response
+                        .then(slates => {
+                            console.log('Slates data:', slates);
+                            if (slates && slates.length > 0) {
+                                // Loop through the available slates and add them as options
+                                slates.forEach((slate, index) => {
+                                    const option = document.createElement('option');
+                                    option.value = index + 1;  // Store the index (1-based) in the option value
+                                    option.textContent = slate;
+
+                                    // Check if the slate is "Reserved" and hide it if true
+                                    if (slate.status === "Reserved") {
+                                        option.style.display = 'none';  // Hide the option
+                                    }
+
+                                    slateNumberSelect.appendChild(option);
+                                });
+                            } else {
+                                const option = document.createElement('option');
+                                option.value = '';
+                                option.textContent = '{{__('messages.all_booked')}}';
+                                slateNumberSelect.appendChild(option);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching slates:', error);
+                            const option = document.createElement('option');
+                            option.value = '';
+                            option.textContent = '{{__('messages.error_fetching_slates')}}';
+                            slateNumberSelect.appendChild(option);
+                        });
                 } else {
+                    // If the date is not active, show an error message
                     const option = document.createElement('option');
                     option.value = '';
-                    option.textContent = '{{__('messages.no_available_slates')}}';
+                    option.textContent = '{{__('messages.holiday')}}';  // You can define this error message in your translation files
+                    // option.disabled = true;
                     slateNumberSelect.appendChild(option);
                 }
             })
             .catch(error => {
-                console.error('Error fetching slates:', error);  // Handle any errors
+                console.error('Error checking active date:', error);
                 const option = document.createElement('option');
                 option.value = '';
-                option.textContent = '{{__('messages.error_fetching_slates')}}';
+                option.textContent = '{{__('messages.error_checking_date')}}';  // You can define this error message as well
                 slateNumberSelect.appendChild(option);
             });
     });
@@ -237,7 +264,8 @@
         reservationDateInput.value = oldDate;  // Set the old value
         reservationDateInput.dispatchEvent(new Event('change'));  // Trigger the change event programmatically
     }
-    });
+});
+
 
     </script>
 @endpush

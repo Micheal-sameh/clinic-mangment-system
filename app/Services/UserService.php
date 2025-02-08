@@ -79,4 +79,9 @@ class UserService
     {
         //
     }
+
+    public function report()
+    {
+        return $this->userRepository->report();
+    }
 }

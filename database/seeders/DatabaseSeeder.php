@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\WorkingDay;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,6 +13,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(RolesAndPermissionSeeder::class);
+        $this->call(WorkingDaysSeeder::class);
         // $this->call(UserSeeder::class);
     }
 }
