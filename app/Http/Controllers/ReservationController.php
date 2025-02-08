@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ReservationStatus;
 use App\Http\Requests\ReservationRequest;
 use App\Models\Reservation;
 use App\Repositories\ReservationRepository;
@@ -95,6 +96,9 @@ class ReservationController extends Controller
     {
         $input = 1;
         $reservation = $this->reservationService->show($id);
+        if($reservation->status != ReservationStatus::WAITING){
+            return redirect()->route('reservations.index')->with('error', 'You can only apply for a reservation that is in the waiting status!');
+        }
         $procedures = $this->procedureService->index($input);
 
         return view('reservations.apply', compact('reservation', 'procedures'));

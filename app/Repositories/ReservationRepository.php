@@ -33,7 +33,8 @@ class ReservationRepository
             ->when(isset($input->today), fn($q) => $q->whereDate('date', today()))
             ->when(isset($input->history), fn($q) => $q->where('date', '<', today()))
             ->when(Auth::user()->hasRole('patient'), fn($q) => $q->where('user_id', auth()->id()))
-            ->when(!isset($input->today) && !isset($input->history), fn($q) => $q->where('date', '>=', today()))
+            // ->when(!isset($input->today) && !isset($input->history), fn($q) => $q->where('date', '>=', today()))
+            ->when(!isset($input->today) && !isset($input->history), fn($q) => $q->whereNotIn('status', [ReservationStatus::CANCELLED, ReservationStatus::PAID]))
             ->orderBy('date', 'asc')
             ->orderBy('reservation_number', 'asc')
             ->paginate();
