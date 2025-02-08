@@ -20,6 +20,7 @@ class ReservationProcedureController extends Controller
     {
         $this->reservationProcedureService->store($request);
 
-        return redirect()->back()->with('success', 'Procedure created successfully');
+        return to_route('reservations.applyPage', ['id' => $request->reservation_id])
+            ->with('success', 'Procedure created successfully');
     }
 }

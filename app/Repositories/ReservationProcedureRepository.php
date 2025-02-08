@@ -67,7 +67,7 @@ class ReservationProcedureRepository
      */
     public function delete($id)
     {
-        return $this->model->find($id)->delete();
+        return $this->model->where('procedure_id', $id)->first()->delete();
     }
 
     public function report()
@@ -84,5 +84,10 @@ class ReservationProcedureRepository
             ->sum('price');
 
         return compact('incomeThisMonth', 'incomeAllTime', 'incomeToday', 'incomeLastMonth');
+    }
+
+    public function getPrice($reservation_id)
+    {
+        return $this->model->where('reservation_id', $reservation_id)->sum('price');
     }
 }

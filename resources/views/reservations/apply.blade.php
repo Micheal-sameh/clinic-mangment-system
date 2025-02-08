@@ -53,9 +53,10 @@
                                     <td>
                                         <input class="form-check-input" type="checkbox" value="{{ $procedure->id }}" id="procedure_{{ $procedure->id }}"
                                             name="procedures[]"
-                                            {{ in_array($procedure->id, $reservation->reservationProcedures->pluck('id')->toArray()) ? 'checked' : '' }}>
+                                            {{ in_array($procedure->id, $reservation->reservationProcedures->pluck('procedure_id')->toArray()) ? 'checked' : '' }}>
                                     </td>
                                 </tr>
+                                    <input type='hidden' name='reservation_id' value="{{$reservation->id}}">
                             @endforeach
                         </tbody>
                     </table>
