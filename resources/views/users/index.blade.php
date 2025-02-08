@@ -88,8 +88,22 @@
                                     </a>
                                 </td>
 
-                                <td>{{  App\Enums\UserStatus::getStringValue($user->status) }}</td>
-                                <td>{{ $user->email }}</td>
+                                <td>
+                                    <form action="{{ route('users.changeStatus', $user->id) }}" method="post">
+                                        @csrf
+                                        @method('put')
+
+                                            @if ($user->status == App\Enums\UserStatus::ACTIVE)
+                                                <button class="btn btn-warning" type="submit">
+                                                    <i class="fa fa-thumbs-up"></i> {{ App\Enums\UserStatus::getStringValue($user->status) }}
+                                                </button>
+                                            @else
+                                                <button class="btn btn-danger" type="submit">
+                                                    <i class="fa fa-thumbs-down"></i> {{ App\Enums\UserStatus::getStringValue($user->status) }}
+                                                </button>
+                                            @endif
+                                    </form>
+                                </td>                                <td>{{ $user->email }}</td>
                                 <td>{{ $user->phone }}</td>
                                 <td class="d-flex justify-content-center">
                                     @if (auth()->user()->hasRole('owner') || (auth()->user()->hasRole('admin') && !$user->hasRole('admin') && !$user->hasRole('owner')))

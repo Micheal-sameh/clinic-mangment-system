@@ -112,4 +112,11 @@ class UserController extends Controller
 
         return redirect()->back()->with('message', 'Password reset successfully');
     }
+
+    public function changeStatus($id)
+    {
+        $this->userRepository->changeStatus($id);
+
+        return redirect()->back()->with('success', 'User status changed successfully');
+    }
 }

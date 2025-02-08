@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Enums\UserStatus;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -87,6 +88,14 @@ class UserRepository
         return $this->model->find($id)->update([
             'password' => Hash::make('123456')
         ]);
+    }
+
+    public function changeStatus($id)
+    {
+        $user = $this->model->find($id);
+        return $user->update([
+            'status' => $user->status == UserStatus::ACTIVE ? UserStatus::INACTIVE : UserStatus::ACTIVE
+            ]);
     }
 
     public function patients()
