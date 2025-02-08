@@ -75,7 +75,7 @@ Route::group(['middleware' => 'setlocale'], function () {
         Route::post('/', [ReservationController::class, 'store'])->name('reservations.store');
         Route::put('/', [ReservationController::class, 'updateProcedures'])->name('reservations.update');
         Route::put('/{id}/paid', [ReservationController::class, 'paid'])->name('reservations.paid');
-        Route::put('/cancel', [ReservationController::class, 'cancel'])->name('reservations.cancel');
+        Route::put('/cancel/{id}', [ReservationController::class, 'destroy'])->name('reservations.cancel');
 
         Route::post('/store', [ReservationNoteController::class, 'store'])->name('reservationNotes.store');
 
