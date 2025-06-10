@@ -45,7 +45,7 @@
 
 
     <!-- Reservations Table for larger screens -->
-    <div class="d-none d-md-block">
+    <div class="d-none d-md-block" style="width:95%">
         <table class="table table-striped text-center">
             <thead>
                 <tr>
@@ -175,7 +175,7 @@
     @endif
 </div>
 
-<div class="text-center mt-4">
+<div class="text-center mt-4" style="width:95%">
     <div class="alert alert-info" role="alert">
         <strong>{{__('messages.count')}} {{__('messages.reservations')}}: </strong>{{ $reservations->total() }}
     </div>

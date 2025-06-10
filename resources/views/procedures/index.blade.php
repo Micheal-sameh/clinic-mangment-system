@@ -57,7 +57,7 @@
     </div>
 
     <!-- Procedures Table -->
-    <div class="table-responsive">
+    <div class="table-responsive" style="width:95%">
         <table class="table table-striped table-hover text-center">
             <thead class="thead-dark">
                 <tr>
@@ -116,7 +116,7 @@
     </div>
 
     <!-- Count of Procedures Displayed -->
-    <div class="text-center mt-4">
+    <div class="text-center mt-4" style="width:95%">
         <div class="alert alert-info" role="alert">
             <strong>{{__('messages.count')}} {{__('messages.procedures')}}: </strong>{{ $procedures->total() }}
         </div>

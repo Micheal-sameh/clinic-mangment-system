@@ -11,8 +11,8 @@ class WorkingDayUpdateRequest extends FormRequest
     {
         return [
             'working_days' => 'required|array|min:1',
-            // 'working_days.*.date' => 'required|date_format:Y-m-d|after_or_equal:today',
-            // 'working_days.*.from' => 'required|date_format:H:i',
+            'working_days.*.to' => 'required|date_format:H:i|after:from',
+            'working_days.*.from' => 'required|date_format:H:i',
             'working_days' => ['required', new CheckDate($this->working_days)],
         ];
     }

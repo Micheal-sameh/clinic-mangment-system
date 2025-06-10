@@ -1,7 +1,7 @@
 @extends('layouts.sideBar')
 <title> {{__('messages.reports')}} </title>
 @section('content')
-<div class="container mt-4">
+<div class="container mt-4" style="width:95%">
     <h1 class="mb-4">{{__('messages.monthly_report')}}</h1>
 
     <div class="row">
