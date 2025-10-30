@@ -8,16 +8,19 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
-class UserRepository
+class UserRepository extends BaseRepository
 {
-    public function __construct(protected User $model) {}
+    public function __construct(User $model)
+    {
+        parent::__construct($model);
+    }
 
     /**
      * Display a listing of the resource.
      */
     public function index($input)
     {
-        $users = $this->model->with('roles')
+        return $this->query()->with('roles:id,name')
             ->when(! is_null($input->role), function ($q) use ($input) {
                 return $q->whereHas('roles', function ($query) use ($input) {
                     $query->where('name', $input->role);
@@ -25,17 +28,7 @@ class UserRepository
             })
             ->when(! is_null($input->name), fn ($q) => $q->where('name', 'like', '%'.$input->name.'%'))
             ->orderby('name')
-            ->paginate();
-
-        return $users;
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+            ->paginate(20); // Limit page size for better performance
     }
 
     /**
@@ -51,9 +44,7 @@ class UserRepository
      */
     public function show($id)
     {
-        $user = $this->model->find($id);
-
-        return $user;
+        return $this->findById($id);
     }
 
     /**
@@ -64,32 +55,18 @@ class UserRepository
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, User $user)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function delete($id)
-    {
-        return $this->model->find($id)->delete();
-    }
-
     public function resetPassword($id)
     {
-        return $this->model->find($id)->update([
+        $user = $this->findById($id);
+
+        return $user->update([
             'password' => Hash::make('123456'),
         ]);
     }
 
     public function changeStatus($id)
     {
-        $user = $this->model->find($id);
+        $user = $this->findById($id);
 
         return $user->update([
             'status' => $user->status == UserStatus::ACTIVE ? UserStatus::INACTIVE : UserStatus::ACTIVE,
@@ -98,9 +75,9 @@ class UserRepository
 
     public function patients()
     {
-        return $this->model->whereHas('roles', function ($query) {
+        return $this->query()->whereHas('roles', function ($query) {
             $query->where('name', 'patient');
-        })->get();
+        })->select('id', 'name', 'phone')->get(); // Select only needed columns
     }
 
     public function report()

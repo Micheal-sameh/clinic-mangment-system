@@ -4,21 +4,20 @@ namespace App\Repositories;
 
 use App\Models\ReservationProcedure;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 
-class ReservationProcedureRepository
+class ReservationProcedureRepository extends BaseRepository
 {
-
-    public function __construct(protected ReservationProcedure $model)
+    public function __construct(ReservationProcedure $model)
     {
-
+        parent::__construct($model);
     }
+
     /**
      * Display a listing of the resource.
      */
     public function index($input)
     {
-        return $this->model
+        return $this->query()
             ->with('user')
             ->where('date', '>=', today())
             ->orderBy('date')
@@ -30,7 +29,7 @@ class ReservationProcedureRepository
      */
     public function store($reservation, $procedure)
     {
-        return $this->model->create([
+        return $this->create([
             'reservation_id' => $reservation->id,
             'procedure_id' => $procedure->id,
             'price' => $procedure->price,
@@ -43,7 +42,7 @@ class ReservationProcedureRepository
      */
     public function show($id)
     {
-        return $this->model->find($id);
+        return $this->findById($id);
     }
 
     /**
@@ -52,22 +51,6 @@ class ReservationProcedureRepository
     public function edit()
     {
         //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update()
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function delete($id)
-    {
-        return $this->model->where('procedure_id', $id)->first()->delete();
     }
 
     public function report()

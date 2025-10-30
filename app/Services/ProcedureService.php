@@ -47,7 +47,7 @@ class ProcedureService
      */
     public function update($id, ProcedureUpdateDTO $input)
     {
-        return $this->procedureRepository->update($id, $input);
+        return $this->procedureRepository->updateData($id, $input);
     }
 
     public function delete($id)

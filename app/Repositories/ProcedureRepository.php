@@ -6,9 +6,12 @@ use App\DTOs\ProcedureCreateDTO;
 use App\DTOs\ProcedureUpdateDTO;
 use App\Models\Procedure;
 
-class ProcedureRepository
+class ProcedureRepository extends BaseRepository
 {
-    public function __construct(protected Procedure $model) {}
+    public function __construct(Procedure $model)
+    {
+        parent::__construct($model);
+    }
 
     /**
      * Display a listing of the resource.
@@ -17,7 +20,7 @@ class ProcedureRepository
     {
         $locale = app()->getLocale();
 
-        return $this->model
+        return $this->query()
             ->when(isset($input->name), fn ($q) => $q->where('name', 'like', '%'.$input->name.'%'))
             ->orderByRaw("JSON_UNQUOTE(JSON_EXTRACT(name, '$.$locale')) ASC")  // Sort by localized name (e.g., name.en or name.ar)
             ->paginate();
@@ -28,14 +31,11 @@ class ProcedureRepository
      */
     public function store(ProcedureCreateDTO $input)
     {
-        $p = $this->model->create([
+        return $this->create([
             'name' => ['en' => $input->name_en, 'ar' => $input->name_ar],
             'description' => ['en' => $input->description_en, 'ar' => $input->description_ar],
             'price' => $input->price,
         ]);
-
-        return $p;
-
     }
 
     /**
@@ -43,9 +43,7 @@ class ProcedureRepository
      */
     public function show($id)
     {
-        $procedure = $this->model->find($id);
-
-        return $procedure;
+        return $this->findById($id);
     }
 
     /**
@@ -53,29 +51,18 @@ class ProcedureRepository
      */
     public function edit($id)
     {
-        return $this->model->find($id);
+        return $this->findById($id);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update($id, ProcedureUpdateDTO $input)
+    public function updateData($id, ProcedureUpdateDTO $input)
     {
-        $procedure = $this->model->find($id);
-        $procedure->update([
+        return $this->update($id, [
             'name' => ['en' => $input->name_en, 'ar' => $input->name_ar],
             'description' => ['en' => $input->description_en, 'ar' => $input->description_ar],
             'price' => $input->price,
         ]);
-
-        return $procedure;
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function delete($id)
-    {
-        return $this->model->find($id)->delete();
     }
 }

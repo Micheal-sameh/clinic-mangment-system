@@ -8,12 +8,13 @@ use App\Models\Reservation;
 use App\Models\WorkingDay;
 use Carbon\Carbon;
 
-class WorkingDayRepository
+class WorkingDayRepository extends BaseRepository
 {
-    public function __construct(protected WorkingDay $model)
+    public function __construct(WorkingDay $model)
     {
-
+        parent::__construct($model);
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -27,10 +28,10 @@ class WorkingDayRepository
      */
     public function store($day)
     {
-       return $this->model->create([
-            'date'  => $day['date'],
-            'from'  => $day['from'],
-            'to'    => $day['to'],
+        return $this->model->create([
+            'date' => $day['date'],
+            'from' => $day['from'],
+            'to' => $day['to'],
         ]);
     }
 
@@ -38,8 +39,8 @@ class WorkingDayRepository
     {
         $worlingDay = $this->model->find($key);
         $worlingDay->update([
-            'from'  => $day['from'],
-            'to'    => $day['to'],
+            'from' => $day['from'],
+            'to' => $day['to'],
         ]);
     }
 
@@ -48,9 +49,7 @@ class WorkingDayRepository
      */
     public function show($id)
     {
-        $user = $this->model->find($id);
-
-        return $user;
+        return $this->findById($id);
     }
 
     /**
@@ -58,7 +57,7 @@ class WorkingDayRepository
      */
     public function active($id)
     {
-        $day = $this->model->find($id);
+        $day = $this->findById($id);
         $day->status == WorkingDayStatus::ACTIVE
         ? $day->status = WorkingDayStatus::INACTIVE
         : $day->status = WorkingDayStatus::ACTIVE;
@@ -70,25 +69,28 @@ class WorkingDayRepository
      */
     public function delete($id)
     {
-        return $this->model->find($id)->delete();
+        return parent::delete($id);
     }
 
     public function slatesNumber($date)
     {
         $weekday = Carbon::create($date)->format('l');
 
-        $day = $this->model->where('name->' . 'en', $weekday)->first();
+        $day = $this->query()->where('name->'.'en', $weekday)->first();
+
+        if (! $day) {
+            return [];
+        }
 
         $startTime = Carbon::createFromFormat('H:i:s', $day->from);
         $endTime = Carbon::createFromFormat('H:i:s', $day->to);
         $slateIntervals = [];
 
-        $reservations = Reservation::where('date', $date)->where('status', '!=', ReservationStatus::CANCELLED)->get();
-        $reservedIntervals = [];
-
-        foreach ($reservations as $reservation) {
-            $reservedIntervals[] = $reservation->reservation_number;
-        }
+        // Get reserved intervals more efficiently using pluck
+        $reservedIntervals = Reservation::where('date', $date)
+            ->where('status', '!=', ReservationStatus::CANCELLED)
+            ->pluck('reservation_number')
+            ->toArray();
 
         while ($startTime->lt($endTime)) {
             $slateEnd = $startTime->copy()->addMinutes(30);
@@ -97,12 +99,15 @@ class WorkingDayRepository
                 $slateEnd = $endTime;
             }
 
-            $slateIntervals[] = $startTime->format('H:i') . ' - ' . $slateEnd->format('H:i');
+            $slateIntervals[] = $startTime->format('H:i').' - '.$slateEnd->format('H:i');
             $startTime = $slateEnd;
         }
 
-        foreach($reservedIntervals as $interval){
-            $slateIntervals[$interval-1] = 'Reserved';
+        // Mark reserved slots
+        foreach ($reservedIntervals as $interval) {
+            if (isset($slateIntervals[$interval - 1])) {
+                $slateIntervals[$interval - 1] = 'Reserved';
+            }
         }
 
         return $slateIntervals;

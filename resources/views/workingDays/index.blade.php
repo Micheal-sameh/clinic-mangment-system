@@ -16,13 +16,7 @@
 
             <!-- Header Section -->
             <div class="text-center mb-5">
-                <div class="premium-badge glass-effect rounded-pill px-4 py-2 d-inline-block mb-3">
-                    <i class="fas fa-calendar-alt me-2 text-primary"></i>
-                    {{ __('messages.working_schedule') ?? 'Working Schedule' }}
-                </div>
                 <h1 class="display-6 fw-bold text-gradient mb-2">{{ __('messages.working_days') }}</h1>
-                <p class="text-muted fs-5">
-                    {{ __('messages.manage_clinic_hours') ?? 'Manage clinic working hours and availability schedule' }}</p>
             </div>
 
             <!-- Flash Messages -->
