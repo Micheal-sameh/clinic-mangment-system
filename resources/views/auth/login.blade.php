@@ -462,15 +462,15 @@
                 <form id="login-form" method="POST" action="{{ route('loginPage') }}">
                     @csrf
 
-                    <!-- Email Field -->
+                    <!-- Email or Phone Field -->
                     <div class="form-group">
-                        <label for="email" class="form-label">
+                        <label for="email_or_phone" class="form-label">
                             <i class="fas fa-envelope"></i>
-                            {{ __('messages.email') }}
+                            {{ __('messages.email_or_phone') }}
                         </label>
-                        <input type="email" id="email" class="form-control" name="email" required autofocus
-                            placeholder="{{ __('messages.enter_email') ?? 'Enter your email address' }}"
-                            autocomplete="email">
+                        <input type="text" id="email_or_phone" class="form-control" name="email_or_phone" required autofocus
+                            placeholder="{{ __('messages.email_or_phone') }}"
+                            autocomplete="username">
                     </div>
 
                     <!-- Password Field -->
@@ -550,14 +550,14 @@
                 e.preventDefault();
 
                 const errors = [];
-                const email = document.getElementById('email').value.trim();
+                const emailOrPhone = document.getElementById('email_or_phone').value.trim();
                 const password = document.getElementById('password').value.trim();
 
                 // Validation
-                if (!email) {
-                    errors.push('{{ __('Email is required') }}');
-                } else if (!isValidEmail(email)) {
-                    errors.push('{{ __('Please enter a valid email address') }}');
+                if (!emailOrPhone) {
+                    errors.push('{{ __('Email or phone number is required') }}');
+                } else if (!isValidEmail(emailOrPhone) && !isValidPhone(emailOrPhone)) {
+                    errors.push('{{ __('Please enter a valid email address or phone number') }}');
                 }
 
                 if (!password) {
@@ -593,10 +593,8 @@
                     spinner.classList.remove('d-none');
                     loginButton.disabled = true;
 
-                    // Simulate loading for better UX
-                    setTimeout(() => {
-                        form.submit();
-                    }, 1500);
+                    // Submit the form
+                    form.submit();
                 }
             });
 
@@ -604,6 +602,12 @@
             function isValidEmail(email) {
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 return emailRegex.test(email);
+            }
+
+            // Phone validation function
+            function isValidPhone(phone) {
+                const phoneRegex = /^\+?\d{10,15}$/;
+                return phoneRegex.test(phone.replace(/\s+/g, ''));
             }
 
             // Add shake animation for errors
@@ -617,8 +621,8 @@
             `;
             document.head.appendChild(style);
 
-            // Auto-focus email field
-            document.getElementById('email').focus();
+            // Auto-focus email or phone field
+            document.getElementById('email_or_phone').focus();
         });
     </script>
 </body>

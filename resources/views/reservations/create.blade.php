@@ -47,7 +47,7 @@
                                 <i class="fas fa-calendar-check fa-2x"></i>
                             </div>
                             <h2 class="h3 fw-bold mb-2">{{ __('messages.schedule_appointment') ?? 'Schedule Appointment' }}</h2>
-                            <p class="mb-0 opacity-90">{{ __('messages.premium_experience') ?? 'Book your appointment with our premium healthcare services' }}</p>
+                            {{-- <p class="mb-0 opacity-90">{{ __('messages.premium_experience') ?? 'Book your appointment with our premium healthcare services' }}</p> --}}
                         </div>
                     </div>
 
@@ -165,7 +165,7 @@
                                 <div class="d-flex gap-3 justify-content-center flex-wrap">
                                     <button type="submit" class="btn btn-primary px-5 py-3 rounded-pill btn-glow btn-submit">
                                         <i class="fas fa-calendar-check me-2"></i>
-                                        {{ __('messages.create_reservation') }}
+                                        {{ __('messages.create') }}
                                         <span class="spinner-border spinner-border-sm ms-2 d-none" role="status"></span>
                                     </button>
                                     <a href="{{ url()->previous() }}" class="btn btn-outline-secondary px-4 py-3 rounded-pill btn-hover">

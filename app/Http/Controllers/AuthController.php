@@ -24,15 +24,25 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         $credentials = $request->validate([
-            'email' => ['required', 'email'],
+            'email_or_phone' => ['required'],
             'password' => ['required'],
         ]);
+
+        $loginField = filter_var($request->email_or_phone, FILTER_VALIDATE_EMAIL) ? 'email' : 'phone';
+
+        $credentials = [
+            $loginField => $request->email_or_phone,
+            'password' => $request->password,
+        ];
+
         $remember = $request->has('remember');
 
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
+
             return redirect()->intended(RouteServiceProvider::HOME);
         }
+
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 
@@ -47,7 +57,7 @@ class AuthController extends Controller
             'name' => ['en' => $request->name_en, 'ar' => $request->name_ar],
             'email' => $request->email,
             'phone' => $request->phone,
-            'age'   => $request->age,
+            'age' => $request->age,
             'password' => Hash::make($request->password),
             'status' => '1',
         ]);

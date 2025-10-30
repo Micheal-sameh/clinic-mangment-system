@@ -16,6 +16,7 @@ return [
     'phone' => 'Phone',
     'email' => 'Email',
     'enter_email' => 'Enter Email',
+    'email_or_phone' => 'Email or Phone Number',
     'age' => 'Age',
     'actions' => 'Actions',
     'count' => 'Total',
@@ -148,5 +149,8 @@ return [
     'inactive_users' => 'Inactive Users',
     'all_roles' => 'All Roles',
     'user_statistics' => 'User Statistics',
+    'trusted_by' => 'Trusted by',
+    'patients' => 'Patients',
+    'satisfaction_rate' => 'Satisfaction Rate',
     'days' => 'Days',
 ];
