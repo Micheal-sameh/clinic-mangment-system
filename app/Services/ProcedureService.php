@@ -3,17 +3,12 @@
 namespace App\Services;
 
 use App\DTOs\ProcedureCreateDTO;
-use App\Models\User;
+use App\DTOs\ProcedureUpdateDTO;
 use App\Repositories\ProcedureRepository;
-use Illuminate\Http\Request;
 
 class ProcedureService
 {
-
-    public function __construct(protected ProcedureRepository $procedureRepository)
-    {
-
-    }
+    public function __construct(protected ProcedureRepository $procedureRepository) {}
 
     /**
      * Display a listing of the resource.
@@ -36,22 +31,23 @@ class ProcedureService
      */
     public function show($id)
     {
+        return $this->procedureRepository->show($id);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit($id)
     {
-        //
+        return $this->procedureRepository->show($id);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update($id, ProcedureUpdateDTO $input)
     {
-        //
+        return $this->procedureRepository->update($id, $input);
     }
 
     public function delete($id)

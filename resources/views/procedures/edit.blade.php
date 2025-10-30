@@ -1,6 +1,6 @@
 @extends('layouts.sideBar')
 
-<title>{{ __('messages.create') }} {{ __('messages.procedure') }}</title>
+<title>{{ __('messages.edit') }} {{ __('messages.procedure') }}</title>
 
 @section('content')
     <div class="container-fluid py-4">
@@ -12,12 +12,12 @@
                     <div class="card-header bg-gradient-primary text-white py-4 px-5 border-0">
                         <div class="d-flex align-items-center">
                             <div class="header-icon bg-white text-primary rounded-3 p-3 me-3">
-                                <i class="fas fa-procedures fa-2x"></i>
+                                <i class="fas fa-edit fa-2x"></i>
                             </div>
                             <div>
-                                <h1 class="h3 mb-1 fw-bold">{{ __('messages.create') }} {{ __('messages.procedure') }}</h1>
+                                <h1 class="h3 mb-1 fw-bold">{{ __('messages.edit') }} {{ __('messages.procedure') }}</h1>
                                 <p class="mb-0 opacity-75">
-                                    {{ __('messages.create_new_procedure_description') ?? 'Add a new medical procedure to the system' }}
+                                    {{ __('messages.edit_procedure_description') ?? 'Update the details of this medical procedure' }}
                                 </p>
                             </div>
                         </div>
@@ -25,8 +25,9 @@
 
                     <!-- Form Section -->
                     <div class="card-body p-5">
-                        <form action="{{ route('procedures.store') }}" method="POST" id="procedureForm">
+                        <form action="{{ route('procedures.update', $procedure->id) }}" method="POST" id="procedureForm">
                             @csrf
+                            @method('PUT')
 
                             <!-- Language Tabs Navigation -->
                             <div class="language-tabs mb-4">
@@ -56,7 +57,7 @@
                                         <div class="form-floating mb-4">
                                             <input type="text"
                                                 class="form-control @error('name_en') is-invalid @enderror" id="name_en"
-                                                name="name_en" value="{{ old('name_en') }}"
+                                                name="name_en" value="{{ old('name_en', $procedure->name['en']) }}"
                                                 placeholder="{{ __('messages.name_en') }}" required>
                                             <label for="name_en" class="fw-medium">
                                                 <i class="fas fa-tag me-2 text-muted"></i>
@@ -71,7 +72,7 @@
 
                                         <div class="form-floating">
                                             <textarea class="form-control @error('description_en') is-invalid @enderror" id="description_en" name="description_en"
-                                                placeholder="{{ __('messages.description_en') }}" style="height: 120px;" required>{{ old('description_en') }}</textarea>
+                                                placeholder="{{ __('messages.description_en') }}" style="height: 120px;" required>{{ old('description_en', $procedure->description['en']) }}</textarea>
                                             <label for="description_en" class="fw-medium">
                                                 <i class="fas fa-align-left me-2 text-muted"></i>
                                                 {{ __('messages.description_en') }}
@@ -96,7 +97,7 @@
                                         <div class="form-floating mb-4">
                                             <input type="text"
                                                 class="form-control @error('name_ar') is-invalid @enderror" id="name_ar"
-                                                name="name_ar" value="{{ old('name_ar') }}"
+                                                name="name_ar" value="{{ old('name_ar', $procedure->name['ar']) }}"
                                                 placeholder="{{ __('messages.name_ar') }}" style="direction: rtl;"
                                                 required>
                                             <label for="name_ar" class="fw-medium">
@@ -112,7 +113,7 @@
 
                                         <div class="form-floating">
                                             <textarea class="form-control @error('description_ar') is-invalid @enderror" id="description_ar" name="description_ar"
-                                                placeholder="{{ __('messages.description_ar') }}" style="height: 120px; direction: rtl;" required>{{ old('description_ar') }}</textarea>
+                                                placeholder="{{ __('messages.description_ar') }}" style="height: 120px; direction: rtl;" required>{{ old('description_ar', $procedure->description['ar']) }}</textarea>
                                             <label for="description_ar" class="fw-medium">
                                                 <i class="fas fa-align-left me-2 text-muted"></i>
                                                 {{ __('messages.description_ar') }}
@@ -138,7 +139,7 @@
                                     <div class="col-md-8">
                                         <div class="form-floating">
                                             <input type="number" class="form-control @error('price') is-invalid @enderror"
-                                                id="price" name="price" value="{{ old('price') }}" step="0.01"
+                                                id="price" name="price" value="{{ old('price', $procedure->price) }}" step="0.01"
                                                 min="0" placeholder="{{ __('messages.price') }}" required>
                                             <label for="price" class="fw-medium">
                                                 <i class="fas fa-money-bill-wave me-2 text-muted"></i>
@@ -156,7 +157,7 @@
                                             <div class="card-body text-center d-flex flex-column justify-content-center">
                                                 <small
                                                     class="text-muted mb-1">{{ __('messages.price_preview') ?? 'Price Preview' }}</small>
-                                                <div class="h5 mb-0 text-success fw-bold" id="pricePreview">$0.00</div>
+                                                <div class="h5 mb-0 text-success fw-bold" id="pricePreview">${{ number_format($procedure->price, 2) }}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -170,8 +171,8 @@
                                     {{ __('messages.back') ?? 'Back' }}
                                 </a>
                                 <button type="submit" class="btn btn-primary px-4 py-2 rounded-3 btn-submit">
-                                    <i class="fas fa-plus-circle me-2"></i>
-                                    {{ __('messages.create') }} {{ __('messages.procedure') }}
+                                    <i class="fas fa-save me-2"></i>
+                                    {{ __('messages.update') }} {{ __('messages.procedure') }}
                                     <span class="spinner-border spinner-border-sm ms-2 d-none" role="status"></span>
                                 </button>
                             </div>
@@ -184,7 +185,7 @@
                     <div class="card-body">
                         <h6 class="fw-bold mb-3">
                             <i class="fas fa-lightbulb text-warning me-2"></i>
-                            {{ __('messages.creation_tips') ?? 'Quick Tips' }}
+                            {{ __('messages.editing_tips') ?? 'Editing Tips' }}
                         </h6>
                         <div class="row">
                             <div class="col-md-6">

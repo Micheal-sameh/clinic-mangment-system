@@ -37,6 +37,7 @@ Route::group(['middleware' => 'setlocale'], function () {
     Route::get('/lang/{lang}', function ($lang) {
         // You can redirect to a page after changing the language
         session(['lang' => $lang]);  // Store the language in session
+
         return redirect()->back();
     });
     Route::prefix('auth')->group(function () {
@@ -62,6 +63,7 @@ Route::group(['middleware' => 'setlocale'], function () {
         Route::get('/create', [ProcedureController::class, 'create'])->name('procedures.create');
         Route::post('/', [ProcedureController::class, 'store'])->name('procedures.store');
         Route::get('/{id}/edit', [ProcedureController::class, 'edit'])->name('procedures.edit');
+        Route::put('/{id}', [ProcedureController::class, 'update'])->name('procedures.update');
         Route::get('/{id}', [ProcedureController::class, 'show'])->name('procedures.show');
         Route::delete('/{id}', [ProcedureController::class, 'delete'])->name('procedures.delete');
     });
@@ -101,7 +103,7 @@ Route::group(['middleware' => 'setlocale'], function () {
                 'date' => ['required', new CheckActiveDayRule],
             ]);
             $is_active = 0;
-            if (!$validator->fails()) {
+            if (! $validator->fails()) {
                 $is_active = 1;
             }
 
@@ -118,5 +120,3 @@ Route::group(['middleware' => 'setlocale'], function () {
     });
 
 });
-
-

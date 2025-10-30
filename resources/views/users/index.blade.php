@@ -1,124 +1,131 @@
 @extends('layouts.sideBar')
 
-@section('title')
-    {{__('messages.users')}}
-@endsection
+@section('title', __('messages.users'))
 
 @section('content')
-    <div class="container-fluid px-0">
-        <div class="row">
-            <div class="col-12 text-center mb-4">
-                <h2 class="display-6">{{__('messages.users')}}</h2>
-            </div>
+    <div class="container-fluid px-3 px-md-5 py-4">
+
+        <!-- Page Title -->
+        <div class="text-center mb-4">
+            <h2 class="fw-bold text-primary">{{ __('messages.users') }}</h2>
+            <div class="divider mx-auto my-3"></div>
         </div>
 
-        @if(session('message'))
-            <div class="alert alert-success fixed-top w-50 mx-auto fade show" id="flashMessage" style="top: 20px; left: 50%; transform: translateX(-50%); z-index: 1050;">
+        <!-- Flash Message -->
+        @if (session('message'))
+            <div class="alert alert-success fade show shadow-sm text-center w-75 mx-auto" id="flashMessage"
+                style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1050;">
                 {{ session('message') }}
             </div>
         @endif
 
-        <!-- Filter Form Above Table -->
-        <div class="text-center mb-4">
-            <form action="{{ route('users.index') }}" method="GET" class="filter-dropdown" id="filter-form">
-                <div class="form-row justify-content-center">
-                    <div class="col-md-4 col-lg-3 col-xl-2 mb-3">
-                        <!-- Filter by Role -->
+        <!-- Filter Section -->
+        <div class="card shadow-sm mb-4 border-0 rounded-4">
+            <div class="card-body">
+                <form action="{{ route('users.index') }}" method="GET" id="filter-form"
+                    class="row g-3 align-items-center justify-content-center">
+                    <div class="col-md-4 col-lg-3">
                         <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-user-tag"></i></span>
-                            </div>
-                            <select name="role" class="form-control form-control-sm" style="height: 40px; border-radius: 10px;" onchange="submitForm()">
-                                <option value="">Select User Type</option>
-                                @foreach($roles as $role)
-                                    <option value="{{ $role->name }}" {{ request()->role == $role->name ? 'selected' : '' }}>{{ $role->name }}</option>
+                            <span class="input-group-text bg-primary text-white"><i class="fas fa-user-tag"></i></span>
+                            <select name="role" class="form-select" onchange="submitForm()">
+                                <option value="">{{ __('messages.select_role') ?? 'Select User Type' }}</option>
+                                @foreach ($roles as $role)
+                                    <option value="{{ $role->name }}"
+                                        {{ request()->role == $role->name ? 'selected' : '' }}>
+                                        {{ $role->name }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
-
-                    <div class="col-md-4 col-lg-3 col-xl-2 mb-3">
-                        <!-- Filter by Name -->
+                    <div class="col-md-4 col-lg-3">
                         <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-search"></i></span>
-                            </div>
-                            <input type="text" name="name" class="form-control form-control-sm" placeholder="Search by Name" value="{{ request()->name }}" style="height: 40px; border-radius: 10px;" id="name-input">
+                            <span class="input-group-text bg-primary text-white"><i class="fas fa-search"></i></span>
+                            <input type="text" name="name" id="name-input" class="form-control"
+                                placeholder="{{ __('messages.search_by_name') ?? 'Search by Name' }}"
+                                value="{{ request()->name }}">
                         </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
 
-        <!-- Action Button to Create a User -->
-        <div class="text-right mb-3">
-            @can('user_create')
-                <a class="btn btn-success btn-lg" href="{{ route('users.create') }}">
-                    <i class="fas fa-plus"></i> Add New User
+        <!-- Create Button -->
+        @can('user_create')
+            <div class="text-end mb-4">
+                <a href="{{ route('users.create') }}" class="btn btn-success btn-lg shadow-sm rounded-3">
+                    <i class="fas fa-plus me-2"></i>{{ __('messages.add_user') ?? 'Add New User' }}
                 </a>
-            @endcan
-        </div>
+            </div>
+        @endcan
 
-        <!-- Users List in Card View for Mobile -->
+        <!-- Desktop Table View -->
         <div class="d-none d-md-block">
-            <!-- Table View for larger screens -->
-            <div class="table-responsive" style="width:95%">
-                <table class="table table-striped table-hover text-center">
-                    <thead class="thead-dark">
+            <div class="table-responsive shadow-sm rounded-4">
+                <table class="table table-hover align-middle text-center mb-0">
+                    <thead class="table-dark">
                         <tr>
-                            <th scope="col">{{__('messages.number')}}</th>
-                            <th scope="col">{{__('messages.name')}}</th>
-                            <th scope="col">{{__('messages.status')}}</th>
-                            <th scope="col">{{__('messages.email')}}</th>
-                            <th scope="col">{{__('messages.phone')}}</th>
-                            <th scope="col">{{__('messages.actions')}}</th>
+                            <th>#</th>
+                            <th>{{ __('messages.name') }}</th>
+                            <th>{{ __('messages.status') }}</th>
+                            <th>{{ __('messages.email') }}</th>
+                            <th>{{ __('messages.phone') }}</th>
+                            <th>{{ __('messages.actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($users as $key => $user)
-                            <tr class="table-row">
-                                <th scope="row">{{ $key + 1 }}</th>
+                            <tr class="bg-white">
+                                <td>{{ $key + 1 }}</td>
                                 <td>
                                     @can('users_show')
-                                        <a class="nav-item" href="{{ route('users.show', $user['id']) }}" style="text-decoration: none;">
-                                            {{$user->localized_name}}
+                                        <a href="{{ route('users.show', $user['id']) }}"
+                                            class="text-decoration-none fw-semibold text-dark">
+                                            {{ $user->localized_name }}
+                                        </a>
                                     @else
-                                        {{$user->localized_name}}
+                                        {{ $user->localized_name }}
                                     @endcan
-                                    </a>
                                 </td>
-
                                 <td>
                                     <form action="{{ route('users.changeStatus', $user->id) }}" method="post">
                                         @csrf
                                         @method('put')
-
-                                            @if ($user->status == App\Enums\UserStatus::ACTIVE)
-                                                <button class="btn btn-warning" type="submit">
-                                                    <i class="fa fa-thumbs-up"></i> {{ App\Enums\UserStatus::getStringValue($user->status) }}
-                                                </button>
-                                            @else
-                                                <button class="btn btn-danger" type="submit">
-                                                    <i class="fa fa-thumbs-down"></i> {{ App\Enums\UserStatus::getStringValue($user->status) }}
-                                                </button>
-                                            @endif
-                                    </form>
-                                </td>                                <td>{{ $user->email }}</td>
-                                <td>{{ $user->phone }}</td>
-                                <td class="d-flex justify-content-center">
-                                    @if (auth()->user()->hasRole('owner') || (auth()->user()->hasRole('admin') && !$user->hasRole('admin') && !$user->hasRole('owner')))
-                                        @if (auth()->user()->can('users_edit'))
-                                            <a class="btn btn-secondary btn-sm mx-1" href="{{ route('users.edit', $user['id']) }}" data-toggle="tooltip" data-placement="top" title="Edit User">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <form action="{{ route('users.resetPassword', $user['id']) }}" method="POST" class="d-inline-block">
-                                                @csrf
-                                                <button class="btn btn-warning btn-sm mx-1" data-toggle="tooltip" data-placement="top" title="Reset Password">
-                                                    <i class="fas fa-key"></i>
-                                                </button>
-                                            </form>
+                                        @if ($user->status == App\Enums\UserStatus::ACTIVE)
+                                            <button class="btn btn-outline-success btn-sm px-3">
+                                                <i class="fa fa-thumbs-up me-1"></i>
+                                                {{ App\Enums\UserStatus::getStringValue($user->status) }}
+                                            </button>
+                                        @else
+                                            <button class="btn btn-outline-danger btn-sm px-3">
+                                                <i class="fa fa-thumbs-down me-1"></i>
+                                                {{ App\Enums\UserStatus::getStringValue($user->status) }}
+                                            </button>
                                         @endif
-                                    @endif
+                                    </form>
+                                </td>
+                                <td>{{ $user->email }}</td>
+                                <td>{{ $user->phone }}</td>
+                                <td>
+                                    <div class="d-flex justify-content-center flex-wrap gap-2">
+                                        @if (auth()->user()->hasRole('owner') ||
+                                                (auth()->user()->hasRole('admin') && !$user->hasRole('admin') && !$user->hasRole('owner')))
+                                            @can('users_edit')
+                                                <a href="{{ route('users.edit', $user['id']) }}"
+                                                    class="btn btn-secondary btn-sm" data-bs-toggle="tooltip" title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            @endcan
+                                            @can('users_reset_pass')
+                                                <form action="{{ route('users.resetPassword', $user['id']) }}" method="POST">
+                                                    @csrf
+                                                    <button class="btn btn-warning btn-sm" title="Reset Password">
+                                                        <i class="fas fa-key"></i>
+                                                    </button>
+                                                </form>
+                                            @endcan
+                                        @endif
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
@@ -129,141 +136,129 @@
 
         <!-- Mobile Card View -->
         <div class="d-md-none">
-            @foreach ($users as $key => $user)
-                <div class="card mb-3 shadow-sm">
-                    <div class="card-header">
-                       <h5 class="card-title">{{ $user->localized_name }}</h5>
+            @foreach ($users as $user)
+                <div class="card shadow-sm border-0 mb-3 rounded-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">{{ $user->localized_name }}</h5>
                     </div>
                     <div class="card-body">
-
-                        <p class="card-text">
-                            <strong>{{ __('messages.status') }}:</strong> {{  App\Enums\UserStatus::getStringValue($user->status) }}<br>
-                            <strong>{{ __('messages.email') }}:</strong> {{ $user->email }}<br>
-                            <strong>{{ __('messages.phone') }}:</strong> {{ $user->phone }}
-                        </p>
+                        <p class="mb-2"><strong>{{ __('messages.status') }}:</strong>
+                            {{ App\Enums\UserStatus::getStringValue($user->status) }}</p>
+                        <p class="mb-2"><strong>{{ __('messages.email') }}:</strong> {{ $user->email }}</p>
+                        <p><strong>{{ __('messages.phone') }}:</strong> {{ $user->phone }}</p>
                     </div>
                     <div class="card-footer d-flex justify-content-between">
-                        <div>
-                            @can('users_show')
-                                <a href="{{ route('users.show', $user['id']) }}" class="btn btn-primary btn-sm"> <i class="fas fa-eye"></i></a>
-                            @endcan
-                        </div>
-                        <div class="d-flex">
-                            @can('users_edit')
-                                <a href="{{ route('users.edit', $user['id']) }}" class="btn btn-secondary btn-sm mx-1"> <i class="fas fa-edit"></i></a>
-                            @endcan
-                            @can('users_reset_pass')
-                                <form action="{{ route('users.resetPassword', $user['id']) }}" method="POST" class="d-inline-block">
-                                    @csrf
-                                    <button class="btn btn-warning btn-sm mx-1" type="submit">Reset Password</button>
-                                </form>
-                            @endcan
-                        </div>
+                        @can('users_show')
+                            <a href="{{ route('users.show', $user['id']) }}" class="btn btn-primary btn-sm"><i
+                                    class="fas fa-eye"></i></a>
+                        @endcan
+                        @if (auth()->user()->hasRole('owner') ||
+                                (auth()->user()->hasRole('admin') && !$user->hasRole('admin') && !$user->hasRole('owner')))
+                            <div class="d-flex gap-2">
+                                @can('users_edit')
+                                    <a href="{{ route('users.edit', $user['id']) }}" class="btn btn-secondary btn-sm"><i
+                                            class="fas fa-edit"></i></a>
+                                @endcan
+                                @can('users_reset_pass')
+                                    <form action="{{ route('users.resetPassword', $user['id']) }}" method="POST">
+                                        @csrf
+                                        <button class="btn btn-warning btn-sm"><i class="fas fa-key"></i></button>
+                                    </form>
+                                @endcan
+                            </div>
+                        @endif
                     </div>
                 </div>
             @endforeach
         </div>
-        <div class="text-center">
-            @if($users->hasPages())
-                <div class="pagination">
-                    @foreach ($users->getUrlRange(1, $users->lastPage()) as $page => $url)
-                        <a href="{{ $url }}" class="page-link">{{ $page }}</a>
-                    @endforeach
-                </div>
-            @endif
-        </div>
 
-        <!-- Count of Users Displayed -->
-        <div class="text-center mt-4" style="width:95%">
-            <div class="alert alert-info" role="alert">
-                <strong>{{__('messages.count')}} {{__('messages.users')}}: </strong>{{ $users->total() }}
+        <!-- Pagination -->
+        @if ($users->hasPages())
+            <div class="d-flex justify-content-center my-4">
+                {{ $users->links('pagination::bootstrap-5') }}
+            </div>
+        @endif
+
+        <!-- Count -->
+        <div class="text-center mt-4">
+            <div class="alert alert-info shadow-sm w-50 mx-auto rounded-4">
+                <strong>{{ __('messages.count') }} {{ __('messages.users') }}:</strong> {{ $users->total() }}
             </div>
         </div>
     </div>
 
     @push('styles')
         <style>
-            /* Set a beautiful background gradient */
-            body {
-                background: linear-gradient(135deg, #72c6f5, #b9e4f3);
-                font-family: 'Roboto', sans-serif;
-                overflow-x: hidden; /* Disable horizontal scrolling */
+            .divider {
+                width: 60px;
+                height: 4px;
+                background: #0d6efd;
+                border-radius: 2px;
             }
 
-            /* Add a soft shadow to tables */
-            table {
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                border-radius: 10px;
-                width: 100%; /* Make sure table takes full width */
+            .table thead th {
+                vertical-align: middle;
+                font-weight: 600;
+                letter-spacing: .5px;
             }
 
-            /* Add hover effect to table rows */
-            tr.table-row:hover {
-                background-color: #f1f1f1;
-                cursor: pointer;
+            .table tbody tr:hover {
+                background-color: #f8f9fa;
             }
 
-            /* Mobile view styling */
-            .card-body {
-                padding: 15px;
+            /* Form Controls */
+            .input-group .form-control,
+            .input-group .form-select {
+                border-radius: 0 8px 8px 0;
             }
 
-            .card-footer {
-                padding: 10px 15px;
+            [dir="rtl"] .input-group .form-control,
+            [dir="rtl"] .input-group .form-select {
+                border-radius: 8px 0 0 8px;
             }
 
-            /* Ensure the filter form is responsive */
+            .input-group-text {
+                border-radius: 8px 0 0 8px;
+            }
+
+            [dir="rtl"] .input-group-text {
+                border-radius: 0 8px 8px 0;
+            }
+
+            .alert {
+                font-size: 0.95rem;
+            }
+
+            /* Mobile */
             @media (max-width: 768px) {
-                .filter-dropdown .form-row {
-                    flex-direction: column;
+                .alert-info {
+                    width: 90% !important;
                 }
-
-                .filter-dropdown .form-row .col-md-4 {
-                    width: 100%;
-                }
-
-                .table-responsive {
-                    overflow-x: auto;
-                }
-            }
-
-            /* Mobile Card View */
-            .d-md-none {
-                width: 100%;
-                padding-left: 0;
-                padding-right: 0;
-            }
-
-            .d-md-none .card {
-                width: 10%; /* Ensure card takes full width */
-                margin: 0; /* Remove any margin to make the card span the entire screen */
-                border-radius: 0; /* Optional: remove any rounded corners for full-width effect */
             }
         </style>
     @endpush
 
     @push('scripts')
-    <script>
-        let typingTimer; // Timer identifier
-        const doneTypingInterval = 1000; // 1 second delay
+        <script>
+            let typingTimer;
+            const doneTypingInterval = 800;
+            const nameInput = document.getElementById('name-input');
 
-        const nameInput = document.getElementById('name-input');
+            if (nameInput) {
+                nameInput.addEventListener('keyup', function() {
+                    clearTimeout(typingTimer);
+                    typingTimer = setTimeout(submitForm, doneTypingInterval);
+                });
+            }
 
-        // Event listener for the search input
-        nameInput.addEventListener('keyup', function () {
-            clearTimeout(typingTimer);
-            typingTimer = setTimeout(submitForm, doneTypingInterval);
-        });
+            function submitForm() {
+                document.getElementById('filter-form').submit();
+            }
 
-        // Function to submit the form
-        function submitForm() {
-            document.getElementById('filter-form').submit();
-        }
-
-        // Enable tooltips
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-        });
-    </script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+                tooltipTriggerList.map(el => new bootstrap.Tooltip(el));
+            });
+        </script>
     @endpush
 @endsection

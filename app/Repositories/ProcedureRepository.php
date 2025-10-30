@@ -3,28 +3,24 @@
 namespace App\Repositories;
 
 use App\DTOs\ProcedureCreateDTO;
+use App\DTOs\ProcedureUpdateDTO;
 use App\Models\Procedure;
-use Illuminate\Http\Request;
 
 class ProcedureRepository
 {
+    public function __construct(protected Procedure $model) {}
 
-    public function __construct(protected Procedure $model)
-    {
-
-    }
     /**
      * Display a listing of the resource.
      */
     public function index($input)
     {
         $locale = app()->getLocale();
-        $procedures = $this->model
-            ->when(isset($input->name), fn($q) => $q->where('name', 'like', '%' . $input->name . '%'))
-            ->orderByRaw("JSON_UNQUOTE(JSON_EXTRACT(name, '$.$locale')) ASC")  // Sort by localized name (e.g., name.en or name.ar)
-            ->paginate(2);
 
-        return $procedures;
+        return $this->model
+            ->when(isset($input->name), fn ($q) => $q->where('name', 'like', '%'.$input->name.'%'))
+            ->orderByRaw("JSON_UNQUOTE(JSON_EXTRACT(name, '$.$locale')) ASC")  // Sort by localized name (e.g., name.en or name.ar)
+            ->paginate();
     }
 
     /**
@@ -33,9 +29,9 @@ class ProcedureRepository
     public function store(ProcedureCreateDTO $input)
     {
         $p = $this->model->create([
-            'name'  =>['en' => $input->name_en, 'ar' => $input->name_ar],
-            'description'  =>['en' => $input->description_en, 'ar' => $input->description_ar],
-            'price'  => $input->price,
+            'name' => ['en' => $input->name_en, 'ar' => $input->name_ar],
+            'description' => ['en' => $input->description_en, 'ar' => $input->description_ar],
+            'price' => $input->price,
         ]);
 
         return $p;
@@ -47,25 +43,32 @@ class ProcedureRepository
      */
     public function show($id)
     {
-        $user = $this->model->find($id);
+        $procedure = $this->model->find($id);
 
-        return $user;
+        return $procedure;
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit()
+    public function edit($id)
     {
-        //
+        return $this->model->find($id);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update()
+    public function update($id, ProcedureUpdateDTO $input)
     {
-        //
+        $procedure = $this->model->find($id);
+        $procedure->update([
+            'name' => ['en' => $input->name_en, 'ar' => $input->name_ar],
+            'description' => ['en' => $input->description_en, 'ar' => $input->description_ar],
+            'price' => $input->price,
+        ]);
+
+        return $procedure;
     }
 
     /**

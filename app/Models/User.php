@@ -11,7 +11,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    use HasApiTokens, HasFactory, HasRoles, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -53,4 +53,8 @@ class User extends Authenticatable
         return $this->name[app()->getLocale()] ?? $this->name['en'];
     }
 
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
+    }
 }

@@ -10,14 +10,10 @@ use Spatie\Permission\Models\Role;
 
 class UserService
 {
-
     public function __construct(
         protected UserRepository $userRepository,
         protected ReservationRepository $reservationRepository
-        )
-    {
-
-    }
+    ) {}
 
     /**
      * Display a listing of the resource.
@@ -26,6 +22,7 @@ class UserService
     {
         $users = $this->userRepository->index($input);
         $roles = Role::where('name', '!=', 'admin')->get();
+
         return compact('users', 'roles');
     }
 
@@ -50,8 +47,9 @@ class UserService
      */
     public function show($id)
     {
-        $user = $this->userRepository->show($id);
+        $user = $this->userRepository->show($id)->withCount('reservations')->first();
         $reservations = $this->reservationRepository->userShow($id);
+
         return compact('user', 'reservations');
     }
 

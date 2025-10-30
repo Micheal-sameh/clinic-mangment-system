@@ -10,23 +10,20 @@ use Illuminate\Support\Facades\Hash;
 
 class UserRepository
 {
+    public function __construct(protected User $model) {}
 
-    public function __construct(protected User $model)
-    {
-
-    }
     /**
      * Display a listing of the resource.
      */
     public function index($input)
     {
-        $users = $this->model
-            ->when(!is_null($input->role), function ($q) use ($input) {
+        $users = $this->model->with('roles')
+            ->when(! is_null($input->role), function ($q) use ($input) {
                 return $q->whereHas('roles', function ($query) use ($input) {
                     $query->where('name', $input->role);
                 });
             })
-            ->when(!is_null($input->name), fn($q) => $q->where('name', 'like', '%' . $input->name . '%'))
+            ->when(! is_null($input->name), fn ($q) => $q->where('name', 'like', '%'.$input->name.'%'))
             ->orderby('name')
             ->paginate();
 
@@ -86,16 +83,17 @@ class UserRepository
     public function resetPassword($id)
     {
         return $this->model->find($id)->update([
-            'password' => Hash::make('123456')
+            'password' => Hash::make('123456'),
         ]);
     }
 
     public function changeStatus($id)
     {
         $user = $this->model->find($id);
+
         return $user->update([
-            'status' => $user->status == UserStatus::ACTIVE ? UserStatus::INACTIVE : UserStatus::ACTIVE
-            ]);
+            'status' => $user->status == UserStatus::ACTIVE ? UserStatus::INACTIVE : UserStatus::ACTIVE,
+        ]);
     }
 
     public function patients()
@@ -114,18 +112,17 @@ class UserRepository
             ->whereYear('created_at', '=', $today->year)
             ->count();
 
-
         $usersAllTime = $this->model->whereHas('roles', function ($query) {
             $query->where('name', 'patient');
-            })->count();
+        })->count();
 
         $newUsersToday = $this->model->whereHas('roles', function ($query) {
             $query->where('name', 'patient');
-            })->whereDate('created_at', '=', $today)->count();
+        })->whereDate('created_at', '=', $today)->count();
 
         $usersLastMonth = $this->model->whereHas('roles', function ($query) {
             $query->where('name', 'patient');
-                })->whereMonth('created_at', '=', today()->subMonth()->month)
+        })->whereMonth('created_at', '=', today()->subMonth()->month)
             ->whereYear('created_at', '=', $today->year)
             ->count();
 
