@@ -39,7 +39,7 @@
             position: fixed;
             top: 0;
             height: 100vh;
-            width: 280px;
+            width: 250px;
             background: var(--sidebar-bg);
             color: var(--sidebar-text);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -242,7 +242,7 @@
 
         /* Content Area */
         .content-area {
-            margin-left: 280px;
+            margin-left: 250px;
             padding: 2rem;
             min-height: 100vh;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -250,7 +250,7 @@
         }
 
         [dir="rtl"] .content-area {
-            margin-right: 280px;
+            margin-right: 250px;
             margin-left: 0;
         }
 
@@ -321,12 +321,12 @@
         /* Mobile View */
         @media (max-width: 768px) {
             #sidebar {
-                left: -280px;
-                width: 280px;
+                left: -250px;
+                width: 250px;
             }
 
             [dir="rtl"] #sidebar {
-                right: -280px;
+                right: -250px;
                 left: auto;
             }
 
