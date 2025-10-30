@@ -253,12 +253,12 @@
                                             class="btn btn-outline-secondary rounded-pill px-4 btn-hover"
                                             onclick="resetForm()">
                                             <i class="fas fa-undo me-2"></i>
-                                            {{ __('messages.reset_changes') ?? 'Reset Changes' }}
+                                            {{ __('messages.reset') ?? 'Reset Changes' }}
                                         </button>
                                         <button id="submit-button" type="submit"
                                             class="btn btn-primary rounded-pill px-4 btn-glow" disabled>
                                             <i class="fas fa-save me-2"></i>
-                                            {{ __('messages.update_schedule') ?? 'Update Schedule' }}
+                                            {{ __('messages.update') ?? 'Update Schedule' }}
                                             <span class="spinner-border spinner-border-sm ms-2 d-none"
                                                 role="status"></span>
                                         </button>
