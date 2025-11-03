@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
+use App\Enums\ReservationStatus;
 use App\Models\User;
 use App\Repositories\ReservationRepository;
 use App\Repositories\UserRepository;
-use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 
 class UserService
@@ -37,9 +37,9 @@ class UserService
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store($request)
     {
-        //
+        return $this->userRepository->store($request);
     }
 
     /**
@@ -47,10 +47,15 @@ class UserService
      */
     public function show($id)
     {
-        $user = $this->userRepository->show($id)->withCount('reservations')->first();
+        $user = $this->userRepository->show($id);
         $reservations = $this->reservationRepository->userShow($id);
+        // Get reservation statistics
+        $totalReservations = $user->reservations_count;
+        $completedReservations = $this->reservationRepository->getUserTotals($id, ReservationStatus::PAID);
+        $upcomingReservations = $this->reservationRepository->getUserTotals($id, ReservationStatus::WAITING, true);
+        $cancelledReservations = $this->reservationRepository->getUserTotals($id, ReservationStatus::CANCELLED);
 
-        return compact('user', 'reservations');
+        return compact('user', 'reservations', 'totalReservations', 'completedReservations', 'upcomingReservations', 'cancelledReservations');
     }
 
     public function profile($id)
@@ -73,13 +78,18 @@ class UserService
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update($id, $request)
     {
-        //
+        return $this->userRepository->update($id, $request);
     }
 
     public function report()
     {
         return $this->userRepository->report();
+    }
+
+    public function getRolesForCreate()
+    {
+        return Role::where('name', '!=', 'admin')->get();
     }
 }

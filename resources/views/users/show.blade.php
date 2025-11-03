@@ -80,30 +80,30 @@
 
                             <!-- Right Column - Statistics -->
                             <div class="col-md-6">
-                                <h5 class="mb-3">Statistics</h5>
+                                <h5 class="mb-3">{{ __('messages.statistics') ?? 'Statistics' }}</h5>
                                 <div class="row g-3">
                                     <div class="col-6">
                                         <div class="border rounded p-3 text-center">
-                                            <div class="h4 mb-1 text-primary">{{ $user->reservations_count }}</div>
-                                            <small class="text-muted">Total Reservations</small>
+                                            <div class="h4 mb-1 text-primary">{{ $totalReservations }}</div>
+                                            <small class="text-muted">{{ __('messages.total_reservations') ?? 'Total Reservations' }}</small>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="border rounded p-3 text-center">
-                                            <div class="h4 mb-1 text-success">{{ $completedReservations ?? '0' }}</div>
-                                            <small class="text-muted">Completed</small>
+                                            <div class="h4 mb-1 text-success">{{ $completedReservations }}</div>
+                                            <small class="text-muted">{{ __('messages.completed') ?? 'Completed' }}</small>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="border rounded p-3 text-center">
-                                            <div class="h4 mb-1 text-info">{{ $upcomingReservations ?? '0' }}</div>
-                                            <small class="text-muted">Upcoming</small>
+                                            <div class="h4 mb-1 text-info">{{ $upcomingReservations }}</div>
+                                            <small class="text-muted">{{ __('messages.upcoming') ?? 'Upcoming' }}</small>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="border rounded p-3 text-center">
-                                            <div class="h4 mb-1 text-warning">{{ $cancelledReservations ?? '0' }}</div>
-                                            <small class="text-muted">Cancelled</small>
+                                            <div class="h4 mb-1 text-warning">{{ $cancelledReservations }}</div>
+                                            <small class="text-muted">{{ __('messages.cancelled') ?? 'Cancelled' }}</small>
                                         </div>
                                     </div>
                                 </div>

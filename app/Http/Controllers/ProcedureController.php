@@ -52,6 +52,16 @@ class ProcedureController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     */
+    public function show($id)
+    {
+        $procedure = $this->procedureService->show($id);
+
+        return view('procedures.show', compact('procedure'));
+    }
+
+    /**
      * Show the form for editing the specified resource.
      */
     public function edit($id)
@@ -79,6 +89,6 @@ class ProcedureController extends Controller
     {
         $this->procedureService->delete($id);
 
-        return redirect()->route('procedures.index')->with('success', 'Procedure deleted successfully');
+        return redirect()->route('procedures.index')->with('message', 'Procedure deleted successfully');
     }
 }

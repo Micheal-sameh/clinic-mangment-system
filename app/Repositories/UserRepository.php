@@ -5,7 +5,6 @@ namespace App\Repositories;
 use App\Enums\UserStatus;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class UserRepository extends BaseRepository
@@ -34,9 +33,20 @@ class UserRepository extends BaseRepository
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store($request)
     {
-        //
+        $user = $this->create([
+            'name' => ['en' => $request->name_en, 'ar' => $request->name_ar],
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'age' => $request->age,
+            'password' => Hash::make('123456'), // Default password
+            'status' => 1, // Active by default
+        ]);
+
+        $user->assignRole($request->role);
+
+        return $user;
     }
 
     /**
@@ -44,7 +54,7 @@ class UserRepository extends BaseRepository
      */
     public function show($id)
     {
-        return $this->findById($id);
+        return $this->query()->where('id', $id)->with('roles:id,name')->withCount('reservations')->firstOrFail();
     }
 
     /**
@@ -52,7 +62,26 @@ class UserRepository extends BaseRepository
      */
     public function edit(User $user)
     {
-        //
+        return $user;
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update($id, $request)
+    {
+        $user = $this->findById($id);
+
+        $user->update([
+            'name' => ['en' => $request->name_en, 'ar' => $request->name_ar],
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'age' => $request->age,
+        ]);
+
+        $user->syncRoles([$request->role]);
+
+        return $user;
     }
 
     public function resetPassword($id)

@@ -133,4 +133,13 @@ class ReservationRepository extends BaseRepository
 
         return compact('reservationsToday');
     }
+
+    public function getUserTotals($id, $status, $upcoming = false)
+    {
+        return $this->query()
+            ->where('user_id', $id)
+            ->where('status', $status)
+            ->when($upcoming, fn ($q) => $q->whereDate('date', '>=', today()))
+            ->count();
+    }
 }

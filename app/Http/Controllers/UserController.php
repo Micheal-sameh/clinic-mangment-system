@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PasswordUpdateRequest;
+use App\Http\Requests\UserCreateRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\Repositories\UserRepository;
 use App\Services\UserService;
 use Illuminate\Http\Request;
@@ -11,12 +13,10 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-
     public function __construct(
         protected UserService $userService,
         protected UserRepository $userRepository,
-        )
-    {
+    ) {
         $this->middleware('permission:users_list|users_create|users_edit|users_delete', ['only' => ['index', 'store']]);
         $this->middleware('permission:users_create', ['only' => ['create', 'store']]);
         $this->middleware('permission:users_edit', ['only' => ['edit', 'update']]);
@@ -31,7 +31,7 @@ class UserController extends Controller
     {
         $data = $this->userService->index($request);
 
-        return view('users.index', ['users' => $data['users'], 'roles' => $data['roles'] ]);
+        return view('users.index', ['users' => $data['users'], 'roles' => $data['roles']]);
     }
 
     /**
@@ -39,15 +39,19 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+        $roles = $this->userService->getRolesForCreate();
+
+        return view('users.create', compact('roles'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UserCreateRequest $request)
     {
-        //
+        $this->userService->store($request);
+
+        return redirect()->route('users.index')->with('success', 'User created successfully');
     }
 
     /**
@@ -56,12 +60,21 @@ class UserController extends Controller
     public function show($id)
     {
         $data = $this->userService->show($id);
-        return view('users.show',['user' => $data['user'], 'reservations' => $data['reservations']]);
+
+        return view('users.show', [
+            'user' => $data['user'],
+            'reservations' => $data['reservations'],
+            'totalReservations' => $data['totalReservations'],
+            'completedReservations' => $data['completedReservations'],
+            'upcomingReservations' => $data['upcomingReservations'],
+            'cancelledReservations' => $data['cancelledReservations'],
+        ]);
     }
 
     public function profile()
     {
         $data = $this->userService->profile(Auth::id());
+
         return view('users.profile', ['user' => $data['user'], 'reservations' => $data['reservations'], 'reservationsCount' => $data['reservationsCount']]);
     }
 
@@ -71,16 +84,19 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = $this->userRepository->show($id);
+        $roles = $this->userService->getRolesForCreate();
 
-        return view('users.edit', compact('user'));
+        return view('users.edit', compact('user', 'roles'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update()
+    public function update(UserUpdateRequest $request, $id)
     {
-        //
+        $this->userService->update($id, $request);
+
+        return redirect()->route('users.index')->with('success', 'User updated successfully');
     }
 
     /**
@@ -95,7 +111,7 @@ class UserController extends Controller
 
     public function updatePassword(PasswordUpdateRequest $request)
     {
-        if (!Hash::check($request->current_password, Auth::user()->password)) {
+        if (! Hash::check($request->current_password, Auth::user()->password)) {
             return back()->withErrors(['current_password' => 'Current password is incorrect.']);
         }
         $user = $this->userRepository->show(Auth::id());
