@@ -6,6 +6,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ReservationNoteController;
 use App\Http\Controllers\ReservationProcedureController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkingDayController;
 use App\Rules\CheckActiveDayRule;
@@ -125,6 +126,11 @@ Route::group(['middleware' => 'setlocale'], function () {
         Route::get('/slatesNumber', [WorkingDayController::class, 'slates'])->name('working-days.slatesNumber');
         Route::get('/create', [WorkingDayController::class, 'create'])->name('working-days.create');
         Route::post('/', [WorkingDayController::class, 'store'])->name('working-days.store');
+    });
+
+    Route::middleware(['auth'])->prefix('settings')->group(function () {
+        Route::get('/', [SettingController::class, 'index'])->name('settings.index');
+        Route::put('/', [SettingController::class, 'update'])->name('settings.update');
     });
 
 });

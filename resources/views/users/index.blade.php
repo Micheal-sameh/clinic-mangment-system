@@ -29,6 +29,13 @@
                         {{ __('messages.manage_patients') ?? 'Manage clinic patients' }}
                     @endif
                 </p>
+                <p class="text-muted fs-5">
+                    @if($userType == 'staff')
+                        {{ __('messages.manage_system_users') ?? 'Manage system users and their permissions' }}
+                    @else
+                        {{ __('messages.manage_patients') ?? 'Manage clinic patients' }}
+                    @endif
+                </p>
             </div>
 
             <!-- Flash Message -->
