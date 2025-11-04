@@ -446,7 +446,7 @@
             <!-- Card Header -->
             <div class="card-header">
                 <div class="header-pattern"></div>
-                <img src="{{ asset('images/logo.jpg') }}" alt="Logo" class="login-logo">
+                <img src="{{ app()->make('App\Repositories\SettingRepository')->getLogo() ?: asset('images/logo.jpg') }}" alt="Logo" class="login-logo">
                 <h3>{{ __('messages.login') }}</h3>
                 <p>{{ __('messages.welcome_back') ?? 'Welcome back! Please sign in to your account' }}</p>
             </div>

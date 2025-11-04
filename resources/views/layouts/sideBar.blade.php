@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
 
+@php
+    $logo = app()->make('App\Repositories\SettingRepository')->getLogo() ?: asset('images/logo.jpg');
+@endphp
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'My Laravel App')</title>
-    <link rel="icon" href="{{ asset('images/logo.jpg') }}" type="image/jpg">
+    <link rel="icon" href="{{ $logo }}" type="image/jpg">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -432,7 +435,7 @@
     <div id="sidebar">
         <!-- Sidebar Header -->
         <div class="sidebar-header">
-            <img src="{{ asset('images/logo.jpg') }}" alt="Logo">
+            <img src="{{ $logo }}" alt="Logo">
             <h1 class="app-name">MediCare</h1>
             <p class="app-subtitle">Healthcare Management</p>
         </div>

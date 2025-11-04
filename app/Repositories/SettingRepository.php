@@ -50,6 +50,14 @@ class SettingRepository extends BaseRepository
         return $settings[$key] ?? null;
     }
 
+    /**
+     * Get logo from cache
+     */
+    public function getLogo()
+    {
+        return $this->model->where('key', 'logo')->first()?->getFirstMediaUrl('app_logo');
+    }
+
     public function update($settings, $files)
     {
         foreach ($settings as $key => $setting) {
