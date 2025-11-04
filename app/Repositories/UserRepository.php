@@ -25,6 +25,11 @@ class UserRepository extends BaseRepository
                     $query->where('name', $input->role);
                 });
             })
+            ->when(isset($input->roles), function ($q) use ($input) {
+                return $q->whereHas('roles', function ($query) use ($input) {
+                    $query->whereIn('name', $input->roles);
+                });
+            })
             ->when(! is_null($input->name), fn ($q) => $q->where('name', 'like', '%'.$input->name.'%'))
             ->orderby('name')
             ->paginate(20); // Limit page size for better performance

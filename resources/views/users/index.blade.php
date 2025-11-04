@@ -15,9 +15,20 @@
             <!-- Premium Header -->
             <div class="text-center mb-5">
 
-                <h1 class="display-6 fw-bold text-gradient mb-2">{{ __('messages.users') }}</h1>
+                <h1 class="display-6 fw-bold text-gradient mb-2">
+                    @if($userType == 'staff')
+                        {{ __('messages.users') }}
+                    @else
+                        {{ __('messages.patients') ?? 'Patients' }}
+                    @endif
+                </h1>
                 <p class="text-muted fs-5">
-                    {{ __('messages.manage_system_users') ?? 'Manage system users and their permissions' }}</p>
+                    @if($userType == 'staff')
+                        {{ __('messages.manage_system_users') ?? 'Manage system users and their permissions' }}
+                    @else
+                        {{ __('messages.manage_patients') ?? 'Manage clinic patients' }}
+                    @endif
+                </p>
             </div>
 
             <!-- Flash Message -->
@@ -110,10 +121,10 @@
                         </span>
                     @endif
                 </div>
-                @can('user_create')
-                    <a href="{{ route('users.create') }}" class="btn btn-primary btn-glow rounded-pill px-4 py-2">
+                @can('users_create')
+                    <a href="{{ $userType === 'staff' ? route('users.create') : route('patients.create') }}" class="btn btn-primary btn-glow rounded-pill px-4 py-2">
                         <i class="fas fa-user-plus me-2"></i>
-                        {{ __('messages.add_user') ?? 'Add New User' }}
+                        {{ $userType === 'staff' ? __('messages.add_user') : __('messages.add_patient') }}
                     </a>
                 @endcan
             </div>
@@ -128,6 +139,7 @@
                                     <tr>
                                         <th class="ps-4" style="width: 80px;">#</th>
                                         <th>{{ __('messages.user') ?? 'User' }}</th>
+                                        <th>{{ __('messages.role') ?? 'Role' }}</th>
                                         <th style="width: 120px;">{{ __('messages.status') }}</th>
                                         <th>{{ __('messages.contact') ?? 'Contact' }}</th>
                                         <th class="text-center" style="width: 150px;">{{ __('messages.actions') }}</th>
@@ -163,16 +175,15 @@
                                                             <span
                                                                 class="fw-semibold text-dark">{{ $user->localized_name }}</span>
                                                         @endcan
-                                                        <div class="user-roles">
-                                                            @foreach ($user->roles as $role)
-                                                                <span
-                                                                    class="badge bg-secondary bg-opacity-10 text-secondary small">
-                                                                    {{ $role->name }}
-                                                                </span>
-                                                            @endforeach
-                                                        </div>
                                                     </div>
                                                 </div>
+                                            </td>
+                                            <td>
+                                                @foreach ($user->roles as $role)
+                                                    <span class="badge bg-primary bg-opacity-10 text-primary">
+                                                        {{ ucfirst($role->name) }}
+                                                    </span>
+                                                @endforeach
                                             </td>
                                             <td>
                                                 <form action="{{ route('users.changeStatus', $user->id) }}" method="post"
@@ -272,9 +283,8 @@
                                             <h6 class="mb-1 fw-semibold">{{ $user->localized_name }}</h6>
                                             <div class="user-roles">
                                                 @foreach ($user->roles as $role)
-                                                    <span
-                                                        class="badge bg-secondary bg-opacity-10 text-secondary small me-1">
-                                                        {{ $role->name }}
+                                                    <span class="badge bg-primary bg-opacity-10 text-primary me-1">
+                                                        {{ ucfirst($role->name) }}
                                                     </span>
                                                 @endforeach
                                             </div>

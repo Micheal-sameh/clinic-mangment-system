@@ -456,10 +456,16 @@
                     </div>
                     @can('users_list')
                         <div class="nav-item">
-                            <a href="{{ route('users.index') }}" class="{{ request()->routeIs('users.*') ? 'active' : '' }}">
+                            <a href="{{ route('users.index') }}" class="{{ request()->routeIs('users.index') ? 'active' : '' }}">
                                 <i class="fas fa-users"></i>
                                 {{ __('messages.users') }}
                                 <span class="nav-badge">Admin</span>
+                            </a>
+                        </div>
+                        <div class="nav-item">
+                            <a href="{{ route('patients.index') }}" class="{{ request()->routeIs('patients.index') ? 'active' : '' }}">
+                                <i class="fas fa-user-injured"></i>
+                                {{ __('messages.patients') }}
                             </a>
                         </div>
                     @endcan

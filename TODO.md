@@ -1,18 +1,8 @@
-# TODO: Complete Procedures CRUD
+# TODO: Modify Users Index for Admin/Secretary and Create Patients Index
 
 ## Tasks
-- [x] Create show.blade.php view for procedures
-- [x] Fix delete flash message in ProcedureController
-- [x] Test show functionality (routes verified)
-- [x] Verify delete flash message works correctly (fixed)
-
-## Information Gathered
-- ProcedureController has show method but no corresponding view
-- Delete method uses 'success' flash message but index checks for 'message'
-- Routes include procedures.show route
-- Index view has links to show page
-
-## Plan
-1. Create resources/views/procedures/show.blade.php with procedure details display
-2. Update ProcedureController delete method to use 'message' instead of 'success'
-3. Test the implementation
+- [x] Update UserController.php: Modify index() to filter for 'admin' or 'secretary' roles, add patientsIndex() method for 'patient' role, pass 'userType' to view.
+- [x] Update UserService.php: Modify index() to accept role filter parameter.
+- [x] Update routes/web.php: Add new route for patients.index pointing to patientsIndex method.
+- [x] Modify resources/views/users/index.blade.php: Add "Role" column to explicitly declare each user's role, use 'userType' for context.
+- [x] Test the new routes and verify filtering and display work correctly.

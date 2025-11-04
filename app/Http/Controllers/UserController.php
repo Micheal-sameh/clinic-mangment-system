@@ -29,9 +29,21 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+        $request->merge(['roles' => ['admin', 'secretary']]);
         $data = $this->userService->index($request);
 
-        return view('users.index', ['users' => $data['users'], 'roles' => $data['roles']]);
+        return view('users.index', ['users' => $data['users'], 'roles' => $data['roles'], 'userType' => 'staff']);
+    }
+
+    /**
+     * Display a listing of patients.
+     */
+    public function patientsIndex(Request $request)
+    {
+        $request->merge(['roles' => ['patient']]);
+        $data = $this->userService->index($request);
+
+        return view('users.index', ['users' => $data['users'], 'roles' => $data['roles'], 'userType' => 'patients']);
     }
 
     /**
@@ -40,8 +52,9 @@ class UserController extends Controller
     public function create()
     {
         $roles = $this->userService->getRolesForCreate();
+        $isPatientCreate = request()->routeIs('patients.create');
 
-        return view('users.create', compact('roles'));
+        return view('users.create', compact('roles', 'isPatientCreate'));
     }
 
     /**
@@ -51,7 +64,9 @@ class UserController extends Controller
     {
         $this->userService->store($request);
 
-        return redirect()->route('users.index')->with('success', 'User created successfully');
+        $redirectRoute = request()->routeIs('patients.store') ? 'patients.index' : 'users.index';
+
+        return redirect()->route($redirectRoute)->with('success', __('messages.success'));
     }
 
     /**

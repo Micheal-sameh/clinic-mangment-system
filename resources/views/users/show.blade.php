@@ -33,6 +33,7 @@
                                         class="badge bg-{{ $user->status == App\Enums\UserStatus::ACTIVE ? 'success' : 'secondary' }}">
                                         {{ App\Enums\UserStatus::getStringValue($user->status) }}
                                     </span>
+                                    <span class="badge bg-info">{{ $user->roles->first()->name ?? 'No Role' }}</span>
                                     <span>Member since {{ $user->created_at->format('M Y') }}</span>
                                 </div>
                             </div>
@@ -128,14 +129,14 @@
                                             <th>Time</th>
                                             <th>Service</th>
                                             <th>Status</th>
-                                            <th>Amount</th>
+                                            <th>{{ __('messages.total') }}</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($reservations as $reservation)
                                             <tr>
-                                                <td class="fw-medium">#{{ $reservation->id }}</td>
+                                                <td class="fw-medium">{{ __('messages.reservation_id') }}{{ $reservation->id }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($reservation->date)->format('M d, Y') }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($reservation->date)->format('h:i A') }}</td>
                                                 <td>

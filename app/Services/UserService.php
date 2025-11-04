@@ -21,7 +21,7 @@ class UserService
     public function index($input)
     {
         $users = $this->userRepository->index($input);
-        $roles = Role::where('name', '!=', 'admin')->get();
+        $roles = isset($input->roles) ? Role::whereIn('name', $input->roles)->get() : Role::where('name', '!=', 'admin')->get();
 
         return compact('users', 'roles');
     }
