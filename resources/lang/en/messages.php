@@ -209,4 +209,10 @@ return [
     'completed' => 'Completed',
     'upcoming' => 'Upcoming',
     'cancelled' => 'Cancelled',
+    'settings' => 'Settings',
+    'Application Settings' => 'Application Settings',
+    'manage_application_settings' => 'Manage application settings and configurations',
+    'value' => 'Value',
+    'type' => 'Type',
+    'error' => 'Error!',
 ];

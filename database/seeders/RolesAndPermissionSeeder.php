@@ -44,6 +44,7 @@ class RolesAndPermissionSeeder extends Seeder
         $workDays_create = Permission::firstOrCreate(['name' => 'workDays_create']);
         $reports_list = Permission::firstOrCreate(['name' => 'reports_list']);
 
+        $settings_update = Permission::firstOrCreate(['name' => 'settings_update']);
 
         $admin = Role::firstOrCreate(['name' => 'admin']);
         $admin->givePermissionTo([
@@ -77,6 +78,8 @@ class RolesAndPermissionSeeder extends Seeder
             $workDays_create,
 
             $reports_list,
+
+            $settings_update,
         ]);
 
         $secretary = Role::firstOrCreate(['name' => 'secretary']);

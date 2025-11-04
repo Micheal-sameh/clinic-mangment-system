@@ -16,7 +16,7 @@
             <div class="text-center mb-5">
                 <h1 class="display-6 fw-bold text-gradient mb-2">{{ __('messages.Application Settings') }}</h1>
                 <p class="text-muted fs-5">
-                    {{ __('messages.manage_application_settings') ?? 'Manage application settings and configurations' }}
+                    {{ __('messages.manage_application_settings') }}
                 </p>
             </div>
 
@@ -28,7 +28,7 @@
                             <i class="fas fa-check text-white"></i>
                         </div>
                         <div class="flex-grow-1">
-                            <h6 class="mb-1">{{ __('messages.success') ?? 'Success!' }}</h6>
+                            <h6 class="mb-1">{{ __('messages.success') }}</h6>
                             <p class="mb-0">{{ session('success') }}</p>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                             <i class="fas fa-exclamation-triangle text-white"></i>
                         </div>
                         <div class="flex-grow-1">
-                            <h6 class="mb-1">{{ __('messages.error') ?? 'Error!' }}</h6>
+                            <h6 class="mb-1">{{ __('messages.error') }}</h6>
                             <ul class="mb-0">
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
@@ -70,7 +70,7 @@
                                     <input type="hidden" name="settings[{{ $setting->id }}][id]" value="{{ $setting->id }}">
                                     <!-- Value Field -->
                                     <div class="mb-3">
-                                        <label class="form-label small text-muted fw-semibold">{{ __('messages.value') ?? 'Value' }}:</label>
+                                        <label class="form-label small text-muted fw-semibold">{{ __('messages.value') }}:</label>
                                         @if ($setting->type === 'file')
                                             <input type="file" name="settings[{{ $setting->id }}][value]"
                                                 class="form-control premium-input">
@@ -82,7 +82,7 @@
 
                                     <!-- Type Display -->
                                     <div class="mb-3">
-                                        <label class="form-label small text-muted fw-semibold">{{ __('messages.type') ?? 'Type' }}:</label>
+                                        <label class="form-label small text-muted fw-semibold">{{ __('messages.type') }}</label>
                                         <span class="badge bg-info bg-opacity-10 text-info">{{ ucfirst($setting->type) }}</span>
                                     </div>
 

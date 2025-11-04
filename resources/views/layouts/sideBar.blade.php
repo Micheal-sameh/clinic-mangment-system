@@ -509,6 +509,15 @@
                             </a>
                         </div>
                     @endcan
+                    @can('settings_update')
+                        <div class="nav-item">
+                            <a href="{{ route('settings.index') }}"
+                                class="{{ request()->routeIs('settings.*') ? 'active' : '' }}">
+                                <i class="fas fa-cog"></i>
+                                {{ __('messages.settings') }}
+                            </a>
+                        </div>
+                    @endcan
                 </div>
             @else
                 <div class="nav-item">

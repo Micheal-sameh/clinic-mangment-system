@@ -210,4 +210,10 @@ return [
     'completed' => 'مكتملة',
     'upcoming' => 'قادمة',
     'cancelled' => 'ملغية',
+    'settings' => 'الإعدادات',
+    'Application Settings' => 'إعدادات التطبيق',
+    'manage_application_settings' => 'إدارة إعدادات التطبيق والتكوينات',
+    'value' => 'القيمة',
+    'type' => 'النوع',
+    'error' => 'خطأ!',
 ];
