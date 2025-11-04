@@ -66,15 +66,14 @@
 
                         <!-- Filters -->
                         <div class="col-md-8">
-                            <form action="{{ route('users.index') }}" method="GET" id="filter-form">
+                            <form action="{{ $userType === 'staff' ? route('users.index') : route('patients.index') }}" method="GET" id="filter-form">
                                 <div class="row g-3">
-                                    <div class="col-md-5">
+                                    <div class="col-md-4">
                                         <div class="input-group premium-input">
                                             <span class="input-group-text bg-light border-end-0">
                                                 <i class="fas fa-user-tag text-primary"></i>
                                             </span>
-                                            <select name="role" class="form-select border-start-0"
-                                                onchange="submitForm()">
+                                            <select name="role" class="form-select border-start-0">
                                                 <option value="">{{ __('messages.all_roles') ?? 'All Roles' }}
                                                 </option>
                                                 @foreach ($roles as $role)
@@ -86,7 +85,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-5">
+                                    <div class="col-md-4">
                                         <div class="input-group premium-input">
                                             <span class="input-group-text bg-light border-end-0">
                                                 <i class="fas fa-search text-primary"></i>
@@ -98,10 +97,18 @@
                                         </div>
                                     </div>
                                     <div class="col-md-2">
+                                        <button type="submit" class="btn btn-primary w-100">
+                                            <i class="fas fa-filter me-1"></i>
+                                            {{ __('messages.filter') ?? 'Filter' }}
+                                        </button>
+                                    </div>
+                                    <div class="col-md-2">
                                         @if (request()->role || request()->name)
-                                            <a href="{{ route('users.index') }}" class="btn btn-outline-secondary w-100">
+                                            <a href="{{ $userType === 'staff' ? route('users.index') : route('patients.index') }}" class="btn btn-outline-secondary w-100" title="{{ __('messages.clear_filters') ?? 'Clear Filters' }}">
                                                 <i class="fas fa-times"></i>
                                             </a>
+                                        @else
+                                            <div></div>
                                         @endif
                                     </div>
                                 </div>

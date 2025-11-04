@@ -150,6 +150,7 @@ return [
     'active_users' => 'المستخدمون النشطون',
     'inactive_users' => 'المستخدمون غير النشطين',
     'all_roles' => 'جميع الأدوار',
+    'clear_filters' => 'مسح المرشحات',
     'user_statistics' => 'إحصائيات المستخدمين',
     'trusted_by' => 'موثوق من قبل',
     'patients' => 'المرضى',

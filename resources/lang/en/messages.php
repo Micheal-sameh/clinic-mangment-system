@@ -149,6 +149,7 @@ return [
     'active_users' => 'Active Users',
     'inactive_users' => 'Inactive Users',
     'all_roles' => 'All Roles',
+    'clear_filters' => 'Clear Filters',
     'user_statistics' => 'User Statistics',
     'trusted_by' => 'Trusted by',
     'patients' => 'Patients',
