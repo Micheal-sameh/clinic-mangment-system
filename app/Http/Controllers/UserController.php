@@ -29,7 +29,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $request->merge(['roles' => ['admin', 'secretary']]);
+        $request->merge(['roles' => ['admin', 'secretary', 'patient']]);
         $data = $this->userService->index($request);
 
         return view('users.index', ['users' => $data['users'], 'roles' => $data['roles'], 'userType' => 'staff']);

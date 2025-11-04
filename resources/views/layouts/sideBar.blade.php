@@ -456,7 +456,7 @@
                     </div>
                     @can('users_list')
                         <div class="nav-item">
-                            <a href="{{ route('users.index') }}" class="{{ request()->routeIs('users.index') ? 'active' : '' }}">
+                            <a href="{{ route('users.index') }}" class="{{ request()->routeIs('users.index') || request()->routeIs('patients.index') ? 'active' : '' }}">
                                 <i class="fas fa-users"></i>
                                 {{ __('messages.users') }}
                                 <span class="nav-badge">Admin</span>
