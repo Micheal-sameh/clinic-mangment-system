@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
-
+@php
+    $logo = app()->make('App\Repositories\SettingRepository')->getLogo() ?: asset('images/logo.jpg');
+@endphp
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Management System</title>
 
-    <link rel="icon" href="{{ asset('images/logo.jpg') }}" type="image/jpg">
+    <link rel="icon" href="{{ $logo }}" type="image/jpg">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -446,7 +448,7 @@
             <!-- Card Header -->
             <div class="card-header">
                 <div class="header-pattern"></div>
-                <img src="{{ app()->make('App\Repositories\SettingRepository')->getLogo() ?: asset('images/logo.jpg') }}" alt="Logo" class="login-logo">
+                <img src="{{ $logo }}" alt="Logo" class="login-logo">
                 <h3>{{ __('messages.login') }}</h3>
                 <p>{{ __('messages.welcome_back') ?? 'Welcome back! Please sign in to your account' }}</p>
             </div>

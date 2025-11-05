@@ -465,6 +465,9 @@
                                 <span class="nav-badge">Admin</span>
                             </a>
                         </div>
+                    @endcan
+                    {{-- @dd(auth()->user()->can('patients_list')); --}}
+                    @can('patients-list')
                         <div class="nav-item">
                             <a href="{{ route('patients.index') }}" class="{{ request()->routeIs('patients.index') ? 'active' : '' }}">
                                 <i class="fas fa-user-injured"></i>

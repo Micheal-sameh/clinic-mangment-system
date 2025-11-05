@@ -43,7 +43,7 @@ class RolesAndPermissionSeeder extends Seeder
         $workDays_list = Permission::firstOrCreate(['name' => 'workDays_list']);
         $workDays_create = Permission::firstOrCreate(['name' => 'workDays_create']);
         $reports_list = Permission::firstOrCreate(['name' => 'reports_list']);
-
+        $patients_list = Permission::firstOrCreate(['name' => 'patients-list']);
         $settings_update = Permission::firstOrCreate(['name' => 'settings_update']);
 
         $admin = Role::firstOrCreate(['name' => 'admin']);
@@ -55,6 +55,7 @@ class RolesAndPermissionSeeder extends Seeder
             $users_delete,
             $users_reset_pass,
             $users_profile,
+            $patients_list,
 
             $procedures_list,
             $procedures_create,
@@ -85,10 +86,10 @@ class RolesAndPermissionSeeder extends Seeder
         $secretary = Role::firstOrCreate(['name' => 'secretary']);
         $secretary->givePermissionTo([
             $users_profile,
-
+            $patients_list,
             $procedures_list,
             $procedures_show,
-
+            $users_create,
             $reservations_list,
             $reservations_create,
             $reservations_add,

@@ -51,6 +51,7 @@ Route::group(['middleware' => 'setlocale'], function () {
     Route::middleware(['auth'])->prefix('users')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('users.index');
         Route::get('/create', [UserController::class, 'create'])->name('users.create');
+        Route::get('/profile', [UserController::class, 'profile'])->name('users.profile');
         Route::post('/', [UserController::class, 'store'])->name('users.store');
     });
 
@@ -58,7 +59,6 @@ Route::group(['middleware' => 'setlocale'], function () {
         Route::get('/', [UserController::class, 'patientsIndex'])->name('patients.index');
         Route::get('/create', [UserController::class, 'create'])->name('patients.create');
         Route::post('/', [UserController::class, 'store'])->name('patients.store');
-        Route::get('/profile', [UserController::class, 'profile'])->name('users.profile');
         Route::get('/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
         Route::get('/{id}', [UserController::class, 'show'])->name('users.show');
         Route::post('/{id}', [UserController::class, 'delete'])->name('users.delete');
