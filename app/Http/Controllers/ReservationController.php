@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use App\Enums\ReservationStatus;
 use App\Http\Requests\ReservationIndexRequest;
 use App\Http\Requests\ReservationRequest;
+use App\Http\Requests\ReservationUpdateRequest;
 use App\Models\Reservation;
 use App\Repositories\ReservationRepository;
 use App\Services\ProcedureService;
 use App\Services\ReservationService;
-use Illuminate\Http\Request;
 
 class ReservationController extends Controller
 {
@@ -72,17 +72,33 @@ class ReservationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Reservation $reservation)
+    public function edit($id)
     {
-        //
+        $reservation = $this->reservationService->show($id);
+        // Only allow editing if user owns the reservation and it's in waiting status
+        if ($reservation->user_id !== auth()->id() && ! auth()->user()->hasRole(['admin', 'secretary']) && $reservation->status !== \App\Enums\ReservationStatus::WAITING) {
+            abort(403, 'You can only edit your own pending reservations.');
+        }
+
+        $data = $this->reservationService->edit($reservation);
+
+        return view('reservations.edit', compact('reservation', 'data'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Reservation $reservation)
+    public function update(ReservationUpdateRequest $request, $id)
     {
-        //
+        $reservation = $this->reservationService->show($id);
+        // Only allow updating if user owns the reservation and it's in waiting status
+        if ($reservation->user_id !== auth()->id() && ! auth()->user()->hasRole(['admin', 'secretary']) && $reservation->status !== \App\Enums\ReservationStatus::WAITING) {
+            abort(403, 'You can only edit your own pending reservations.');
+        }
+
+        $this->reservationService->updateTimeSlot($request->validated(), $reservation);
+
+        return redirect()->route('reservations.index')->with('success', 'Reservation time slot updated successfully!');
     }
 
     /**

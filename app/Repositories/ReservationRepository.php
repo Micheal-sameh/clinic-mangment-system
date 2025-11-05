@@ -55,12 +55,12 @@ class ReservationRepository extends BaseRepository
      */
     public function store($input)
     {
-        $data = $this->model->getFromAndToFromWoringDays($input->reservation_date, $input->slate_number);
+        $data = $this->model->getFromAndToFromWoringDays($input['reservation_date'], $input['slate_number']);
 
         return $this->create([
-            'user_id' => $input->user_id ?? Auth::id(),
-            'date' => $input->reservation_date,
-            'reservation_number' => $input->slate_number,
+            'user_id' => $input['user_id'] ?? Auth::id(),
+            'date' => $input['reservation_date'],
+            'reservation_number' => $input['slate_number'],
             'from' => $data['from'],
             'to' => $data['to'],
         ]);
@@ -154,5 +154,45 @@ class ReservationRepository extends BaseRepository
             ->where('status', $status)
             ->when($upcoming, fn ($q) => $q->whereDate('date', '>=', today()))
             ->count();
+    }
+
+    public function getAvailableSlatesForDate($date, $excludeReservationNumber = null)
+    {
+        $weekday = Carbon::create($date)->format('l');
+
+        $day = $this->query()->where('name->'.'en', $weekday)->first();
+
+        if (! $day) {
+            return [];
+        }
+
+        $startTime = Carbon::createFromFormat('H:i:s', $day->from);
+        $endTime = Carbon::createFromFormat('H:i:s', $day->to);
+        $slateIntervals = [];
+
+        // Get reserved intervals more efficiently using pluck, excluding the current reservation if provided
+        $reservedIntervals = Reservation::where('date', $date)
+            ->where('status', '!=', ReservationStatus::CANCELLED)
+            ->when($excludeReservationNumber, fn ($q) => $q->where('reservation_number', '!=', $excludeReservationNumber))
+            ->pluck('reservation_number')
+            ->toArray();
+
+        $index = 1;
+        while ($startTime->lt($endTime)) {
+            $slateEnd = $startTime->copy()->addMinutes(30);
+
+            if ($slateEnd->gt($endTime)) {
+                $slateEnd = $endTime;
+            }
+
+            if (! in_array($index, $reservedIntervals)) {
+                $slateIntervals[$index] = $startTime->format('H:i').' - '.$slateEnd->format('H:i');
+            }
+
+            $startTime = $slateEnd;
+            $index++;
+        }
+
+        return $slateIntervals;
     }
 }

@@ -2,21 +2,16 @@
 
 namespace App\Services;
 
-use App\DTOs\ProcedureCreateDTO;
-use App\Models\User;
 use App\Repositories\ReservationRepository;
 use App\Repositories\UserRepository;
-use Illuminate\Http\Request;
 
 class ReservationService
 {
-
     public function __construct(
         protected ReservationRepository $reservationRepository,
-        protected UserRepository $userRepository
-        ){
-
-    }
+        protected UserRepository $userRepository,
+        protected WorkingDayService $workingDayService
+    ) {}
 
     /**
      * Display a listing of the resource.
@@ -52,17 +47,44 @@ class ReservationService
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit($reservation)
     {
-        //
+        $allSlates = $this->workingDayService->slatesNumber($reservation->date);
+        $availableSlates = [];
+
+        foreach ($allSlates as $index => $slate) {
+            if ($slate !== 'Reserved' || $index + 1 == $reservation->reservation_number) {
+                $availableSlates[$index + 1] = $slate;
+            }
+        }
+
+        return compact('availableSlates');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function updateTimeSlot($input, $reservation)
     {
-        //
+        // Get all slates for the date
+        $allSlates = $this->workingDayService->slatesNumber($reservation->date);
+
+        // Check if the selected slate is available (not reserved by another reservation)
+        $selectedIndex = $input['slate_number'] - 1;
+        if (! isset($allSlates[$selectedIndex]) || ($allSlates[$selectedIndex] === 'Reserved' && $input['slate_number'] != $reservation->reservation_number)) {
+            throw new \Exception('Selected time slot is not available.');
+        }
+
+        // Update the reservation with new time slot
+        $data = $reservation->getFromAndToFromWoringDays($reservation->date, $input['slate_number']);
+
+        $reservation->update([
+            'reservation_number' => $input['slate_number'],
+            'from' => $data['from'],
+            'to' => $data['to'],
+        ]);
+
+        return $reservation;
     }
 
     public function delete($id)
