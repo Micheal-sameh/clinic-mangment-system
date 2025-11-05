@@ -1,8 +1,9 @@
-# TODO: Modify Users Index for Admin/Secretary and Create Patients Index
+# Reservation Index Filters Task
 
-## Tasks
-- [x] Update UserController.php: Modify index() to filter for 'admin' or 'secretary' roles, add patientsIndex() method for 'patient' role, pass 'userType' to view.
-- [x] Update UserService.php: Modify index() to accept role filter parameter.
-- [x] Update routes/web.php: Add new route for patients.index pointing to patientsIndex method.
-- [x] Modify resources/views/users/index.blade.php: Add "Role" column to explicitly declare each user's role, use 'userType' for context.
-- [x] Test the new routes and verify filtering and display work correctly.
+## Steps to Complete
+- [x] Add date_from and date_to input fields to the filter form in resources/views/reservations/index.blade.php
+- [x] Add search input field for patient name or phone in resources/views/reservations/index.blade.php
+- [x] Update ReservationRepository index method to handle date range filter using whereBetween
+- [x] Update ReservationRepository index method to handle search filter using whereHas on user relationship
+- [ ] Test the new filters functionality
+- [ ] Verify existing filters (today, history) still work

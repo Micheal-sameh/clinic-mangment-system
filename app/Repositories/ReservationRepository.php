@@ -26,12 +26,25 @@ class ReservationRepository extends BaseRepository
         if (auth()->user()->hasRole('admin')) {
             $this->checkDate();
         }
+        if (! isset($input['date_from'])) {
+            $input['date_from'] = null;
+        }
+        if (! isset($input['date_to'])) {
+            $input['date_to'] = null;
+        }
 
         return $this->query()->with('user:id,name,phone') // Eager load with specific columns
-            ->when(isset($input->today), fn ($q) => $q->whereDate('date', today()))
-            ->when(isset($input->history), fn ($q) => $q->where('date', '<', today()))
+            ->when(isset($input['today']), fn ($q) => $q->whereDate('date', today()))
+            ->when(isset($input['history']), fn ($q) => $q->where('date', '<', today()))
+            ->when(isset($input['date_from']) && isset($input['date_to']), fn ($q) => $q->whereBetween('date', [$input['date_from'], $input['date_to']]))
+            ->when(isset($input['date_from']) && ! isset($input['date_to']), fn ($q) => $q->whereDate('date', '>=', $input['date_from']))
+            ->when(! isset($input['date_from']) && isset($input['date_to']), fn ($q) => $q->whereDate('date', '<=', $input['date_to']))
+            ->when(isset($input['search']), fn ($q) => $q->whereHas('user', function ($query) use ($input) {
+                $query->where('name', 'like', '%'.$input['search'].'%')
+                    ->orWhere('phone', 'like', '%'.$input['search'].'%');
+            }))
             ->when(Auth::user()->hasRole('patient'), fn ($q) => $q->where('user_id', auth()->id()))
-            ->when(! isset($input->today) && ! isset($input->history), fn ($q) => $q->whereNotIn('status', [ReservationStatus::CANCELLED, ReservationStatus::PAID]))
+            ->when(! isset($input['today']) && ! isset($input['history']), fn ($q) => $q->whereNotIn('status', [ReservationStatus::CANCELLED, ReservationStatus::PAID]))
             ->orderBy('date', 'asc')
             ->orderBy('reservation_number', 'asc')
             ->paginate(15);

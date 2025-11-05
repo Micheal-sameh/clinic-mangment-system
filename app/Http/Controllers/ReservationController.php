@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ReservationStatus;
+use App\Http\Requests\ReservationIndexRequest;
 use App\Http\Requests\ReservationRequest;
 use App\Models\Reservation;
 use App\Repositories\ReservationRepository;
@@ -15,8 +16,8 @@ class ReservationController extends Controller
     public function __construct(
         protected ReservationService $reservationService,
         protected ReservationRepository $reservationRepository,
-        protected ProcedureService  $procedureService
-    ){
+        protected ProcedureService $procedureService
+    ) {
         $this->middleware('permission:reservations_list', ['only' => ['index', 'show']]);
         $this->middleware('permission:reservations_create', ['only' => ['create', 'store']]);
         $this->middleware('permission:reservations_edit', ['only' => ['edit', 'update']]);
@@ -29,9 +30,10 @@ class ReservationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(ReservationIndexRequest $request)
     {
-        $reservations = $this->reservationService->index($request);
+        // dd($request->validated());
+        $reservations = $this->reservationService->index($request->validated());
 
         return view('reservations.index', compact('reservations'));
     }
@@ -51,7 +53,7 @@ class ReservationController extends Controller
      */
     public function store(ReservationRequest $request)
     {
-        $this->reservationService->store($request);
+        $this->reservationService->store($request->validated());
 
         return redirect()->route('reservations.index')->with('success', 'Reservation created successfully!');
     }
@@ -89,6 +91,7 @@ class ReservationController extends Controller
     public function destroy($id)
     {
         $this->reservationRepository->delete($id);
+
         return redirect()->back()->with('success', 'Reservation deleted successfully!');
     }
 
@@ -96,7 +99,7 @@ class ReservationController extends Controller
     {
         $input = 1;
         $reservation = $this->reservationService->show($id);
-        if($reservation->status != ReservationStatus::WAITING){
+        if ($reservation->status != ReservationStatus::WAITING) {
             return redirect()->route('reservations.index')->with('error', 'You can only apply for a reservation that is in the waiting status!');
         }
         $procedures = $this->procedureService->index($input);

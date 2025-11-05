@@ -65,6 +65,31 @@
                 <div class="col-md-8">
                     <form id="filterForm" action="{{ route('reservations.index') }}" method="GET">
                         <div class="row g-3">
+                            <!-- Date Range Filters -->
+                            <div class="col-md-3">
+                                <label for="date_from" class="form-label small fw-medium">{{ __('messages.date_from') ?? 'Date From' }}</label>
+                                <input type="date" class="form-control form-control-sm" id="date_from" name="date_from"
+                                       value="{{ request('date_from') }}" onchange="this.form.submit()">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="date_to" class="form-label small fw-medium">{{ __('messages.date_to') ?? 'Date To' }}</label>
+                                <input type="date" class="form-control form-control-sm" id="date_to" name="date_to"
+                                       value="{{ request('date_to') }}" onchange="this.form.submit()">
+                            </div>
+                            <!-- Search Field -->
+                            <div class="col-md-4">
+                                <label for="search" class="form-label small fw-medium">{{ __('messages.search') ?? 'Search by Name or Phone' }}</label>
+                                <input type="text" class="form-control form-control-sm" id="search" name="search"
+                                       value="{{ request('search') }}" placeholder="{{ __('messages.search_placeholder') ?? 'Enter name or phone...' }}">
+                            </div>
+                            <div class="col-md-2 d-flex align-items-end">
+                                <button type="submit" class="btn btn-primary btn-sm me-2">
+                                    <i class="fas fa-search me-1"></i>
+                                    {{ __('messages.search') ?? 'Search' }}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row g-3 mt-2">
                             <div class="col-md-4">
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" name="today" id="today_filter"
@@ -85,17 +110,6 @@
                                     </label>
                                 </div>
                             </div>
-                            <div class="col-md-4 text-end">
-                                @if(request('today') || request('history'))
-                                    <a href="{{ route('reservations.index') }}" class="btn btn-outline-secondary btn-sm">
-                                        <i class="fas fa-times me-1"></i>
-                                        {{ __('messages.clear_filters') }}
-                                    </a>
-                                @endif
-                            </div>
-                        </div>
-                    </form>
-                </div>
             </div>
         </div>
     </div>
