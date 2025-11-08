@@ -105,6 +105,45 @@
                                 </div>
                             @endcan
 
+                            <!-- Doctor Selection -->
+                            <div class="form-section glass-inner rounded-4 mb-5">
+                                <div class="section-header d-flex align-items-center mb-4">
+                                    <div class="section-icon bg-success text-white rounded-3 p-3 me-3">
+                                        <i class="fas fa-user-md fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="fw-bold mb-1">{{ __('messages.doctor_selection') ?? 'Doctor Selection' }}</h5>
+                                        <p class="text-muted mb-0 small">{{ __('messages.select_doctor') ?? 'Choose your preferred doctor' }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="form-floating premium-input">
+                                    <select name="doctor_id" id="doctor_id" class="form-select border-0 shadow-sm pt-4" required>
+                                        <option value="">{{ __('messages.select_doctor_placeholder') ?? 'Choose a doctor...' }}</option>
+                                        @foreach ($doctors ?? [] as $doctor)
+                                            <option value="{{ $doctor->id }}" {{ old('doctor_id') == $doctor->id ? 'selected' : '' }}>
+                                                👨‍⚕️ {{ $doctor->localized_name }}
+                                                @if($doctor->specialization)
+                                                    • 🏥 {{ $doctor->specialization }}
+                                                @endif
+                                                @if($doctor->phone)
+                                                    • 📞 {{ $doctor->phone }}
+                                                @endif
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <label for="doctor_id" class="fw-medium text-muted">
+                                        <i class="fas fa-user-md me-2"></i>
+                                        {{ __('messages.select_doctor') ?? 'Select Doctor' }}
+                                    </label>
+                                    @error('doctor_id')
+                                        <div class="error-message mt-2">
+                                            <i class="fas fa-exclamation-triangle me-2"></i>{{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                            </div>
+
                             <!-- Appointment Details -->
                             <div class="form-section glass-inner rounded-4 mb-5">
                                 <div class="section-header d-flex align-items-center mb-4">

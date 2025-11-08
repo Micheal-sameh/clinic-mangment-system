@@ -18,6 +18,7 @@ class ReservationRequest extends FormRequest
     {
         return [
             'user_id' => ['exists:users,id', new CanReserveToday($this->reservation_date)],
+            'doctor_id' => 'required|exists:doctors,id',
             'reservation_date' => ['required','date','after_or_equal:today', new CheckActiveDayRule],
             'slate_number' => 'required|integer',
         ];

@@ -137,6 +137,7 @@
                                         <tr>
                                             <th class="ps-4" style="width: 80px;">{{ __('messages.number') }}</th>
                                             <th>{{ __('messages.patient') }}</th>
+                                            <th>{{ __('messages.doctor') }}</th>
                                             <th style="width: 140px;">{{ __('messages.time') }}</th>
                                             <th style="width: 120px;">{{ __('messages.date') }}</th>
                                             <th class="text-end" style="width: 120px;">{{ __('messages.price') }}</th>
@@ -184,6 +185,28 @@
                                                             </div>
                                                         </div>
                                                     </a>
+                                                </td>
+                                                <td>
+                                                    @if ($reservation->doctor)
+                                                        <a href="{{ route('doctors.show', $reservation->doctor->id) }}"
+                                                            class="text-decoration-none text-dark fw-medium">
+                                                            <div class="d-flex align-items-center">
+                                                                <div
+                                                                    class="doctor-avatar bg-success text-white rounded-circle me-3">
+                                                                    {{ strtoupper(substr($reservation->doctor->localized_name, 0, 1)) }}
+                                                                </div>
+                                                                <div>
+                                                                    {{ $reservation->doctor->localized_name }}
+                                                                    @if ($reservation->doctor->specialization)
+                                                                        <small
+                                                                            class="d-block text-muted">{{ $reservation->doctor->specialization }}</small>
+                                                                    @endif
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                    @else
+                                                        <span class="text-muted">{{ __('messages.no_doctor_assigned') ?? 'No Doctor Assigned' }}</span>
+                                                    @endif
                                                 </td>
                                                 <td>
                                                     <span class="badge bg-light text-dark border">
@@ -278,7 +301,7 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="{{ auth()->user()->can('reservations_paid') || auth()->user()->can('reservations_edit') || auth()->user()->can('reservations_show') || auth()->user()->can('reservations_delete') ? 7 : 6 }}"
+                                                <td colspan="{{ auth()->user()->can('reservations_paid') || auth()->user()->can('reservations_edit') || auth()->user()->can('reservations_show') || auth()->user()->can('reservations_delete') ? 8 : 7 }}"
                                                     class="text-center py-5">
                                                     <div class="empty-state">
                                                         <i class="fas fa-calendar-times text-muted mb-3"
@@ -486,6 +509,16 @@
                 }
 
                 .patient-avatar {
+                    width: 40px;
+                    height: 40px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-weight: 600;
+                    font-size: 1rem;
+                }
+
+                .doctor-avatar {
                     width: 40px;
                     height: 40px;
                     display: flex;

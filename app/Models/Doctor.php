@@ -5,16 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class WorkingDay extends Model
+class Doctor extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'name',
-        'from',
-        'to',
-        'status',
-        'doctor_id',
+        'specialization',
+        'phone',
+        'whatsapp',
     ];
 
     protected $casts = [
@@ -26,8 +25,13 @@ class WorkingDay extends Model
         return $this->name[app()->getLocale()] ?? $this->name['en'];
     }
 
-    public function doctor()
+    public function reservations()
     {
-        return $this->belongsTo(Doctor::class);
+        return $this->hasMany(Reservation::class);
+    }
+
+    public function workingDays()
+    {
+        return $this->hasMany(WorkingDay::class);
     }
 }

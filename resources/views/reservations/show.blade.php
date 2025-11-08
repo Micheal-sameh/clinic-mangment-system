@@ -72,6 +72,32 @@
                             </div>
                         </div>
 
+                        <!-- Doctor Information -->
+                        @if ($reservation->doctor)
+                            <div class="doctor-section mb-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="doctor-avatar bg-success text-white rounded-circle me-3">
+                                        {{ strtoupper(substr($reservation->doctor->localized_name, 0, 1)) }}
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-1">{{ $reservation->doctor->localized_name }}</h5>
+                                        @if ($reservation->doctor->specialization)
+                                            <p class="text-muted mb-0">
+                                                <i class="fas fa-user-md me-2"></i>
+                                                {{ $reservation->doctor->specialization }}
+                                            </p>
+                                        @endif
+                                        @if ($reservation->doctor->phone)
+                                            <p class="text-muted mb-0">
+                                                <i class="fas fa-phone me-2"></i>
+                                                {{ $reservation->doctor->phone }}
+                                            </p>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
                         <!-- Reservation Details Grid -->
                         <div class="row g-4 mb-4">
                             <div class="col-md-6">
@@ -263,6 +289,16 @@
         }
 
         .patient-avatar {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .doctor-avatar {
             width: 60px;
             height: 60px;
             display: flex;

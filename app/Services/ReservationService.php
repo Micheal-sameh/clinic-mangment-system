@@ -32,8 +32,9 @@ class ReservationService
     public function create()
     {
         $users = $this->userRepository->patients();
+        $doctors = app(\App\Repositories\DoctorRepository::class)->index();
 
-        return compact('users');
+        return compact('users', 'doctors');
     }
 
     /**

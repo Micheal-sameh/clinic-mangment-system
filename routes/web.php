@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\ProcedureController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReservationController;
@@ -133,6 +134,16 @@ Route::group(['middleware' => 'setlocale'], function () {
     Route::middleware(['auth'])->prefix('settings')->group(function () {
         Route::get('/', [SettingController::class, 'index'])->name('settings.index');
         Route::put('/', [SettingController::class, 'update'])->name('settings.update');
+    });
+
+    Route::middleware(['auth'])->prefix('doctors')->group(function () {
+        Route::get('/', [DoctorController::class, 'index'])->name('doctors.index');
+        Route::get('/create', [DoctorController::class, 'create'])->name('doctors.create');
+        Route::post('/', [DoctorController::class, 'store'])->name('doctors.store');
+        Route::get('/{id}', [DoctorController::class, 'show'])->name('doctors.show');
+        Route::get('/{id}/edit', [DoctorController::class, 'edit'])->name('doctors.edit');
+        Route::put('/{id}', [DoctorController::class, 'update'])->name('doctors.update');
+        Route::delete('/{id}', [DoctorController::class, 'destroy'])->name('doctors.destroy');
     });
 
 });
