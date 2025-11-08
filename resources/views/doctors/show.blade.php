@@ -1,4 +1,4 @@
-@extends('layouts.sideBar')
+b@extends('layouts.sideBar')
 
 @section('content')
     <div class="min-vh-100 bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-5">
@@ -69,6 +69,12 @@
                     {{ __('messages.back_to_doctors') ?? 'Back to Doctors' }}
                 </a>
                 <div class="d-flex gap-2">
+                    @can('workDays_list')
+                        <a href="{{ route('working-days.doctor', $doctor->id) }}" class="btn btn-info rounded-pill px-4 py-2">
+                            <i class="fas fa-clock me-2"></i>
+                            {{ __('messages.working_days') ?? 'Working Days' }}
+                        </a>
+                    @endcan
                     @can('users_edit')
                         <a href="{{ route('doctors.edit', $doctor->id) }}" class="btn btn-primary rounded-pill px-4 py-2">
                             <i class="fas fa-edit me-2"></i>

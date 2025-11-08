@@ -248,4 +248,11 @@ return [
     'easy_rescheduling' => 'إعادة جدولة سهلة',
     'update_reservation' => 'تحديث الحجز',
     'time_slot_available' => 'الوقت متاح',
+    'doctors' => 'الأطباء',
+    'for_doctor' => 'للطبيب',
+    'select_doctor' => 'اختر الطبيب',
+    'all_doctors' => 'جميع الأطباء',
+    'filter' => 'تصفية',
+    'search_doctor' => 'البحث عن طبيب...',
+    'no_results' => 'لا توجد نتائج',
 ];

@@ -20,7 +20,15 @@ class WorkingDayRepository extends BaseRepository
      */
     public function index($input)
     {
-        return $this->model->get();
+        return $this->model->with('doctor')->get();
+    }
+
+    /**
+     * Display a listing of working days for a specific doctor.
+     */
+    public function indexByDoctor($doctorId)
+    {
+        return $this->model->where('doctor_id', $doctorId)->get();
     }
 
     /**

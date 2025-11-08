@@ -8,7 +8,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class ReservationRequest extends FormRequest
 {
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -19,7 +18,7 @@ class ReservationRequest extends FormRequest
         return [
             'user_id' => ['exists:users,id', new CanReserveToday($this->reservation_date)],
             'doctor_id' => 'required|exists:doctors,id',
-            'reservation_date' => ['required','date','after_or_equal:today', new CheckActiveDayRule],
+            'reservation_date' => ['required', 'date', 'after_or_equal:today', new CheckActiveDayRule],
             'slate_number' => 'required|integer',
         ];
     }
@@ -28,5 +27,4 @@ class ReservationRequest extends FormRequest
     {
         return __('validation.custom.can_reserve_today');
     }
-
 }

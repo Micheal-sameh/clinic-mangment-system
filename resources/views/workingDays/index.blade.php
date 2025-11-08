@@ -57,46 +57,78 @@
 
             <!-- Main Content Card -->
             <div class="card glass-effect border-0 rounded-4 shadow-xxl overflow-hidden">
-                <!-- Premium Header -->
-                <div class="card-header premium-header position-relative overflow-hidden">
-                    <div class="header-shapes">
-                        <div class="shape shape-1"></div>
-                        <div class="shape shape-2"></div>
-                        <div class="shape shape-3"></div>
+            <!-- Premium Header -->
+            <div class="card-header premium-header position-relative overflow-hidden">
+                <div class="header-shapes">
+                    <div class="shape shape-1"></div>
+                    <div class="shape shape-2"></div>
+                    <div class="shape shape-3"></div>
+                </div>
+                <div class="position-relative z-3 text-center text-white py-4">
+                    <div class="header-icon bg-white text-primary rounded-3 p-3 d-inline-flex mb-3">
+                        <i class="fas fa-clock fa-2x"></i>
                     </div>
-                    <div class="position-relative z-3 text-center text-white py-4">
-                        <div class="header-icon bg-white text-primary rounded-3 p-3 d-inline-flex mb-3">
-                            <i class="fas fa-clock fa-2x"></i>
-                        </div>
-                        <h2 class="h3 fw-bold mb-2">{{ __('messages.working_hours') ?? 'Working Hours' }}</h2>
-                        {{-- <p class="mb-0 opacity-90">
-                            {{ __('messages.configure_daily_schedule') ?? 'Configure daily working hours for your clinic' }}
-                        </p> --}}
+                    <h2 class="h3 fw-bold mb-2">{{ __('messages.working_hours') ?? 'Working Hours' }}</h2>
+                    @if(isset($doctor))
+                        <p class="mb-2 opacity-90">
+                            {{ __('messages.for_doctor') ?? 'For Doctor' }}: {{ $doctor->localized_name }}
+                        </p>
+                    @endif
+                    {{-- <p class="mb-0 opacity-90">
+                        {{ __('messages.configure_daily_schedule') ?? 'Configure daily working hours for your clinic' }}
+                    </p> --}}
 
-                        <!-- Quick Stats -->
-                        <div class="row justify-content-center mt-3">
-                            <div class="col-auto">
-                                <div class="stat-badge glass-inner rounded-pill px-3 py-1">
-                                    <i class="fas fa-calendar-check me-1 text-success"></i>
-                                    <small>{{ $workingDays->where('status', App\Enums\WorkingDayStatus::ACTIVE)->count() }}/7
-                                        {{ __('messages.active') ?? 'Active' }}</small>
-                                </div>
+                    <!-- Quick Stats -->
+                    <div class="row justify-content-center mt-3">
+                        <div class="col-auto">
+                            <div class="stat-badge glass-inner rounded-pill px-3 py-1">
+                                <i class="fas fa-calendar-check me-1 text-success"></i>
+                                <small>{{ $workingDays->where('status', App\Enums\WorkingDayStatus::ACTIVE)->count() }}/7
+                                    {{ __('messages.active') ?? 'Active' }}</small>
                             </div>
-                            <div class="col-auto">
-                                <div class="stat-badge glass-inner rounded-pill px-3 py-1">
-                                    <i class="fas fa-users me-1 text-info"></i>
-                                    <small>{{ $workingDays->count() }} {{ __('messages.days') ?? 'Days' }}</small>
-                                </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="stat-badge glass-inner rounded-pill px-3 py-1">
+                                <i class="fas fa-users me-1 text-info"></i>
+                                <small>{{ $workingDays->count() }} {{ __('messages.days') ?? 'Days' }}</small>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
                 <!-- Card Body -->
                 <div class="card-body p-0">
+                    <!-- Doctor Filter -->
+                    <div class="p-4 border-bottom">
+                        <form method="GET" action="{{ route('working-days.index') }}" class="row g-3 align-items-end">
+                            <div class="col-md-4">
+                                <label for="doctor_id" class="form-label fw-semibold">{{ __('messages.select_doctor') ?? 'Select Doctor' }}</label>
+                                <select name="doctor_id" id="doctor_id" class="form-select rounded-pill" data-live-search="true">
+                                    <option value="">{{ __('messages.all_doctors') ?? 'All Doctors' }}</option>
+                                    @foreach($doctors as $doc)
+                                        <option value="{{ $doc->id }}" {{ request('doctor_id') == $doc->id ? 'selected' : '' }}>
+                                            {{ $doc->localized_name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-primary rounded-pill px-4">
+                                    <i class="fas fa-filter me-2"></i>
+                                    {{ __('messages.filter') ?? 'Filter' }}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                     <form id="working-days-form" method="POST" action="{{ route('working-days.update') }}">
                         @csrf
                         @method('PUT')
+
+                        <!-- Include doctor_id in the form if filtering -->
+                        @if(request('doctor_id'))
+                            <input type="hidden" name="doctor_id" value="{{ request('doctor_id') }}">
+                        @endif
 
                         <div class="table-responsive">
                             <table class="table table-hover mb-0">
@@ -110,6 +142,12 @@
                                             <i class="fas fa-calendar-day text-muted me-1"></i>
                                             {{ __('messages.day') }}
                                         </th>
+                                        @if($workingDays->first()->doctor && is_null($doctor))
+                                        <th style="width: 250px;">
+                                            <i class="fas fa-clock text-muted me-1"></i>
+                                            {{ __('messages.doctor') ?? 'Doctor' }}
+                                        </th>
+                                        @endif
                                         <th style="width: 250px;">
                                             <i class="fas fa-clock text-muted me-1"></i>
                                             {{ __('messages.working_hours') ?? 'Working Hours' }}
@@ -150,26 +188,24 @@
                                         @endphp
 
                                         <tr class="working-day-row align-middle {{ !$isActive ? 'table-inactive' : '' }}">
-                                            {{-- <td class="ps-4 fw-bold text-muted">
-                                                <div
-                                                    class="day-number bg-{{ $dayColor }} bg-opacity-10 text-{{ $dayColor }} rounded-2 px-2 py-1 d-inline-block">
-                                                    {{ $key + 1 }}
-                                                </div>
-                                            </td> --}}
                                             <td>
                                                 <div class="d-flex align-items-center">
-                                                    {{-- <div
-                                                        class="day-icon bg-{{ $dayColor }} bg-opacity-10 text-{{ $dayColor }} rounded-2 p-2 me-3">
-                                                        <i class="fas fa-calendar-day"></i>
-                                                    </div> --}}
                                                     <div>
                                                         <h6 class="mb-1 fw-semibold text-{{ $dayColor }}">
                                                             {{ $workingDay->localized_name }}</h6>
-                                                        {{-- <small
-                                                            class="text-muted">{{ __('messages.weekday') ?? 'Weekday' }}</small> --}}
                                                     </div>
                                                 </div>
                                             </td>
+                                            @if(!isset($doctor))
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div>
+                                                        <h6 class="mb-1 fw-semibold text-{{ $dayColor }}">
+                                                            {{ $workingDay->doctor->localized_name }}</h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            @endif
 
                                             @if (auth()->user()->hasRole('admin'))
                                                 <td>
@@ -675,6 +711,18 @@
     </style>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap Select for searchable dropdown -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#doctor_id').selectpicker({
+                liveSearch: true,
+                liveSearchPlaceholder: '{{ __('messages.search_doctor') ?? 'Search for doctor...' }}',
+                noneResultsText: '{{ __('messages.no_results') ?? 'No results found' }}'
+            });
+        });
+    </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('working-days-form');

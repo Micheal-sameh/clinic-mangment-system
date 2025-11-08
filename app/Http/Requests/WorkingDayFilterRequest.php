@@ -11,6 +11,7 @@ class WorkingDayFilterRequest extends FormRequest
         return [
             'start_date' => 'date',
             'end_date' => 'date|after_or_equal:start_date',
+            'doctor_id' => 'nullable|exists:doctors,id',
         ];
     }
 }

@@ -107,6 +107,7 @@ Route::group(['middleware' => 'setlocale'], function () {
         Route::get('/create', [WorkingDayController::class, 'create'])->name('working-days.create');
         Route::put('/', [WorkingDayController::class, 'update'])->name('working-days.update');
         Route::get('/{id}/active', [WorkingDayController::class, 'active'])->name('working-days.active');
+        Route::get('/doctor/{doctorId}', [WorkingDayController::class, 'index'])->name('working-days.doctor')->where('doctorId', '[0-9]+');
         Route::get('check-active-date', function () {
             $data = [
                 'date' => request('date'),

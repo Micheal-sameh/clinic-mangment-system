@@ -154,7 +154,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="{{ can(['procedures_edit', 'procedures_delete']) ? 4 : 3 }}"
+                                        <td colspan="{{ auth()->user()->can(['procedures_edit', 'procedures_delete']) ? 4 : 3 }}"
                                             class="text-center py-5">
                                             <div class="empty-state">
                                                 <i class="fas fa-procedures text-muted mb-3" style="font-size: 3rem;"></i>

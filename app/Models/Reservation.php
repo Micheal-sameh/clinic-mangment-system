@@ -69,7 +69,7 @@ class Reservation extends Model
         $slateStart = $fromTime->copy()->addMinutes(30 * ($slateNumber - 1));
         $slateEnd = $slateStart->copy()->addMinutes(30);
         if ($slateStart->lt($toTime)) {
-            return ['from' => $slateStart->format('H:i') , 'to' => $slateEnd->format('H:i')];
+            return ['from' => $slateStart->format('H:i'), 'to' => $slateEnd->format('H:i')];
         }
     }
 }

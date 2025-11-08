@@ -503,6 +503,15 @@
                             </a>
                         </div>
                     @endcan
+                    @can('users_list')
+                        <div class="nav-item">
+                            <a href="{{ route('doctors.index') }}" class="{{ request()->routeIs('doctors.*') ? 'active' : '' }}">
+                                <i class="fas fa-user-md"></i>
+                                {{ __('messages.doctors') }}
+                                <span class="nav-badge">Admin</span>
+                            </a>
+                        </div>
+                    @endcan
                     @can('reports_list')
                         <div class="nav-item">
                             <a href="{{ route('reports.index') }}"

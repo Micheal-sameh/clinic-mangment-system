@@ -246,4 +246,11 @@ return [
     'easy_rescheduling' => 'Easy Rescheduling',
     'update_reservation' => 'Update Reservation',
     'time_slot_available' => 'Time Slot Available',
+    'doctors' => 'Doctors',
+    'for_doctor' => 'For Doctor',
+    'select_doctor' => 'Select Doctor',
+    'all_doctors' => 'All Doctors',
+    'filter' => 'Filter',
+    'search_doctor' => 'Search for doctor...',
+    'no_results' => 'No results found',
 ];

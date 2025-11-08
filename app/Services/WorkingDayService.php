@@ -2,26 +2,27 @@
 
 namespace App\Services;
 
-use App\DTOs\ProcedureCreateDTO;
 use App\Models\User;
 use App\Repositories\ProcedureRepository;
 use App\Repositories\WorkingDayRepository;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class WorkingDayService
 {
-
-    public function __construct(protected WorkingDayRepository $workingDayRepository)
-    {
-
-    }
+    public function __construct(protected WorkingDayRepository $workingDayRepository) {}
 
     /**
      * Display a listing of the resource.
      */
-    public function index($input)
+    public function index($input, $doctorId = null)
     {
+        if ($doctorId) {
+            return $this->workingDayRepository->indexByDoctor($doctorId);
+        }
+        if (isset($input->doctor_id)) {
+            return $this->workingDayRepository->indexByDoctor($input->doctor_id);
+        }
+
         return $this->workingDayRepository->index($input);
     }
 
@@ -31,7 +32,7 @@ class WorkingDayService
     public function store($input)
     {
         DB::beginTransaction();
-        foreach($input->working_days as $day){
+        foreach ($input->working_days as $day) {
             $this->workingDayRepository->store($day);
         }
         DB::commit();
@@ -40,7 +41,7 @@ class WorkingDayService
     public function update($input)
     {
         DB::beginTransaction();
-        foreach($input->working_days as $key => $day){
+        foreach ($input->working_days as $key => $day) {
             $this->workingDayRepository->update($key, $day);
         }
         DB::commit();
@@ -49,9 +50,7 @@ class WorkingDayService
     /**
      * Display the specified resource.
      */
-    public function show($id)
-    {
-    }
+    public function show($id) {}
 
     /**
      * Show the form for editing the specified resource.
@@ -64,7 +63,6 @@ class WorkingDayService
     /**
      * Update the specified resource in storage.
      */
-
     public function delete($id)
     {
         // return $this->procedureRepository->delete($id);
