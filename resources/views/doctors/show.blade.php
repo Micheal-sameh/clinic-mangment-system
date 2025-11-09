@@ -1,4 +1,4 @@
-b@extends('layouts.sideBar')
+@extends('layouts.sideBar')
 
 @section('content')
     <div class="min-vh-100 bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-5">
@@ -66,7 +66,7 @@ b@extends('layouts.sideBar')
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <a href="{{ route('doctors.index') }}" class="btn btn-outline-secondary rounded-pill px-4 py-2">
                     <i class="fas fa-arrow-left me-2"></i>
-                    {{ __('messages.back_to_doctors') ?? 'Back to Doctors' }}
+                    {{ __('messages.back') ?? 'Back to Doctors' }}
                 </a>
                 <div class="d-flex gap-2">
                     @can('workDays_list')
@@ -127,7 +127,7 @@ b@extends('layouts.sideBar')
                                 <tbody>
                                     @foreach ($doctor->reservations as $reservation)
                                         <tr>
-                                            <td>{{ $reservation->date->format('M d, Y') }}</td>
+                                            <td>{{ $reservation->date }}</td>
                                             <td>{{ $reservation->from }} - {{ $reservation->to }}</td>
                                             <td>
                                                 @if ($reservation->user)
@@ -137,8 +137,8 @@ b@extends('layouts.sideBar')
                                                 @endif
                                             </td>
                                             <td>
-                                                <span class="badge bg-{{ $reservation->status == 'confirmed' ? 'success' : ($reservation->status == 'pending' ? 'warning' : 'secondary') }}">
-                                                    {{ ucfirst($reservation->status) }}
+                                                <span class="badge bg-{{ $reservation->status == App\Enums\ReservationStatus::PAID ? 'success' : ($reservation->status == App\Enums\ReservationStatus::WAITING ? 'warning' : 'secondary') }}">
+                                                    {{ App\Enums\ReservationStatus::getStringValue($reservation->status) }}
                                                 </span>
                                             </td>
                                             <td>

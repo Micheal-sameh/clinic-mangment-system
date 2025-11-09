@@ -318,15 +318,25 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input type="tel" class="form-control @error('phone') is-invalid @enderror"
-                                        id="phone" name="phone" value="{{ old('phone') }}"
-                                        placeholder="{{ __('Phone Number') }}" required>
-                                    <label for="phone">{{ __('Phone Number') }}</label>
-                                    @error('phone')
+                                    <input type="number" class="form-control @error('age') is-invalid @enderror"
+                                        id="age" name="age" value="{{ old('age') }}"
+                                        placeholder="{{ __('Age') }}" min="1" max="120">
+                                    <label for="age">{{ __('Age') }}</label>
+                                    @error('age')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="form-floating">
+                            <input type="tel" class="form-control @error('phone') is-invalid @enderror"
+                                id="phone" name="phone" value="{{ old('phone') }}"
+                                placeholder="{{ __('Phone Number') }}" required>
+                            <label for="phone">{{ __('Phone Number') }}</label>
+                            @error('phone')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div class="form-floating">

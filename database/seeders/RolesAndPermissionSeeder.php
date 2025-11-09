@@ -102,6 +102,24 @@ class RolesAndPermissionSeeder extends Seeder
             $workDays_list,
         ]);
 
+        $doctor = Role::firstOrCreate(['name' => 'doctor']);
+        $doctor->givePermissionTo([
+            $users_profile,
+            $patients_list,
+            $procedures_list,
+            $procedures_show,
+            $reservations_list,
+            $reservations_create,
+            $reservations_add,
+            $reservations_edit,
+            $reservations_show,
+            $reservations_delete,
+            $reservations_paid,
+            $reservations_history,
+
+            $workDays_list,
+        ]);
+
         $patient = Role::firstOrCreate(['name' => 'patient']);
         $patient->givePermissionTo([
             $users_profile,

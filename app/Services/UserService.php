@@ -51,9 +51,9 @@ class UserService
         $reservations = $this->reservationRepository->userShow($id);
         // Get reservation statistics
         $totalReservations = $user->reservations_count;
-        $completedReservations = $this->reservationRepository->getUserTotals($id, ReservationStatus::PAID);
-        $upcomingReservations = $this->reservationRepository->getUserTotals($id, ReservationStatus::WAITING, true);
-        $cancelledReservations = $this->reservationRepository->getUserTotals($id, ReservationStatus::CANCELLED);
+        $completedReservations = $this->reservationRepository->getUserTotals($user, ReservationStatus::PAID);
+        $upcomingReservations = $this->reservationRepository->getUserTotals($user, ReservationStatus::WAITING, true);
+        $cancelledReservations = $this->reservationRepository->getUserTotals($user, ReservationStatus::CANCELLED);
 
         return compact('user', 'reservations', 'totalReservations', 'completedReservations', 'upcomingReservations', 'cancelledReservations');
     }

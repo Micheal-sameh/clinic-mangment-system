@@ -28,7 +28,7 @@ class WorkingDayRepository extends BaseRepository
      */
     public function indexByDoctor($doctorId)
     {
-        return $this->model->where('doctor_id', $doctorId)->get();
+        return $this->model->where('doctor_id', $doctorId)->get()->append(['doctorId']);
     }
 
     /**

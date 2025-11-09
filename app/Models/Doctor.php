@@ -14,6 +14,8 @@ class Doctor extends Model
         'specialization',
         'phone',
         'whatsapp',
+        'user_id',
+        'age',
     ];
 
     protected $casts = [
@@ -33,5 +35,19 @@ class Doctor extends Model
     public function workingDays()
     {
         return $this->hasMany(WorkingDay::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($doctor) {
+            \App\Events\DoctorCreated::dispatch($doctor);
+        });
     }
 }

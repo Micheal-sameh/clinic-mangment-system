@@ -57,4 +57,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Reservation::class);
     }
+
+    public function doctor()
+    {
+        return $this->hasOne(Doctor::class);
+    }
+
+    public function isDoctor()
+    {
+        return $this->hasOne(Doctor::class)->exists();
+    }
 }

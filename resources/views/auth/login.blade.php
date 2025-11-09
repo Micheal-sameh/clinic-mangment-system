@@ -157,7 +157,7 @@
         .login-logo {
             width: 80px;
             height: 80px;
-            border-radius: 50%;
+            border-radius: 35%;
             background: rgba(255, 255, 255, 0.9);
             padding: 12px;
             margin-bottom: 1rem;

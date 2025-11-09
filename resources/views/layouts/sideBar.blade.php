@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'My Laravel App')</title>
+    <title>@yield('title', env('APP_NAME'))</title>
     <link rel="icon" href="{{ $logo }}" type="image/jpg">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -69,11 +69,13 @@
         .sidebar-header img {
             width: 80px;
             height: 80px;
-            border-radius: 50%;
+            border-radius: 35px;
             border: 3px solid rgba(255, 255, 255, 0.2);
             padding: 3px;
             margin-bottom: 1rem;
             transition: all 0.3s ease;
+            object-fit: contain;
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .sidebar-header img:hover {
@@ -436,7 +438,7 @@
         <!-- Sidebar Header -->
         <div class="sidebar-header">
             <img src="{{ $logo }}" alt="Logo">
-            <h1 class="app-name">MediCare</h1>
+            <h1 class="app-name">{{ env('APP_NAME') }}</h1>
             <p class="app-subtitle">Healthcare Management</p>
         </div>
         <!-- Navigation -->

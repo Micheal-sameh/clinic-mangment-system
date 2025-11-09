@@ -63,6 +63,7 @@ class ReservationRepository extends BaseRepository
             'reservation_number' => $input['slate_number'],
             'from' => $data['from'],
             'to' => $data['to'],
+            'doctor_id' => $input['doctor_id'],
         ]);
 
     }
@@ -147,10 +148,13 @@ class ReservationRepository extends BaseRepository
         return compact('reservationsToday');
     }
 
-    public function getUserTotals($id, $status, $upcoming = false)
+    public function getUserTotals($user, $status, $upcoming = false)
     {
+        $field = $user->isDoctor() ? 'doctor_id' : 'user_id';
+        $value = $user->isDoctor() ? $user->doctor->id : $user->id;
+
         return $this->query()
-            ->where('user_id', $id)
+            ->where($field, $value)
             ->where('status', $status)
             ->when($upcoming, fn ($q) => $q->whereDate('date', '>=', today()))
             ->count();
