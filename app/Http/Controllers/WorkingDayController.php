@@ -51,7 +51,7 @@ class WorkingDayController extends Controller
 
     public function slates(Request $request)
     {
-        $slates = $this->workingDayService->slatesNumber($request->date);
+        $slates = $this->workingDayService->slatesNumber($request->date, $request->doctor_id);
 
         return $slates;
     }

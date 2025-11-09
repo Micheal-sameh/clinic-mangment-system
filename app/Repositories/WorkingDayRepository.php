@@ -80,11 +80,17 @@ class WorkingDayRepository extends BaseRepository
         return parent::delete($id);
     }
 
-    public function slatesNumber($date)
+    public function slatesNumber($date, $doctorId = null)
     {
         $weekday = Carbon::create($date)->format('l');
 
-        $day = $this->query()->where('name->'.'en', $weekday)->first();
+        $query = $this->query()->where('name->'.'en', $weekday);
+
+        if ($doctorId) {
+            $query->where('doctor_id', $doctorId);
+        }
+
+        $day = $query->first();
 
         if (! $day) {
             return [];
@@ -94,11 +100,15 @@ class WorkingDayRepository extends BaseRepository
         $endTime = Carbon::createFromFormat('H:i:s', $day->to);
         $slateIntervals = [];
 
-        // Get reserved intervals more efficiently using pluck
-        $reservedIntervals = Reservation::where('date', $date)
-            ->where('status', '!=', ReservationStatus::CANCELLED)
-            ->pluck('reservation_number')
-            ->toArray();
+        // Get reserved intervals more efficiently using pluck, filtered by doctor_id if provided
+        $reservedQuery = Reservation::where('date', $date)
+            ->where('status', '!=', ReservationStatus::CANCELLED);
+
+        if ($doctorId) {
+            $reservedQuery->where('doctor_id', $doctorId);
+        }
+
+        $reservedIntervals = $reservedQuery->pluck('reservation_number')->toArray();
 
         while ($startTime->lt($endTime)) {
             $slateEnd = $startTime->copy()->addMinutes(30);

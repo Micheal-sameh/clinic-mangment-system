@@ -534,6 +534,7 @@
 
         dateInput.addEventListener('change', async function() {
             const date = this.value;
+            const doctorId = document.getElementById('doctor_id').value;
             slateSelect.innerHTML = '<option value="">{{ __('messages.select_time_slot') ?? "Select Time Slot" }}</option>';
             statusText.style.display = 'none';
             setLoadingState(true);
@@ -546,7 +547,7 @@
             showStatus('{{ __('messages.checking_availability') ?? "🔍 Checking availability..." }}', 'loading');
 
             try {
-                const activeRes = await fetch(`/working-days/check-active-date?date=${encodeURIComponent(date)}`);
+                const activeRes = await fetch(`/working-days/check-active-date?date=${encodeURIComponent(date)}&doctor_id=${encodeURIComponent(doctorId)}`);
                 const activeData = await activeRes.json();
 
                 if (!activeData.is_active) {
@@ -556,7 +557,7 @@
                     return;
                 }
 
-                const slateRes = await fetch(`/working-days/slatesNumber?date=${encodeURIComponent(date)}`);
+                const slateRes = await fetch(`/working-days/slatesNumber?date=${encodeURIComponent(date)}&doctor_id=${encodeURIComponent(doctorId)}`);
                 const slates = await slateRes.json();
 
                 if (slates.length === 0) {

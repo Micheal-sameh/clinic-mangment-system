@@ -68,8 +68,8 @@ class WorkingDayService
         // return $this->procedureRepository->delete($id);
     }
 
-    public function slatesNumber($date)
+    public function slatesNumber($date, $doctorId = null)
     {
-        return $this->workingDayRepository->slatesNumber($date);
+        return $this->workingDayRepository->slatesNumber($date, $doctorId);
     }
 }

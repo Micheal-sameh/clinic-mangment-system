@@ -111,9 +111,11 @@ Route::group(['middleware' => 'setlocale'], function () {
         Route::get('check-active-date', function () {
             $data = [
                 'date' => request('date'),
+                'doctor_id' => request('doctor_id'),
             ];
             $validator = Validator::make($data, [
-                'date' => ['required', new CheckActiveDayRule],
+                'date' => ['required', new CheckActiveDayRule(request('doctor_id'))],
+                'doctor_id' => 'required|exists:doctors,id',
             ]);
             $is_active = 0;
             if (! $validator->fails()) {
@@ -121,7 +123,7 @@ Route::group(['middleware' => 'setlocale'], function () {
             }
 
             return response()->json(['is_active' => $is_active]);
-        });
+        })->withoutMiddleware(['auth']);
 
     });
 

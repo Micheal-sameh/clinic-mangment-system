@@ -45,7 +45,7 @@ class ReservationController extends Controller
     {
         $data = $this->reservationService->create();
 
-        return view('reservations.create', ['users' => $data['users']]);
+        return view('reservations.create', ['users' => $data['users'], 'doctors' => $data['doctors']]);
     }
 
     /**

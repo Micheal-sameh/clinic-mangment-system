@@ -10,6 +10,13 @@ use Illuminate\Contracts\Validation\ValidationRule;
 
 class CheckActiveDayRule implements ValidationRule
 {
+    protected $doctorId;
+
+    public function __construct($doctorId = null)
+    {
+        $this->doctorId = $doctorId;
+    }
+
     /**
      * Run the validation rule.
      *
@@ -18,10 +25,15 @@ class CheckActiveDayRule implements ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         $weekday = Carbon::create($value)->format('l');
-        $day = WorkingDay::where('name->en', $weekday)->first();
-        // dd($day, $weekday);
+        $query = WorkingDay::where('name->en', $weekday);
 
-        if($day->status == WorkingDayStatus::INACTIVE){
+        if ($this->doctorId) {
+            $query->where('doctor_id', $this->doctorId);
+        }
+
+        $day = $query->first();
+
+        if (! $day || $day->status == WorkingDayStatus::INACTIVE) {
             $fail(__('messages.holiday'));
         }
     }
