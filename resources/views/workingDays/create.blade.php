@@ -1,9 +1,5 @@
 @extends('layouts.sideBar')
 
-@section('title')
-    {{ __('messages.create') }} {{ __('messages.working_days') }}
-@endsection
-
 @section('content')
 <div class="container">
     <h1 class="text-center mb-4"> {{__('messages.create')}} {{__('messages.working_days')}} </h1>

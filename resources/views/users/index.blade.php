@@ -1,7 +1,5 @@
 @extends('layouts.sideBar')
 
-@section('title', __('messages.users'))
-
 @section('content')
     <div class="min-vh-100 bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-5">
         <div class="container">

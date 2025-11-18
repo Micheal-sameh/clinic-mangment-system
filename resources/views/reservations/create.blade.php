@@ -119,7 +119,7 @@
 
                                 <div class="form-floating premium-input">
                                     <select name="doctor_id" id="doctor_id" class="form-select border-0 shadow-sm pt-4" required>
-                                        <option value="">{{ __('messages.select_doctor_placeholder') ?? 'Choose a doctor...' }}</option>
+                                        <option value="">{{ __('messages.select_doctor') ?? 'Choose a doctor...' }}</option>
                                         @foreach ($doctors ?? [] as $doctor)
                                             <option value="{{ $doctor->id }}" {{ old('doctor_id') == $doctor->id ? 'selected' : '' }}>
                                                 👨‍⚕️ {{ $doctor->localized_name }}

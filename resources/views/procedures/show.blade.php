@@ -1,9 +1,5 @@
 @extends('layouts.sideBar')
 
-@section('title')
-    {{ __('messages.procedure_details') ?? 'Procedure Details' }}
-@endsection
-
 @section('content')
     <div class="container-fluid py-4">
         <div class="row justify-content-center">

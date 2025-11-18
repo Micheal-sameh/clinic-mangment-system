@@ -265,4 +265,8 @@ return [
     'edit_doctor' => 'Edit Doctor',
     'delete_doctor' => 'Delete Doctor',
     'apply_treatment' => 'Apply Treatment',
+    'activate_day' => 'Activate Day',
+    'deactivate_day' => 'Deactivate Day',
+    'slots_available' => 'Slots Available',
+    'doctor_selection' => 'Doctor Selection',
 ];

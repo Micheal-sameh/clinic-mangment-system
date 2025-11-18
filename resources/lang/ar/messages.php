@@ -267,4 +267,8 @@ return [
     'edit_doctor' => 'تعديل الطبيب',
     'delete_doctor' => 'حذف الطبيب',
     'apply_treatment' => 'تطبيق العلاج',
+    'activate_day' => 'تفعيل اليوم',
+    'deactivate_day' => 'تعطيل اليوم',
+    'slots_available' => 'الفترات المتاحة',
+    'doctor_selection' => 'اختيار الطبيب',
 ];

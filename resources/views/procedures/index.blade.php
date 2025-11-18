@@ -1,9 +1,5 @@
 @extends('layouts.sideBar')
 
-@section('title')
-    {{ __('messages.procedures') }}
-@endsection
-
 @section('content')
     <div class="container-fluid">
         <!-- Header Section -->

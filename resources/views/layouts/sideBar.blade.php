@@ -69,7 +69,7 @@
         .sidebar-header img {
             width: 80px;
             height: 80px;
-            border-radius: 35px;
+            border-radius: 25px;
             border: 3px solid rgba(255, 255, 255, 0.2);
             padding: 3px;
             margin-bottom: 1rem;

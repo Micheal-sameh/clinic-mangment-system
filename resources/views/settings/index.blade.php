@@ -66,11 +66,12 @@
                         <div class="col-md-6 col-lg-4">
                             <div class="card setting-card glass-effect border-0 rounded-4 shadow-sm h-100">
                                 <div class="card-body">
-                                    <h5 class="card-title fw-bold text-primary mb-3">{{ $setting->name }}</h5>
-                                    <input type="hidden" name="settings[{{ $setting->id }}][id]" value="{{ $setting->id }}">
+                                    <h5 class="card-title fw-bold text-primary mb-3">{{ $setting->key }}</h5>
+                                    <input type="hidden" name="settings[{{ $setting->id }}][id]"
+                                        value="{{ $setting->id }}">
                                     <!-- Value Field -->
                                     <div class="mb-3">
-                                        <label class="form-label small text-muted fw-semibold">{{ __('messages.value') }}:</label>
+                                        {{-- <label class="form-label small text-muted fw-semibold">{{ __('messages.value') }}:</label> --}}
                                         @if ($setting->type === 'file')
                                             <input type="file" name="settings[{{ $setting->id }}][value]"
                                                 class="form-control premium-input">
@@ -82,8 +83,10 @@
 
                                     <!-- Type Display -->
                                     <div class="mb-3">
-                                        <label class="form-label small text-muted fw-semibold">{{ __('messages.type') }}</label>
-                                        <span class="badge bg-info bg-opacity-10 text-info">{{ ucfirst($setting->type) }}</span>
+                                        <label
+                                            class="form-label small text-muted fw-semibold">{{ __('messages.type') }}</label>
+                                        <span
+                                            class="badge bg-info bg-opacity-10 text-info">{{ ucfirst($setting->type) }}</span>
                                     </div>
 
                                     <!-- Hidden name -->
@@ -173,9 +176,12 @@
         }
 
         @keyframes float {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: translateY(0px) rotate(0deg);
             }
+
             50% {
                 transform: translateY(-20px) rotate(180deg);
             }

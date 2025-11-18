@@ -1,9 +1,5 @@
 @extends('layouts.sideBar')
 
-@section('title')
-    {{ $user->localized_name }}
-@endsection
-
 @section('content')
     <div class="container-fluid py-4">
         <div class="row">
