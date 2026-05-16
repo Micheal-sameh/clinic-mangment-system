@@ -347,6 +347,51 @@
                         </div>
                     </div>
 
+                    <!-- Medical Information Section -->
+                    <div class="form-section">
+                        <div class="section-title">
+                            <i class="fas fa-heartbeat"></i>
+                            {{ __('messages.medical_info') ?? 'Medical Information' }}
+                        </div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <select class="form-control" id="blood_type" name="blood_type">
+                                        <option value="">—</option>
+                                        @foreach(['A+','A-','B+','B-','AB+','AB-','O+','O-'] as $bt)
+                                            <option value="{{ $bt }}" {{ old('blood_type', $user->blood_type) == $bt ? 'selected' : '' }}>{{ $bt }}</option>
+                                        @endforeach
+                                    </select>
+                                    <label for="blood_type">{{ __('messages.blood_type') ?? 'Blood Type' }}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="emergency_contact_name" name="emergency_contact_name"
+                                        value="{{ old('emergency_contact_name', $user->emergency_contact_name) }}"
+                                        placeholder="{{ __('messages.emergency_contact') ?? 'Emergency Contact' }}">
+                                    <label for="emergency_contact_name">{{ __('messages.emergency_contact') ?? 'Emergency Contact' }}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <input type="tel" class="form-control" id="emergency_contact_phone" name="emergency_contact_phone"
+                                        value="{{ old('emergency_contact_phone', $user->emergency_contact_phone) }}"
+                                        placeholder="{{ __('messages.emergency_phone') ?? 'Emergency Phone' }}">
+                                    <label for="emergency_contact_phone">{{ __('messages.emergency_phone') ?? 'Emergency Phone' }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control" id="allergies" name="allergies" placeholder="Allergies" style="height:80px;">{{ old('allergies', $user->allergies) }}</textarea>
+                            <label for="allergies">{{ __('messages.allergies') ?? 'Allergies' }}</label>
+                        </div>
+                        <div class="form-floating">
+                            <textarea class="form-control" id="chronic_conditions" name="chronic_conditions" placeholder="Chronic Conditions" style="height:80px;">{{ old('chronic_conditions', $user->chronic_conditions) }}</textarea>
+                            <label for="chronic_conditions">{{ __('messages.chronic_conditions') ?? 'Chronic Conditions' }}</label>
+                        </div>
+                    </div>
+
                     <!-- Account Information Section -->
                     <div class="form-section">
                         <div class="section-title">

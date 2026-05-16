@@ -33,6 +33,11 @@ class UserUpdateRequest extends FormRequest
             'age' => 'required|integer|min:0|max:90',
             'email' => 'required|email|unique:users,email,'.$userId,
             'role' => 'required|exists:roles,name',
+            'blood_type' => 'nullable|string|max:5',
+            'allergies' => 'nullable|string|max:2000',
+            'chronic_conditions' => 'nullable|string|max:2000',
+            'emergency_contact_name' => 'nullable|string|max:255',
+            'emergency_contact_phone' => 'nullable|string|max:20',
         ];
     }
 }

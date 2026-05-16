@@ -25,6 +25,11 @@ class User extends Authenticatable
         'status',
         'phone',
         'age',
+        'blood_type',
+        'allergies',
+        'chronic_conditions',
+        'emergency_contact_name',
+        'emergency_contact_phone',
     ];
 
     /**
@@ -66,5 +71,15 @@ class User extends Authenticatable
     public function isDoctor()
     {
         return $this->hasOne(Doctor::class)->exists();
+    }
+
+    public function diagnoses()
+    {
+        return $this->hasMany(Diagnosis::class);
+    }
+
+    public function prescriptions()
+    {
+        return $this->hasMany(Prescription::class);
     }
 }

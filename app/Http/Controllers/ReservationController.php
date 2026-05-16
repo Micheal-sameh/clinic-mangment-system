@@ -119,6 +119,7 @@ class ReservationController extends Controller
             return redirect()->route('reservations.index')->with('error', 'You can only apply for a reservation that is in the waiting status!');
         }
         $procedures = $this->procedureService->index($input);
+        $reservation->load(['reservationNotes', 'reservationProcedures', 'diagnoses', 'prescriptions', 'user', 'doctor.user']);
 
         return view('reservations.apply', compact('reservation', 'procedures'));
     }

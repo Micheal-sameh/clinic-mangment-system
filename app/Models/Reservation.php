@@ -42,6 +42,16 @@ class Reservation extends Model
         return $this->hasMany(ReservationNote::class);
     }
 
+    public function diagnoses()
+    {
+        return $this->hasMany(Diagnosis::class);
+    }
+
+    public function prescriptions()
+    {
+        return $this->hasMany(Prescription::class);
+    }
+
     // public function getReservationNumberAttribute($value)
     // {
     //     $weekday = Carbon::create($this->date)->format('l');

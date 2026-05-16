@@ -84,6 +84,8 @@ class UserController extends Controller
             'completedReservations' => $data['completedReservations'],
             'upcomingReservations' => $data['upcomingReservations'],
             'cancelledReservations' => $data['cancelledReservations'],
+            'diagnoses' => $data['diagnoses'],
+            'prescriptions' => $data['prescriptions'],
         ]);
     }
 

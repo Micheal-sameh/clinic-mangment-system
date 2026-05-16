@@ -82,6 +82,11 @@ class UserRepository extends BaseRepository
             'email' => $request->email,
             'phone' => $request->phone,
             'age' => $request->age,
+            'blood_type' => $request->blood_type,
+            'allergies' => $request->allergies,
+            'chronic_conditions' => $request->chronic_conditions,
+            'emergency_contact_name' => $request->emergency_contact_name,
+            'emergency_contact_phone' => $request->emergency_contact_phone,
         ]);
 
         $user->syncRoles([$request->role]);

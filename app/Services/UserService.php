@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Enums\ReservationStatus;
+use App\Models\Diagnosis;
+use App\Models\Prescription;
 use App\Models\User;
 use App\Repositories\ReservationRepository;
 use App\Repositories\UserRepository;
@@ -55,7 +57,16 @@ class UserService
         $upcomingReservations = $this->reservationRepository->getUserTotals($user, ReservationStatus::WAITING, true);
         $cancelledReservations = $this->reservationRepository->getUserTotals($user, ReservationStatus::CANCELLED);
 
-        return compact('user', 'reservations', 'totalReservations', 'completedReservations', 'upcomingReservations', 'cancelledReservations');
+        $diagnoses = Diagnosis::where('user_id', $user->id)
+            ->with(['reservation', 'doctor.user'])
+            ->latest()
+            ->get();
+        $prescriptions = Prescription::where('user_id', $user->id)
+            ->with(['reservation', 'doctor.user'])
+            ->latest()
+            ->get();
+
+        return compact('user', 'reservations', 'totalReservations', 'completedReservations', 'upcomingReservations', 'cancelledReservations', 'diagnoses', 'prescriptions');
     }
 
     public function profile($id)

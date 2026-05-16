@@ -169,7 +169,7 @@
             @endif
 
             {{-- Add Notes Card --}}
-            <div class="card">
+            <div class="card mb-4">
                 <div class="card-body">
                     <div class="d-flex align-items-center gap-2 mb-3">
                         <div class="section-icon bg-success bg-opacity-10">
@@ -197,6 +197,171 @@
                                 <i class="fas fa-save me-2"></i>{{ __('messages.save_notes') ?? 'Save Notes' }}
                             </button>
                         </div>
+                    </form>
+                </div>
+            </div>
+
+            {{-- Diagnoses Section --}}
+            @if($reservation->diagnoses && $reservation->diagnoses->count())
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <div class="section-icon bg-danger bg-opacity-10">
+                            <i class="fas fa-diagnoses text-danger"></i>
+                        </div>
+                        <h5 class="mb-0 fw-bold">{{ __('messages.diagnoses') ?? 'Diagnoses' }}</h5>
+                        <span class="badge bg-secondary ms-auto">{{ $reservation->diagnoses->count() }}</span>
+                    </div>
+                    @foreach($reservation->diagnoses as $dx)
+                    <div class="p-3 rounded-3 border mb-2" style="background:#fafafa;">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <p class="mb-1 fw-semibold">{{ $dx->diagnosis }}</p>
+                                @if($dx->icd_code)
+                                    <span class="badge bg-light text-dark border me-1">ICD: {{ $dx->icd_code }}</span>
+                                @endif
+                                @if($dx->notes)
+                                    <p class="text-muted mt-1 mb-0" style="font-size:.85rem;">{{ $dx->notes }}</p>
+                                @endif
+                                <div class="text-muted mt-1" style="font-size:.75rem;">{{ $dx->created_at->format('d M Y, H:i') }}</div>
+                            </div>
+                            <form action="{{ route('diagnoses.destroy', $dx->id) }}" method="POST" class="ms-2">
+                                @csrf @method('DELETE')
+                                <button class="btn btn-sm btn-light border text-danger" title="Delete">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            @endif
+
+            {{-- Add Diagnosis --}}
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <div class="section-icon bg-danger bg-opacity-10">
+                            <i class="fas fa-file-medical text-danger"></i>
+                        </div>
+                        <h5 class="mb-0 fw-bold">{{ __('messages.add_diagnosis') ?? 'Add Diagnosis' }}</h5>
+                    </div>
+                    <form action="{{ route('diagnoses.store') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="reservation_id" value="{{ $reservation->id }}">
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <label class="form-label">{{ __('messages.diagnosis') ?? 'Diagnosis' }} <span class="text-danger">*</span></label>
+                                <textarea name="diagnosis" class="form-control" rows="3" required
+                                    placeholder="{{ __('messages.diagnosis_placeholder') ?? 'Describe the diagnosis...' }}"></textarea>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">{{ __('messages.icd_code') ?? 'ICD Code' }}</label>
+                                <input type="text" name="icd_code" class="form-control" placeholder="e.g. J06.9" maxlength="20">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">{{ __('messages.notes') ?? 'Notes' }}</label>
+                                <textarea name="notes" class="form-control" rows="2"
+                                    placeholder="{{ __('messages.optional_notes') ?? 'Optional additional notes...' }}"></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-danger mt-3">
+                            <i class="fas fa-save me-2"></i>{{ __('messages.save_diagnosis') ?? 'Save Diagnosis' }}
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            {{-- Prescriptions Section --}}
+            @if($reservation->prescriptions && $reservation->prescriptions->count())
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <div class="section-icon bg-info bg-opacity-10">
+                            <i class="fas fa-prescription-bottle-alt text-info"></i>
+                        </div>
+                        <h5 class="mb-0 fw-bold">{{ __('messages.prescriptions') ?? 'Prescriptions' }}</h5>
+                        <span class="badge bg-secondary ms-auto">{{ $reservation->prescriptions->count() }}</span>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>{{ __('messages.medicine') ?? 'Medicine' }}</th>
+                                    <th>{{ __('messages.dosage') ?? 'Dosage' }}</th>
+                                    <th>{{ __('messages.frequency') ?? 'Frequency' }}</th>
+                                    <th>{{ __('messages.duration') ?? 'Duration' }}</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($reservation->prescriptions as $rx)
+                                <tr>
+                                    <td class="fw-semibold">{{ $rx->medicine_name }}</td>
+                                    <td>{{ $rx->dosage ?? '—' }}</td>
+                                    <td>{{ $rx->frequency ?? '—' }}</td>
+                                    <td>{{ $rx->duration ?? '—' }}</td>
+                                    <td>
+                                        <form action="{{ route('prescriptions.destroy', $rx->id) }}" method="POST" class="d-inline">
+                                            @csrf @method('DELETE')
+                                            <button class="btn btn-sm btn-light border text-danger"><i class="fas fa-trash-alt"></i></button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                @if($rx->notes)
+                                <tr class="table-light">
+                                    <td colspan="5" class="text-muted" style="font-size:.82rem;padding-top:.25rem;">
+                                        <i class="fas fa-comment-dots me-1"></i>{{ $rx->notes }}
+                                    </td>
+                                </tr>
+                                @endif
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            {{-- Add Prescription --}}
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <div class="section-icon bg-info bg-opacity-10">
+                            <i class="fas fa-pills text-info"></i>
+                        </div>
+                        <h5 class="mb-0 fw-bold">{{ __('messages.add_prescription') ?? 'Add Prescription' }}</h5>
+                    </div>
+                    <form action="{{ route('prescriptions.store') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="reservation_id" value="{{ $reservation->id }}">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">{{ __('messages.medicine_name') ?? 'Medicine Name' }} <span class="text-danger">*</span></label>
+                                <input type="text" name="medicine_name" class="form-control" required
+                                    placeholder="{{ __('messages.medicine_placeholder') ?? 'e.g. Amoxicillin 500mg' }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">{{ __('messages.dosage') ?? 'Dosage' }}</label>
+                                <input type="text" name="dosage" class="form-control" placeholder="e.g. 500mg">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">{{ __('messages.frequency') ?? 'Frequency' }}</label>
+                                <input type="text" name="frequency" class="form-control" placeholder="e.g. 3x daily">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">{{ __('messages.duration') ?? 'Duration' }}</label>
+                                <input type="text" name="duration" class="form-control" placeholder="e.g. 7 days">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">{{ __('messages.notes') ?? 'Notes' }}</label>
+                                <input type="text" name="notes" class="form-control" placeholder="{{ __('messages.optional_notes') ?? 'Optional...' }}">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-info text-white mt-3">
+                            <i class="fas fa-save me-2"></i>{{ __('messages.save_prescription') ?? 'Save Prescription' }}
+                        </button>
                     </form>
                 </div>
             </div>
