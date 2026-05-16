@@ -50,7 +50,7 @@
             position: absolute;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.08);
-            animation: float 8s ease-in-out infinite;
+            
         }
 
         .shape-1 { width: 280px; height: 280px; top: 5%; left: 2%; animation-delay: 0s; }
@@ -64,7 +64,7 @@
             position: absolute;
             color: rgba(255, 255, 255, 0.06);
             font-size: 5rem;
-            animation: float 10s ease-in-out infinite;
+            
         }
         .med-cross-1 { top: 15%; right: 8%; animation-delay: 0.5s; }
         .med-cross-2 { bottom: 20%; left: 5%; animation-delay: 2.5s; font-size: 3.5rem; }
@@ -294,8 +294,8 @@
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .glass-card { animation: slideInUp 0.6s ease-out; }
-        .form-group { animation: slideInUp 0.6s ease-out; animation-fill-mode: both; }
+        .glass-card {  }
+        .form-group {  }
         .form-group:nth-child(1) { animation-delay: 0.1s; }
         .form-group:nth-child(2) { animation-delay: 0.2s; }
         .form-group:nth-child(3) { animation-delay: 0.3s; }

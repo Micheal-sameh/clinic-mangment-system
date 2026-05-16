@@ -40,14 +40,14 @@
             position: absolute;
             border-radius: 50%;
             background: rgba(255,255,255,0.07);
-            animation: float 10s ease-in-out infinite;
+            
         }
         .shape-1 { width: 300px; height: 300px; top: -50px; right: -50px; }
         .shape-2 { width: 200px; height: 200px; bottom: 10%; left: -30px; animation-delay: 3s; }
         .shape-3 { width: 120px; height: 120px; top: 40%; right: 8%; animation-delay: 1.5s; }
         .med-cross {
             position: absolute; color: rgba(255,255,255,0.06);
-            font-size: 4rem; animation: float 12s ease-in-out infinite;
+            font-size: 4rem; 
         }
         .med-cross-1 { top: 20%; left: 5%; animation-delay: 1s; }
         .med-cross-2 { bottom: 15%; right: 6%; font-size: 2.5rem; animation-delay: 3s; }
@@ -75,7 +75,7 @@
             overflow: hidden;
             width: 100%;
             max-width: 560px;
-            animation: slideInUp 0.6s ease-out;
+            
         }
 
         @keyframes slideInUp {

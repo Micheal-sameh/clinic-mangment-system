@@ -114,7 +114,7 @@
     </div>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
 
         :root {
             --primary-gradient: linear-gradient(135deg, #0d9488 0%, #0891b2 100%);
@@ -148,7 +148,7 @@
             position: absolute;
             border-radius: 50%;
             background: linear-gradient(135deg, rgba(13, 148, 136, 0.1), rgba(8, 145, 178, 0.05));
-            animation: float 8s ease-in-out infinite;
+            
         }
 
         .element-1 {
@@ -284,7 +284,7 @@
         }
     </style>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize tooltips

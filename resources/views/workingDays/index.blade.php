@@ -351,7 +351,7 @@
     </div>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
 
         :root {
             --primary-gradient: linear-gradient(135deg, #0d9488 0%, #0891b2 100%);
@@ -386,7 +386,7 @@
             position: absolute;
             border-radius: 50%;
             background: linear-gradient(135deg, rgba(13, 148, 136, 0.1), rgba(8, 145, 178, 0.05));
-            animation: float 8s ease-in-out infinite;
+
         }
 
         .element-1 {
@@ -706,18 +706,33 @@
         }
     </style>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Bootstrap Select for searchable dropdown -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
+
+    <!-- Native searchable select (no library needed) -->
     <script>
-        $(document).ready(function() {
-            $('#doctor_id').selectpicker({
-                liveSearch: true,
-                liveSearchPlaceholder: '{{ __('messages.search_doctor') ?? 'Search for doctor...' }}',
-                noneResultsText: '{{ __('messages.no_results') ?? 'No results found' }}'
+        // Simple live-search for doctor select
+        (function () {
+            var sel = document.getElementById('doctor_id');
+            if (!sel) return;
+            var wrap = sel.parentNode;
+            var input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'form-control form-control-sm mb-1';
+            input.placeholder = '{{ __('messages.search_doctor') ?? 'Search doctor...' }}';
+            wrap.insertBefore(input, sel);
+            var allOptions = Array.from(sel.options);
+            input.addEventListener('input', function () {
+                var q = this.value.toLowerCase();
+                Array.from(sel.options).forEach(function (o) { o.hidden = true; });
+                allOptions.forEach(function (o) {
+                    if (!q || o.text.toLowerCase().includes(q)) {
+                        o.hidden = false;
+                        if (!sel.querySelector('option:not([hidden]):checked')) {
+                            sel.value = '';
+                        }
+                    }
+                });
             });
-        });
+        })();
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {

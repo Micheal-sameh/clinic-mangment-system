@@ -36,15 +36,10 @@
             position: absolute;
             border-radius: 50%;
             background: rgba(255,255,255,0.04);
-            animation: floatHero 12s ease-in-out infinite;
         }
-        .hero-shape-1 { width: 500px; height: 500px; top: -150px; right: -100px; animation-delay: 0s; }
-        .hero-shape-2 { width: 300px; height: 300px; bottom: -80px; left: -60px; animation-delay: 4s; }
-        .hero-shape-3 { width: 180px; height: 180px; top: 30%; left: 15%; animation-delay: 2s; }
-        @keyframes floatHero {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-30px) scale(1.03); }
-        }
+        .hero-shape-1 { width: 500px; height: 500px; top: -150px; right: -100px; }
+        .hero-shape-2 { width: 300px; height: 300px; bottom: -80px; left: -60px; }
+        .hero-shape-3 { width: 180px; height: 180px; top: 30%; left: 15%; }
 
         /* Navbar */
         .hero-nav {
@@ -309,7 +304,7 @@
             </div>
             <div class="nav-links">
                 @auth
-                    <a href="{{ url('/home') }}" class="nav-link nav-btn">
+                    <a href="{{ url('/') }}" class="nav-link nav-btn">
                         <i class="fas fa-tachometer-alt me-1"></i> Dashboard
                     </a>
                 @else

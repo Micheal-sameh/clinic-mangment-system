@@ -32,7 +32,11 @@ Route::get('/', function () {
     } else {
         return redirect()->route('login'); // Redirect to login if not authenticated
     }
-});
+})->name('home');
+
+Route::get('/welcome', function () {
+    return view('welcome');
+})->name('welcome');
 Route::group(['middleware' => 'setlocale'], function () {
 
     // Language change routes (optional, if you want to switch languages via URL)

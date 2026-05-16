@@ -438,7 +438,9 @@
         }
     </style>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    @push('head_scripts')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+    @endpush
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize tooltips

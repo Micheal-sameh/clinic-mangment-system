@@ -9,10 +9,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', env('APP_NAME'))</title>
     <link rel="icon" href="{{ $logo }}" type="image/jpg">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Non-blocking font load -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    @stack('head_scripts')
 
     <style>
         /* ============================================
@@ -42,7 +47,7 @@
             --sidebar-width:   260px;
 
             /* Content */
-            --content-bg:      #f0fdfa;
+            --content-bg:      #f8fafc;
             --card-bg:         #ffffff;
 
             /* Gradients */
@@ -55,14 +60,14 @@
             --shadow:          0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
             --shadow-md:       0 8px 24px rgba(0,0,0,0.10), 0 4px 8px rgba(0,0,0,0.06);
             --shadow-lg:       0 20px 40px rgba(0,0,0,0.12), 0 8px 16px rgba(0,0,0,0.06);
-            --shadow-primary:  0 8px 24px rgba(13,148,136,0.30);
-            --shadow-xxl:      0 25px 50px -12px rgba(0,0,0,0.20);
+            --shadow-primary:  0 8px 24px rgba(13,148,136,0.25);
+            --shadow-xxl:      0 25px 50px -12px rgba(0,0,0,0.15);
 
             /* Borders */
-            --radius:          12px;
-            --radius-lg:       20px;
-            --radius-xl:       28px;
-            --border-light:    rgba(13,148,136,0.15);
+            --radius:          10px;
+            --radius-lg:       16px;
+            --radius-xl:       24px;
+            --border-light:    rgba(0,0,0,0.08);
 
             /* Transitions */
             --transition:      all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -83,7 +88,8 @@
             width: 100%;
             background: var(--content-bg);
             font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
-            line-height: 1.6;
+            font-size: 15px;
+            line-height: 1.65;
             color: #1e293b;
         }
 
@@ -127,15 +133,13 @@
 
         /* Glass morphism card */
         .glass-effect {
-            background: rgba(255,255,255,0.75);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(13,148,136,0.12) !important;
+            background: #ffffff;
+            border: 1px solid rgba(0,0,0,0.07) !important;
             box-shadow: var(--shadow-md);
         }
         .glass-inner {
-            background: rgba(240,253,250,0.60);
-            border: 1px solid rgba(13,148,136,0.10);
+            background: rgba(248,250,252,0.70);
+            border: 1px solid rgba(0,0,0,0.06);
             border-radius: var(--radius);
         }
 
@@ -225,25 +229,29 @@
         /* Premium input */
         .premium-input .form-control,
         .premium-input .form-select {
-            border: 2px solid rgba(13,148,136,0.15);
+            border: 1.5px solid rgba(0,0,0,0.12);
             border-radius: var(--radius);
             transition: var(--transition);
             font-size: 0.95rem;
+            padding: 0.55rem 0.875rem;
         }
         .premium-input .form-control:focus,
         .premium-input .form-select:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(13,148,136,0.12);
+            box-shadow: 0 0 0 3px rgba(13,148,136,0.10);
+        }
+        .form-control, .form-select {
+            border-color: rgba(0,0,0,0.12) !important;
         }
         .form-control:focus, .form-select:focus {
             border-color: var(--primary) !important;
             box-shadow: 0 0 0 3px rgba(13,148,136,0.10) !important;
         }
-        .input-group-text { border-color: rgba(13,148,136,0.15); }
+        .input-group-text { border-color: rgba(0,0,0,0.12); background: #f8fafc; }
 
         /* Cards */
         .card {
-            border: 1px solid rgba(13,148,136,0.08) !important;
+            border: 1px solid rgba(0,0,0,0.06) !important;
             border-radius: var(--radius-lg) !important;
             box-shadow: var(--shadow) !important;
             transition: var(--transition);
@@ -252,22 +260,23 @@
         .shadow-xxl { box-shadow: var(--shadow-xxl) !important; }
 
         /* Table */
-        .table { font-size: 0.9rem; }
+        .table { font-size: 0.925rem; }
         .table th {
             font-weight: 600;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.06em;
             color: #64748b;
-            padding: 1rem 0.75rem;
-            border-bottom: 2px solid rgba(13,148,136,0.10);
+            padding: 1rem 1rem;
+            border-bottom: 2px solid rgba(0,0,0,0.07);
+            background: #f8fafc;
         }
-        .table td { padding: 0.875rem 0.75rem; vertical-align: middle; }
+        .table td { padding: 0.9rem 1rem; vertical-align: middle; }
         .table-hover tbody tr:hover {
-            background: rgba(240,253,250,0.70) !important;
-            transition: background 0.2s ease;
+            background: rgba(239,246,255,0.60) !important;
+            transition: background 0.15s ease;
         }
-        .table-light th { background: rgba(240,253,250,0.70) !important; }
+        .table-light th { background: #f8fafc !important; }
 
         /* Alerts */
         .alert { border-radius: var(--radius) !important; border: none !important; }
@@ -278,34 +287,40 @@
 
         /* Background page wrapper used by many pages */
         .bg-gradient-to-br {
-            background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 40%, #f0fdfa 70%, #e0f2fe 100%) !important;
+            background: linear-gradient(135deg, #f8fafc 0%, #f3f8ff 50%, #eff6ff 100%) !important;
         }
 
-        /* Floating background elements */
-        .floating-elements {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-        .floating-element {
-            position: absolute;
-            border-radius: 50%;
-            background: linear-gradient(135deg, rgba(13,148,136,0.06), rgba(6,182,212,0.04));
-            animation: floatBg 10s ease-in-out infinite;
-        }
-        .element-1 { width: 280px; height: 280px; top: -80px; left: -80px; animation-delay: 0s; }
-        .element-2 { width: 200px; height: 200px; bottom: 10%; right: -60px; animation-delay: 3s; }
-        .element-3 { width: 120px; height: 120px; bottom: 30%; left: 15%; animation-delay: 6s; }
-        .element-4 { width: 160px; height: 160px; top: 40%; right: 20%; animation-delay: 1.5s; }
-        @keyframes floatBg {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50%       { transform: translateY(-20px) rotate(15deg); }
-        }
+        /* Background decorative elements — static, no animation */
+        .floating-elements { display: none; }
+        .floating-element  { display: none; }
 
-        /* Error messages */
+        /* ── Typography Comfort ───────────────── */
+        h1, h2, h3, h4, h5, h6 { font-weight: 700; letter-spacing: -0.01em; color: #0f172a; }
+        .form-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.4rem;
+        }
+        .form-text { font-size: 0.8rem; color: #6b7280; }
+        .form-control, .form-select {
+            font-size: 0.95rem;
+            color: #1e293b;
+            background-color: #fff;
+            border-radius: var(--radius);
+            padding: 0.55rem 0.875rem;
+        }
+        .btn {
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-radius: var(--radius);
+            padding: 0.55rem 1.25rem;
+            transition: var(--transition);
+        }
+        .btn-sm { padding: 0.35rem 0.85rem; font-size: 0.82rem; }
+        .btn-lg { padding: 0.75rem 1.75rem; font-size: 1rem; }
+
+        /* ── Error messages ───────────────────── */
         .error-message {
             color: var(--danger);
             font-size: 0.85rem;
@@ -320,12 +335,7 @@
         .status-topay    { background: rgba(6,182,212,0.12) !important; color: #164e63 !important; }
         .status-cancelled{ background: rgba(239,68,68,0.12) !important; color: #7f1d1d !important; }
 
-        /* Page animations */
-        .content-area { animation: fadeInUp 0.45s ease; }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(16px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
+
 
         /* Metric indicator dot */
         .metric-indicator {
@@ -336,8 +346,8 @@
 
         /* Detail card */
         .detail-card {
-            background: rgba(240,253,250,0.7);
-            border: 1px solid rgba(13,148,136,0.10);
+            background: rgba(248,250,252,0.80);
+            border: 1px solid rgba(0,0,0,0.06);
             border-radius: var(--radius);
         }
 
@@ -349,9 +359,8 @@
             font-size: 0.78rem;
         }
         .glass-inner-stat {
-            background: rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.18);
             border: 1px solid rgba(255,255,255,0.25);
-            backdrop-filter: blur(10px);
         }
 
         /* Table inactive row */
@@ -579,7 +588,7 @@
         /* ── Content Area ─────────────────────── */
         .content-area {
             margin-left: var(--sidebar-width);
-            padding: 2rem 2rem 3rem;
+            padding: 2rem 2.5rem 3rem;
             min-height: 100vh;
             transition: var(--transition);
             background: var(--content-bg);
@@ -611,11 +620,10 @@
         .sidebar-backdrop {
             position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(15,23,42,0.50);
-            backdrop-filter: blur(3px);
+            background: rgba(15,23,42,0.55);
             z-index: 999;
             opacity: 0; visibility: hidden;
-            transition: var(--transition);
+            transition: opacity 0.2s ease, visibility 0.2s ease;
         }
         .sidebar-backdrop.show { opacity: 1; visibility: visible; }
 
@@ -631,19 +639,7 @@
             [dir="rtl"] .btn-toggle-sidebar { right: 0.875rem; }
         }
 
-        /* ── Loading shimmer ──────────────────── */
-        @keyframes shimmer {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
-        .nav-item.loading a::after {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-            animation: shimmer 1.2s infinite;
-        }
+
     </style>
 </head>
 
