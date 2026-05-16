@@ -352,7 +352,7 @@
         }
 
         .bg-gradient-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0d9488 0%, #0891b2 100%);
         }
 
         .stat-card {
@@ -457,12 +457,12 @@
                         label: 'Number of Customers',
                         data: [{{ $usersLastMonth }}, {{ $usersThisMonth }},
                             {{ $usersAllTime }}],
-                        borderColor: 'rgba(102, 126, 234, 1)',
-                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        borderColor: 'rgba(13, 148, 136, 1)',
+                        backgroundColor: 'rgba(13, 148, 136, 0.1)',
                         borderWidth: 3,
                         tension: 0.4,
                         fill: true,
-                        pointBackgroundColor: 'rgba(102, 126, 234, 1)',
+                        pointBackgroundColor: 'rgba(13, 148, 136, 1)',
                         pointBorderColor: '#fff',
                         pointBorderWidth: 2,
                         pointRadius: 6,

@@ -271,7 +271,7 @@
 
     <style>
         .bg-gradient-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0d9488 0%, #0891b2 100%);
         }
 
         .card {
@@ -310,7 +310,7 @@
 
         .detail-card {
             transition: all 0.3s ease;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid #0d9488;
         }
 
         .detail-card:hover {

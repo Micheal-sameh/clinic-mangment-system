@@ -10,13 +10,13 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <style>
             :root {
-                --primary-color: #4361ee;
-                --primary-dark: #3a56d4;
-                --secondary-color: #f8f9fa;
-                --success-color: #4cc9f0;
+                --primary-color: #0d9488;
+                --primary-dark: #0f766e;
+                --secondary-color: #f0fdfa;
+                --success-color: #0891b2;
                 --border-color: #e2e8f0;
-                --text-primary: #2d3748;
-                --text-secondary: #718096;
+                --text-primary: #1e293b;
+                --text-secondary: #64748b;
             }
 
             body {
@@ -102,7 +102,7 @@
             .section-title i {
                 margin-right: 0.75rem;
                 color: var(--primary-color);
-                background: rgba(67, 97, 238, 0.1);
+                background: rgba(13, 148, 136, 0.1);
                 width: 36px;
                 height: 36px;
                 border-radius: 10px;
@@ -125,7 +125,7 @@
 
             .form-control:focus {
                 border-color: var(--primary-color);
-                box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.15);
+                box-shadow: 0 0 0 0.25rem rgba(13, 148, 136, 0.15);
             }
 
             .form-label {
@@ -190,7 +190,7 @@
                 font-size: 1.1rem;
                 color: white;
                 transition: all 0.3s ease;
-                box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+                box-shadow: 0 4px 15px rgba(13, 148, 136, 0.3);
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -201,7 +201,7 @@
 
             .btn-submit:hover {
                 transform: translateY(-2px);
-                box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+                box-shadow: 0 6px 20px rgba(13, 148, 136, 0.4);
             }
 
             .btn-submit:active {

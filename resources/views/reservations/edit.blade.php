@@ -171,7 +171,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
         :root {
-            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --primary-gradient: linear-gradient(135deg, #0d9488 0%, #0891b2 100%);
             --glass-bg: rgba(255, 255, 255, 0.25);
             --glass-border: rgba(255, 255, 255, 0.18);
             --shadow-xxl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
@@ -202,7 +202,7 @@
         .floating-element {
             position: absolute;
             border-radius: 50%;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.05));
+            background: linear-gradient(135deg, rgba(13, 148, 136, 0.1), rgba(8, 145, 178, 0.05));
             animation: float 6s ease-in-out infinite;
         }
 
@@ -340,7 +340,7 @@
         .premium-input .form-control:focus,
         .premium-input .form-select:focus {
             background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+            box-shadow: 0 8px 25px rgba(13, 148, 136, 0.15);
             transform: translateY(-2px);
         }
 
@@ -370,7 +370,7 @@
 
         .btn-glow:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 10px 30px rgba(13, 148, 136, 0.4);
         }
 
         .btn-hover {
@@ -416,8 +416,8 @@
 
         /* Current Reservation Info */
         .current-reservation-info {
-            background: rgba(102, 126, 234, 0.1);
-            border: 1px solid rgba(102, 126, 234, 0.2);
+            background: rgba(13, 148, 136, 0.1);
+            border: 1px solid rgba(13, 148, 136, 0.2);
         }
 
         /* Section Icons */

@@ -221,7 +221,7 @@
 
     <style>
         .bg-gradient-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0d9488 0%, #0891b2 100%);
         }
 
         .header-icon {
@@ -241,7 +241,7 @@
             padding: 1.5rem;
             background: #f8f9fa;
             border-radius: 12px;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid #0d9488;
         }
 
         .section-title {
@@ -266,8 +266,8 @@
         }
 
         .form-control:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.15);
+            border-color: #0d9488;
+            box-shadow: 0 0 0 0.25rem rgba(13, 148, 136, 0.15);
         }
 
         .form-label {
@@ -286,18 +286,18 @@
 
         .nav-pills .nav-link.active {
             background: white;
-            color: #667eea;
+            color: #0d9488;
             border-color: #e2e8f0;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         .nav-pills .nav-link:not(.active):hover {
-            background: rgba(102, 126, 234, 0.1);
-            color: #667eea;
+            background: rgba(13, 148, 136, 0.1);
+            color: #0d9488;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0d9488 0%, #0891b2 100%);
             border: none;
             font-weight: 600;
             padding: 0.75rem 2rem;
@@ -306,7 +306,7 @@
 
         .btn-primary:hover {
             transform: translateY(-1px);
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 4px 15px rgba(13, 148, 136, 0.4);
         }
 
         .btn-outline-secondary {
