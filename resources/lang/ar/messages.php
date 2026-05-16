@@ -271,4 +271,48 @@ return [
     'deactivate_day' => 'تعطيل اليوم',
     'slots_available' => 'الفترات المتاحة',
     'doctor_selection' => 'اختيار الطبيب',
+
+    // ── Medical Information ──────────────────────────────────────
+    'medical_information' => 'المعلومات الطبية',
+    'medical_history' => 'السجل الطبي',
+    'medical_file' => 'الملف الطبي',
+    'visit_history' => 'سجل الزيارات',
+    'account_information' => 'معلومات الحساب',
+    'blood_type' => 'فصيلة الدم',
+    'allergies' => 'الحساسية',
+    'chronic_conditions' => 'الأمراض المزمنة',
+    'emergency_contact' => 'جهة الاتصال في الطوارئ',
+    'emergency_contact_name' => 'اسم جهة الاتصال في الطوارئ',
+    'emergency_contact_phone' => 'رقم هاتف جهة الاتصال في الطوارئ',
+    'no_medical_info' => 'لا توجد معلومات طبية مسجلة',
+
+    // ── Diagnoses ────────────────────────────────────────────────
+    'diagnosis' => 'التشخيص',
+    'diagnoses' => 'التشخيصات',
+    'icd_code' => 'رمز ICD',
+    'diagnosis_notes' => 'ملاحظات التشخيص',
+    'add_diagnosis' => 'إضافة تشخيص',
+    'no_diagnoses' => 'لا توجد تشخيصات مسجلة بعد',
+    'confirm_delete_diagnosis' => 'هل أنت متأكد من حذف هذا التشخيص؟',
+
+    // ── Prescriptions ─────────────────────────────────────────────
+    'prescription' => 'الوصفة الطبية',
+    'prescriptions' => 'الوصفات الطبية',
+    'medicine_name' => 'اسم الدواء',
+    'dosage' => 'الجرعة',
+    'frequency' => 'التكرار',
+    'add_prescription' => 'إضافة وصفة طبية',
+    'no_prescriptions' => 'لا توجد وصفات طبية مسجلة بعد',
+    'confirm_delete_prescription' => 'هل أنت متأكد من حذف هذه الوصفة الطبية؟',
+
+    // ── Reservation Statuses ──────────────────────────────────────
+    'paid' => 'مدفوع',
+    'waiting' => 'قيد الانتظار',
+    'apply_page_title' => 'تطبيق العلاج',
+    'patient_info' => 'معلومات المريض',
+    'treatment_procedures' => 'إجراءات العلاج',
+    'add_note' => 'إضافة ملاحظة',
+    'no_notes' => 'لا توجد ملاحظات بعد',
+    'total_price' => 'السعر الإجمالي',
+    'no_history' => 'لا يوجد سجل متاح',
 ];

@@ -1,41 +1,68 @@
 services:
+  # ── PHP-FPM Application ─────────────────────────────────────────
   app:
     build:
-      args:
-        user: reservation-system
-        uid: 1500
       context: ./docker/php
       dockerfile: Dockerfile
-    container_name: reservation-system
+      args:
+        user: clinic-app
+        uid: 1000
+    container_name: clinic-app
     restart: unless-stopped
-    working_dir: /var/www/reservation-system
+    working_dir: /var/www/html
+    environment:
+      APP_ENV: ${APP_ENV:-production}
+      APP_DEBUG: ${APP_DEBUG:-false}
+      PHP_OPCACHE_ENABLE: 1
     volumes:
-      - ./:/var/www/reservation-system
-      - ./docker/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini
+      - .:/var/www/html:cached
+      - ./docker/php/custom.ini:/usr/local/etc/php/conf.d/99-custom.ini:ro
+      - app-storage:/var/www/html/storage/app
     networks:
-      - reservation-system
-      - external_db_network
+      - clinic-net
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "php-fpm", "-t"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
 
+  # ── Nginx Web Server ────────────────────────────────────────────
   nginx:
-    container_name: reservation-test-nginx
+    image: nginx:1.27-alpine
+    container_name: clinic-nginx
     restart: unless-stopped
-    image: nginx
     ports:
-      - 8031:80
-    depends_on:
-      - app
+      - "${APP_PORT:-8031}:80"
     volumes:
-      - ./:/var/www/reservation-system
-      - ./docker/nginx/conf.d/:/etc/nginx/conf.d
+      - .:/var/www/html:ro
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d:ro
     networks:
-      - reservation-system
+      - clinic-net
+    depends_on:
+      app:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ── MariaDB Database ────────────────────────────────────────────
   db:
-    image: mariadb:10.5
-    container_name: reservation-test-db
+    image: mariadb:11.4
+    container_name: clinic-db
     restart: unless-stopped
-    command: --max_allowed_packet=67108864
+    command:
+      - --max_allowed_packet=67108864
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --innodb-buffer-pool-size=256M
     environment:
       MYSQL_DATABASE: ${DB_DATABASE}
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
@@ -44,31 +71,83 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
     ports:
-      - "9001:3306"
+      - "${DB_PORT_EXPOSE:-9001}:3306"
     networks:
-      - reservation-system
-      - external_db_network
+      - clinic-net
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
+  # ── Redis Cache & Queue ─────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: clinic-redis
+    restart: unless-stopped
+    command: redis-server --save 60 1 --loglevel warning --requirepass ${REDIS_PASSWORD:-secret}
+    volumes:
+      - redis-data:/data
+    networks:
+      - clinic-net
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-secret}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # ── Queue Worker (Supervisor) ───────────────────────────────────
+  worker:
+    build:
+      context: ./docker/supervisor
+      dockerfile: Dockerfile
+      args:
+        user: clinic-app
+        uid: 1000
+    container_name: clinic-worker
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html:cached
+      - ./docker/supervisor/conf.d:/etc/supervisor/conf.d:ro
+    networks:
+      - clinic-net
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  # ── phpMyAdmin (dev only) ───────────────────────────────────────
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: reservation-system-db
+    image: phpmyadmin:5.2-apache
+    container_name: clinic-phpmyadmin
     restart: unless-stopped
     environment:
-      PMA_HOST: db  # Points to the db service
+      PMA_HOST: db
       PMA_PORT: 3306
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       UPLOAD_LIMIT: 256M
+      MAX_EXECUTION_TIME: 600
     ports:
-      - "8080:80"
+      - "${PMA_PORT:-8080}:80"
     networks:
-      - reservation-system
+      - clinic-net
+    depends_on:
+      db:
+        condition: service_healthy
+    profiles:
+      - dev
 
 networks:
-  reservation-system:
+  clinic-net:
     driver: bridge
-  external_db_network:
-    external: false
 
 volumes:
   mysql-data:
+    driver: local
+  redis-data:
+    driver: local
+  app-storage:
     driver: local

@@ -1,34 +1,49 @@
 FROM php:8.2-fpm
 
-# Arguments defined in docker-compose.yml
-ARG user
-ARG uid
+# ── Build arguments ───────────────────────────────────────────────────────────
+ARG user=clinic-app
+ARG uid=1000
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
+# ── System dependencies ───────────────────────────────────────────────────────
+RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     curl \
     libpng-dev \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
     libonig-dev \
     libxml2-dev \
+    libzip-dev \
+    libicu-dev \
+    libssl-dev \
     zip \
     unzip \
     supervisor \
-    nodejs \
-    npm
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# Clear cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+# ── PHP extensions ────────────────────────────────────────────────────────────
+RUN pecl install redis \
+    && docker-php-ext-enable redis \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) \
+        pdo_mysql \
+        mbstring \
+        exif \
+        pcntl \
+        bcmath \
+        gd \
+        zip \
+        intl \
+        opcache
 
-# Install PHP extensions
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+# ── Composer ──────────────────────────────────────────────────────────────────
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
+# ── Supervisor log directory ──────────────────────────────────────────────────
 RUN mkdir -p /var/log/supervisor
 
-# Get latest Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# ── Working directory ─────────────────────────────────────────────────────────
+WORKDIR /var/www/html
 
-# Set working directory
-WORKDIR /var/www
-
-CMD [ "supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf" ]
+CMD ["supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]

@@ -269,4 +269,48 @@ return [
     'deactivate_day' => 'Deactivate Day',
     'slots_available' => 'Slots Available',
     'doctor_selection' => 'Doctor Selection',
+
+    // ── Medical Information ──────────────────────────────────────
+    'medical_information' => 'Medical Information',
+    'medical_history' => 'Medical History',
+    'medical_file' => 'Medical File',
+    'visit_history' => 'Visit History',
+    'account_information' => 'Account Information',
+    'blood_type' => 'Blood Type',
+    'allergies' => 'Allergies',
+    'chronic_conditions' => 'Chronic Conditions',
+    'emergency_contact' => 'Emergency Contact',
+    'emergency_contact_name' => 'Emergency Contact Name',
+    'emergency_contact_phone' => 'Emergency Contact Phone',
+    'no_medical_info' => 'No medical information recorded',
+
+    // ── Diagnoses ────────────────────────────────────────────────
+    'diagnosis' => 'Diagnosis',
+    'diagnoses' => 'Diagnoses',
+    'icd_code' => 'ICD Code',
+    'diagnosis_notes' => 'Diagnosis Notes',
+    'add_diagnosis' => 'Add Diagnosis',
+    'no_diagnoses' => 'No diagnoses recorded yet',
+    'confirm_delete_diagnosis' => 'Are you sure you want to delete this diagnosis?',
+
+    // ── Prescriptions ─────────────────────────────────────────────
+    'prescription' => 'Prescription',
+    'prescriptions' => 'Prescriptions',
+    'medicine_name' => 'Medicine Name',
+    'dosage' => 'Dosage',
+    'frequency' => 'Frequency',
+    'add_prescription' => 'Add Prescription',
+    'no_prescriptions' => 'No prescriptions recorded yet',
+    'confirm_delete_prescription' => 'Are you sure you want to delete this prescription?',
+
+    // ── Reservation Statuses ──────────────────────────────────────
+    'paid' => 'Paid',
+    'waiting' => 'Waiting',
+    'apply_page_title' => 'Apply Treatment',
+    'patient_info' => 'Patient Info',
+    'treatment_procedures' => 'Treatment Procedures',
+    'add_note' => 'Add Note',
+    'no_notes' => 'No notes yet',
+    'total_price' => 'Total Price',
+    'no_history' => 'No history available',
 ];
