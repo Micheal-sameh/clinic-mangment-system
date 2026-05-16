@@ -23,6 +23,114 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "php-fpm", "-t"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+  # ── Nginx Web Server ────────────────────────────────────────────
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: clinic-nginx
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8031}:80"
+    volumes:
+      - .:/var/www/html:ro
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d:ro
+    networks:
+      - clinic-net
+    depends_on:
+      app:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ── MariaDB Database ────────────────────────────────────────────
+  db:
+    image: mariadb:11.4
+    container_name: clinic-db
+    restart: unless-stopped
+    command:
+      - --max_allowed_packet=67108864
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --innodb-buffer-pool-size=256M
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - "${DB_PORT_EXPOSE:-9001}:3306"
+    networks:
+      - clinic-net
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # ── phpMyAdmin (dev only — run with: docker compose --profile dev up) ───────
+  phpmyadmin:
+    image: phpmyadmin:5.2-apache
+    container_name: clinic-phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      UPLOAD_LIMIT: 256M
+      MAX_EXECUTION_TIME: 600
+    ports:
+      - "${PMA_PORT:-8080}:80"
+    networks:
+      - clinic-net
+    depends_on:
+      db:
+        condition: service_healthy
+    profiles:
+      - dev
+
+networks:
+  clinic-net:
+    driver: bridge
+
+volumes:
+  mysql-data:
+    driver: local
+  app-storage:
+    driver: local
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+      args:
+        user: clinic-app
+        uid: 1000
+    container_name: clinic-app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    environment:
+      APP_ENV: ${APP_ENV:-production}
+      APP_DEBUG: ${APP_DEBUG:-false}
+      PHP_OPCACHE_ENABLE: 1
+    volumes:
+      - .:/var/www/html:cached
+      - ./docker/php/custom.ini:/usr/local/etc/php/conf.d/99-custom.ini:ro
+      - app-storage:/var/www/html/storage/app
+    networks:
+      - clinic-net
+    depends_on:
+      db:
+        condition: service_healthy
       redis:
         condition: service_healthy
     healthcheck:
