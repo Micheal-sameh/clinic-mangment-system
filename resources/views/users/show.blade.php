@@ -132,7 +132,7 @@
                         <li class="nav-item">
                             <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-visits" type="button">
                                 <i class="fas fa-calendar-alt me-1"></i>{{ __('messages.reservations') ?? 'Visits' }}
-                                <span class="badge bg-primary ms-1">{{ $reservations ? $reservations->total() : 0 }}</span>
+                                <span class="badge bg-primary ms-1">{{ $reservations ? $reservations->count() : 0 }}</span>
                             </button>
                         </li>
                         <li class="nav-item">

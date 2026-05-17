@@ -2,22 +2,28 @@ services:
   # ── PHP Application ─────────────────────────────────────────────
   app:
     build:
-      context: ./docker/php
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: docker/php/Dockerfile
       args:
         user: clinic-app
-        uid: 1000
+        uid: 1500
     container_name: clinic-app
     restart: unless-stopped
     working_dir: /var/www/html
-    command: php artisan serve --host=0.0.0.0 --port=8000
+    command: >
+      sh -c "
+        php artisan migrate --force &&
+        php artisan config:cache &&
+        php artisan route:cache &&
+        php-fpm
+      "
     environment:
       APP_ENV: ${APP_ENV:-production}
       APP_DEBUG: ${APP_DEBUG:-false}
+      DB_HOST: db
     ports:
-      - "${APP_PORT:-8031}:8000"
+      - "8031:9000"
     volumes:
-      - .:/var/www/html:cached
       - ./docker/php/custom.ini:/usr/local/etc/php/conf.d/99-custom.ini:ro
       - app-storage:/var/www/html/storage/app
     networks:
@@ -26,11 +32,13 @@ services:
       db:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "php", "artisan", "--version"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 20s
+      test: ["CMD", "php", "-r", "echo 1;"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 90s
+
+  # ── Nginx Web Server removed – host nginx talks FastCGI directly ──
 
   # ── MariaDB Database ────────────────────────────────────────────
   db:
@@ -43,10 +51,10 @@ services:
       - --collation-server=utf8mb4_unicode_ci
       - --innodb-buffer-pool-size=256M
     environment:
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_DATABASE: clinic
+      MYSQL_ROOT_PASSWORD: "Misho$$1234"
+      MYSQL_PASSWORD: "Misho$$1234"
+      MYSQL_USER: clinic
     volumes:
       - mysql-data:/var/lib/mysql
     ports:
@@ -56,9 +64,9 @@ services:
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       interval: 10s
-      timeout: 5s
+      timeout: 10s
       retries: 5
-      start_period: 30s
+      start_period: 60s
 
   # ── phpMyAdmin (dev only) ────────────────────────────────────────
   phpmyadmin:

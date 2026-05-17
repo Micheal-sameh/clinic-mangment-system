@@ -49,4 +49,11 @@ RUN useradd -G www-data,root -u ${uid} -d /home/${user} ${user} \
 # ── Working directory ─────────────────────────────────────────────
 WORKDIR /var/www/html
 
+# ── Copy source & install dependencies ───────────────────────────
+COPY --chown=${user}:${user} . .
+
+RUN composer install --no-dev --no-scripts --optimize-autoloader --no-interaction \
+    && mkdir -p storage/logs storage/framework/cache storage/framework/sessions storage/framework/views bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
+
 USER ${user}
